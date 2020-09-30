@@ -1,9 +1,9 @@
 import React, { useRef, useCallback } from 'react';
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { FiLogIn, FiMail } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line import/no-unresolved
 import { Container, Content, AnimationContainer, Background } from './styles';
@@ -13,43 +13,53 @@ import Button from '../../components/Button';
 import logoImg from '../../assets/logo.svg';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
+import api from '../../services/api';
+import { useState } from 'react';
 
-interface SignInFormData {
+interface ForgotPasswordFormData {
   email: string;
-  password: string;
 }
 
-const SignIn: React.FC = () => {
+const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
-  const history = useHistory();
+  //const history = useHistory();
 
-  const { signIn } = useAuth();
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
-    async (data: SignInFormData) => {
+    async (data: ForgotPasswordFormData) => {
       try {
+        setLoading(true);
+
         formRef.current?.setErrors({});
         const schema = Yup.object().shape({
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
-          password: Yup.string().required('Senha obrigatória'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await signIn({
-          email: data.email,
-          password: data.password,
-        });
+        // recuperacao de senha
 
-        history.push('/dashboard');
-      } catch (err) {
+        await api.post('/password/forgot', {
+          email: data.email
+        })
+
+        addToast({
+          type: 'success',
+          title: 'E-mail de recuperação enviado',
+          description:
+          'Enviamos um e-mail para recuperação de senha. Cheque sua caixa de entrada.'
+        })
+
+        //history.push('/dashboard');
+      }
+      catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
@@ -60,11 +70,13 @@ const SignIn: React.FC = () => {
         addToast({
           type: 'error',
           title: 'Erro na autenticação!',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais!',
+          description: 'Ocorreu um erro ao realizar a recuperação de senha!',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [signIn, history, addToast],
+    [addToast],
   );
 
   return (
@@ -72,22 +84,17 @@ const SignIn: React.FC = () => {
       <Content>
         <AnimationContainer>
           <img src={logoImg} alt="Gobarber" />
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Faça seu Logon</h1>
-            <Input icon={FiMail} name="email" placeholder="E-mail" />
-            <Input
-              icon={FiLock}
-              name="password"
-              type="password"
-              placeholder="Senha"
-            />
-            <Button type="submit">Entrar</Button>
 
-            <Link to="/forgot-password">Esqueci minha senha</Link>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Recuperar senha</h1>
+            <Input icon={FiMail} name="email" placeholder="E-mail" />
+
+            <Button loading={loading} type="submit">Recuperar</Button>
           </Form>
+
           <Link to="/signup">
             <FiLogIn />
-            Criar conta
+            Voltar ao login
           </Link>
         </AnimationContainer>
       </Content>
@@ -95,4 +102,4 @@ const SignIn: React.FC = () => {
     </Container>
   );
 };
-export default SignIn;
+export default ForgotPassword;
