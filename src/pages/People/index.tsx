@@ -1,6 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 
-import { FiChevronDown, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import {
+  FiArrowDown,
+  FiArrowUp,
+  FiChevronDown,
+  FiChevronLeft,
+  FiChevronRight,
+  FiSearch,
+} from 'react-icons/fi';
+import { createStyles, Theme, InputBase, makeStyles } from '@material-ui/core';
 import {
   Container,
   Content,
@@ -22,6 +30,7 @@ interface People {
 
 const People: React.FC = () => {
   const [people, setPeople] = useState<People[]>([]);
+
   const [totalPeople, setTotalPeople] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
@@ -30,11 +39,15 @@ const People: React.FC = () => {
   const [pageLimitInf, setPageLimitInf] = useState(1);
   const [pageLimitSup, setPageLimitSup] = useState(1);
 
+  const [nameOrder, setNameOrder] = useState('asc');
+  const [searchName, setSearchName] = useState('');
+  const [searchInputValue, setSearchInputValue] = useState('');
+
   useEffect(() => {
     async function loadPeople(): Promise<void> {
       try {
         const response = await api.get(
-          `users?_page=${currentPage}&_limit=${rowsPerPage}`,
+          `users?_sort=name&_order=${nameOrder}&_page=${currentPage}&_limit=${rowsPerPage}&name_like=${searchName}`,
         );
         setPeople(response.data);
 
@@ -54,7 +67,7 @@ const People: React.FC = () => {
     }
 
     loadPeople();
-  }, [currentPage, rowsPerPage]);
+  }, [currentPage, rowsPerPage, nameOrder, searchName]);
 
   function handleNextPageClick(): void {
     if (currentPage === lastPage) {
@@ -70,18 +83,42 @@ const People: React.FC = () => {
     setCurrentPage(currentPage - 1);
   }
 
+  function handleSearch(event: FormEvent): void {
+    event.preventDefault();
+    setSearchName(searchInputValue);
+  }
+
   return (
     <Container>
       <Header />
       <Content>
         <TableContainer>
-          <form>
-            <input type="text" placeholder="Nome ou CPF" name="people" />
+          <form onSubmit={handleSearch}>
+            <input
+              placeholder="Buscar por nome"
+              name="filter"
+              value={searchInputValue}
+              onChange={event => setSearchInputValue(event.target.value)}
+            />
+            <button type="submit">
+              <FiSearch
+                size={16}
+                style={{ margin: '8px', cursor: 'pointer' }}
+              />
+            </button>
           </form>
+
           <table>
             <thead>
               <tr>
-                <th>Nome</th>
+                <th
+                  onClick={() =>
+                    setNameOrder(nameOrder === 'asc' ? 'desc' : 'asc')
+                  }
+                  style={{ cursor: 'pointer' }}
+                >
+                  {nameOrder === 'asc' ? <FiArrowDown /> : <FiArrowUp />} Nome
+                </th>
                 <th>Dt. Nasc.</th>
               </tr>
             </thead>

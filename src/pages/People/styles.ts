@@ -75,13 +75,47 @@ export const TableContainer = styled.div`
   padding: 16px 16px;
   border-radius: 8px;
   max-width: 500px;
+  width: 100%;
+
   display: table;
   justify-content: center;
+
+  form {
+    border: 1px solid #d3d4d5;
+    width: 280px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    input {
+      width: 100%;
+      border: none;
+      padding-left: 8px;
+      color: #333;
+
+      :-webkit-autofill,
+      :-webkit-autofill:hover,
+      :-webkit-autofill:focus,
+      :-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+    }
+
+    button {
+      background: #fff;
+      border: none;
+      border-radius: inherit;
+      display: flex;
+      align-items: center;
+    }
+  }
 
   table {
     border-collapse: collapse;
     margin: 16px 0;
-
+    width: 100%;
     td,
     th {
       padding: 16px;
@@ -97,12 +131,6 @@ export const TableContainer = styled.div`
         :hover {
           background: #f3f4f5;
           cursor: pointer;
-        }
-      }
-
-      td {
-        span {
-          margin-left: 8px;
         }
       }
     }
