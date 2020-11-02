@@ -115,29 +115,32 @@ export const TableContainer = styled.div`
     border-collapse: collapse;
     margin: 16px 0;
     width: 100%;
-    td,
-    th {
-      padding: 16px;
-      border-bottom: 1px solid #d3d4d5;
-    }
 
     th {
+      padding: 16px 0;
+      border-bottom: 1px solid #d3d4d5;
       text-align: left;
     }
 
-    tbody {
-      tr {
-        :hover {
-          background: #f3f4f5;
-          cursor: pointer;
-        }
-        height: 55px;
+    tbody tr {
+      :hover {
+        background: #f3f4f5;
+        cursor: pointer;
+      }
 
-        td:first-child {
-          display: grid;
-          grid-template-columns: 28px auto;
-          column-gap: 8px;
-          align-items: center;
+      td {
+        border-bottom: 1px solid #d3d4d5;
+        padding: 16px 0;
+      }
+
+      td span {
+        display: block;
+      }
+
+      td:first-child div.person-data {
+        display: flex;
+        span {
+          margin-left: 16px;
         }
       }
     }

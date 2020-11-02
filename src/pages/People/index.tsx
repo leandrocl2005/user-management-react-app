@@ -127,8 +127,10 @@ const People: React.FC = () => {
             {people.map(person => (
               <tr key={person.id}>
                 <td>
-                  <FiChevronDown size={18} />
-                  <span>{person.name}</span>
+                  <div className="person-data">
+                    <FiChevronDown size={18} />
+                    <span>{person.name}</span>
+                  </div>
                 </td>
                 <td>
                   <span>
