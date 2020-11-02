@@ -6,16 +6,16 @@ import { FormHandles } from '@unform/core';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line import/no-unresolved
+import { useState } from 'react';
 import { Container, Content, AnimationContainer, Background } from './styles';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import logoImg from '../../assets/logo.svg';
+import logoImg from '../../assets/logo-danielle.svg';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { useToast } from '../../hooks/toast';
 import api from '../../services/api';
-import { useState } from 'react';
 
 interface ForgotPasswordFormData {
   email: string;
@@ -24,7 +24,7 @@ interface ForgotPasswordFormData {
 const ForgotPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const formRef = useRef<FormHandles>(null);
-  //const history = useHistory();
+  // const history = useHistory();
 
   const { addToast } = useToast();
 
@@ -47,19 +47,18 @@ const ForgotPassword: React.FC = () => {
         // recuperacao de senha
 
         await api.post('/password/forgot', {
-          email: data.email
-        })
+          email: data.email,
+        });
 
         addToast({
           type: 'success',
           title: 'E-mail de recuperação enviado',
           description:
-          'Enviamos um e-mail para recuperação de senha. Cheque sua caixa de entrada.'
-        })
+            'Enviamos um e-mail para recuperação de senha. Cheque sua caixa de entrada.',
+        });
 
-        //history.push('/dashboard');
-      }
-      catch (err) {
+        // history.push('/dashboard');
+      } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
           formRef.current?.setErrors(errors);
@@ -89,12 +88,14 @@ const ForgotPassword: React.FC = () => {
             <h1>Recuperar senha</h1>
             <Input icon={FiMail} name="email" placeholder="E-mail" />
 
-            <Button loading={loading} type="submit">Recuperar</Button>
+            <Button loading={loading} type="submit">
+              Recuperar
+            </Button>
           </Form>
 
-          <Link to="/signup">
+          <Link to="/">
             <FiLogIn />
-            Voltar ao login
+            Voltar ao logon
           </Link>
         </AnimationContainer>
       </Content>

@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
-import signUpBackgroundImg from '../../assets/sign-up-background.png';
+import signUpBackgroundImg from '../../assets/sign-in-background-danielle.png';
 
 export const Container = styled.div`
   height: 100vh;
@@ -36,17 +36,24 @@ export const AnimationContainer = styled.div`
 
   animation: ${appearFromRight} 1s;
 
+  img {
+    width: 340px;
+  }
+
   form {
-    margin: 32px 0;
+    margin: 16px 0;
     width: 340px;
     text-align: center;
 
     h1 {
       margin-bottom: 24px;
+      font: 700 1.8rem 'Nunito', sans-serif;
+      color: #245c2b;
     }
 
     a {
-      color: #faede8;
+      color: #245c2b;
+      font: 700 1rem 'Nunito', sans-serif;
       display: block;
       margin-top: 24px;
       text-decoration: none;
@@ -63,7 +70,7 @@ export const AnimationContainer = styled.div`
   }
 
   > a {
-    color: #faede8;
+    color: #245c2b;
     display: block;
     text-decoration: none;
     transition: color 0.2s;

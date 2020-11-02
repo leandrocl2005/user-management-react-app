@@ -13,7 +13,7 @@ import Button from '../../components/Button';
 import api from '../../services/api';
 import { useToast } from '../../hooks/toast';
 
-import logoImg from '../../assets/logo.svg';
+import logoImg from '../../assets/logo-danielle.svg';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 interface SignUpFormData {
@@ -88,7 +88,7 @@ const SignUp: React.FC = () => {
             />
             <Button type="submit">Cadastrar</Button>
 
-            <a href="/forgot">Esqueci minha senha</a>
+            <Link to="/forgot-password">Esqueci minha senha</Link>
           </Form>
           <Link to="/">
             <FiArrowLeft />

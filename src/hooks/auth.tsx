@@ -42,12 +42,19 @@ export const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
+    /* const response = await api.post('sessions', {
+      email,
+      password,
+    }); */
+    const response = await api.post('login', {
       email,
       password,
     });
 
-    const { token, user } = response.data;
+    /* const {user, token} = response.data */
+    const { access_token: token } = response.data;
+    const user_response = await api.get(`users?email=${email}`);
+    const user = user_response.data;
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
@@ -63,17 +70,21 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
-  const updateUser = useCallback((user: User) => {
-
-    localStorage.setItem('@GoBarber:user', JSON.stringify(user));
-    setData({
-      token: data.token,
-      user,
-    })
-  }, [setData, data.token],)
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, updateUser }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

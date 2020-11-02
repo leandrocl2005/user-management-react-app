@@ -3,7 +3,7 @@ import { FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
-import {  useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 // eslint-disable-next-line import/no-unresolved
 import { Container, Content, AnimationContainer, Background } from './styles';
@@ -35,8 +35,9 @@ const ResetPassword: React.FC = () => {
         const schema = Yup.object().shape({
           password: Yup.string().required('Senha obrigatória'),
           password_confirmation: Yup.string().oneOf(
-            [Yup.ref('password'), null], "Confirmação incorreta"
-          )
+            [Yup.ref('password'), null],
+            'Confirmação incorreta',
+          ),
         });
 
         await schema.validate(data, {
@@ -49,12 +50,11 @@ const ResetPassword: React.FC = () => {
           throw new Error();
         }
 
-        await api.post("password/reset", {
+        await api.post('password/reset', {
           password: data.password,
           password_confirmation: data.password_confirmation,
-          token
+          token,
         });
-
 
         history.push('/');
       } catch (err) {
@@ -98,9 +98,7 @@ const ResetPassword: React.FC = () => {
             />
 
             <Button type="submit">Alterar senha</Button>
-
           </Form>
-
         </AnimationContainer>
       </Content>
       <Background />

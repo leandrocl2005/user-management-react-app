@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
-import signInBackgroundImg from '../../assets/sign-in-background.png';
+import signInBackgroundImg from '../../assets/sign-in-background-danielle.png';
 
 export const Container = styled.div`
   height: 100vh;
@@ -37,6 +37,10 @@ export const AnimationContainer = styled.div`
 
   animation: ${appearFromLeft} 1s;
 
+  img {
+    width: 340px;
+  }
+
   form {
     margin: 60px 0;
     width: 340px;
@@ -44,14 +48,17 @@ export const AnimationContainer = styled.div`
 
     h1 {
       margin-bottom: 24px;
+      font: 700 1.8rem Nunito, sans-serif;
+      color: #245c2b;
     }
 
     a {
-      color: #faede8;
+      color: #245c2b;
       display: block;
       margin-top: 24px;
       text-decoration: none;
       transition: color 0.2s;
+      font: 700 1rem Nunito, sans-serif;
 
       &::placeholder {
         color: '#666360';
@@ -64,7 +71,7 @@ export const AnimationContainer = styled.div`
   }
 
   > a {
-    color: #ff9000;
+    color: #245c2b;
     display: block;
     text-decoration: none;
     transition: color 0.2s;
@@ -77,7 +84,7 @@ export const AnimationContainer = styled.div`
     }
 
     &:hover {
-      ${shade(0.2, '#ff9000')};
+      ${shade(0.2, '#245c2b')};
     }
   }
 `;
@@ -85,5 +92,5 @@ export const AnimationContainer = styled.div`
 export const Background = styled.div`
   flex: 1;
   background: url(${signInBackgroundImg}) no-repeat center;
-  background-size: cover;
+  background-size: 'cover';
 `;

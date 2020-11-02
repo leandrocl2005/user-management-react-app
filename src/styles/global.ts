@@ -9,13 +9,13 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #312e38;
-    color: #fff;
+    background: #fff;
+    color: #182c1e;
     -wekit-font-smoothing: antialiased;
   }
 
   body, input, button {
-    font-family: 'Roboto Slab', serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 16px;
   }
 
