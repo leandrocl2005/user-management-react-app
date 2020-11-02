@@ -30,9 +30,6 @@ export const Container = styled.div`
       transition: color 0.2s;
       font: 700 1rem Nunito, sans-serif;
 
-      &:hover {
-        color: #182c1e;
-      }
       p {
         font: 400 18px Nunito, sans-serif;
         margin-left: 8px;
@@ -41,6 +38,14 @@ export const Container = styled.div`
       &:hover {
         background: ${shade(0.05, '#ffffee')};
         cursor: pointer;
+      }
+
+      :first-child {
+        border-radius: 8px 8px 0px 0px;
+      }
+
+      :last-child {
+        border-radius: 0px 0px 8px 8px;
       }
     }
   }
