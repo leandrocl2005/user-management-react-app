@@ -8,10 +8,8 @@ import {
   FiChevronRight,
   FiSearch,
 } from 'react-icons/fi';
-import { createStyles, Theme, InputBase, makeStyles } from '@material-ui/core';
 import {
   Container,
-  Content,
   RowsPerPageContainer,
   TableContainer,
   Pagination,
@@ -19,6 +17,7 @@ import {
 } from './styles';
 import Header from '../../components/Header';
 import api from '../../services/api';
+import { useToast } from '../../hooks/toast';
 
 interface People {
   id: number;
@@ -29,6 +28,8 @@ interface People {
 }
 
 const People: React.FC = () => {
+  const { addToast } = useToast();
+
   const [people, setPeople] = useState<People[]>([]);
 
   const [totalPeople, setTotalPeople] = useState(0);
@@ -62,12 +63,16 @@ const People: React.FC = () => {
         setPageLimitInf(inf);
         setPageLimitSup(sup);
       } catch (error) {
-        console.log('Ocorreu um erro ao buscar pessoas.');
+        addToast({
+          type: 'error',
+          title: 'Erro ao buscar pessoas!',
+          description: 'Ocorreu um erro ao buscar pessoas!',
+        });
       }
     }
 
     loadPeople();
-  }, [currentPage, rowsPerPage, nameOrder, searchName]);
+  }, [currentPage, rowsPerPage, nameOrder, searchName, addToast]);
 
   function handleNextPageClick(): void {
     if (currentPage === lastPage) {
@@ -91,93 +96,92 @@ const People: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Content>
-        <TableContainer>
-          <form onSubmit={handleSearch}>
-            <input
-              placeholder="Buscar por nome"
-              name="filter"
-              value={searchInputValue}
-              onChange={event => setSearchInputValue(event.target.value)}
-            />
-            <button type="submit">
-              <FiSearch
-                size={16}
-                style={{ margin: '8px', cursor: 'pointer' }}
-              />
-            </button>
-          </form>
+      <TableContainer>
+        <form onSubmit={handleSearch}>
+          <input
+            placeholder="Buscar por nome"
+            name="filter"
+            value={searchInputValue}
+            onChange={event => setSearchInputValue(event.target.value)}
+          />
+          <button type="submit">
+            <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
+          </button>
+        </form>
 
-          <table>
-            <thead>
-              <tr>
-                <th
-                  onClick={() =>
-                    setNameOrder(nameOrder === 'asc' ? 'desc' : 'asc')
-                  }
-                  style={{ cursor: 'pointer' }}
-                >
-                  {nameOrder === 'asc' ? <FiArrowDown /> : <FiArrowUp />} Nome
-                </th>
-                <th>Dt. Nasc.</th>
-              </tr>
-            </thead>
-            <tbody>
-              {people.map(person => (
-                <tr key={person.id}>
-                  <td>
-                    <FiChevronDown size={18} />
-                    <span>{person.name}</span>
-                  </td>
-                  <td>{`${person.born_day}/${person.born_month}/${person.born_year}`}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination>
-            <RowsPerPageContainer
-              onClick={() => setRowsPerPageVisibility(!rowsPerPageVisibility)}
-            >
-              {rowsPerPage} <FiChevronDown />
-              <ul
-                style={
-                  rowsPerPageVisibility
-                    ? {
-                        visibility: 'visible',
-                      }
-                    : {
-                        visibility: 'hidden',
-                      }
+        <table>
+          <thead>
+            <tr>
+              <th
+                onClick={() =>
+                  setNameOrder(nameOrder === 'asc' ? 'desc' : 'asc')
                 }
+                style={{ cursor: 'pointer' }}
               >
-                {[5, 10, 25].map(rows => (
-                  <li
-                    key={rows}
-                    onClick={() => {
-                      setRowsPerPage(rows);
-                      setRowsPerPageVisibility(false);
-                    }}
-                  >
-                    {rows}
-                  </li>
-                ))}
-              </ul>
-            </RowsPerPageContainer>
+                {nameOrder === 'asc' ? <FiArrowDown /> : <FiArrowUp />} Nome
+              </th>
+              <th>Dt. Nasc.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {people.map(person => (
+              <tr key={person.id}>
+                <td>
+                  <FiChevronDown size={18} />
+                  <span>{person.name}</span>
+                </td>
+                <td>
+                  <span>
+                    {`${person.born_day}/${person.born_month}/${person.born_year}`}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Pagination>
+          <RowsPerPageContainer
+            onClick={() => setRowsPerPageVisibility(!rowsPerPageVisibility)}
+          >
+            {rowsPerPage} <FiChevronDown />
+            <ul
+              style={
+                rowsPerPageVisibility
+                  ? {
+                      visibility: 'visible',
+                    }
+                  : {
+                      visibility: 'hidden',
+                    }
+              }
+            >
+              {[5, 10, 25].map(rows => (
+                <li
+                  key={rows}
+                  onClick={() => {
+                    setRowsPerPage(rows);
+                    setRowsPerPageVisibility(false);
+                  }}
+                >
+                  {rows}
+                </li>
+              ))}
+            </ul>
+          </RowsPerPageContainer>
 
-            <PageNumbersContainer>
-              <p>
-                {pageLimitInf}-{pageLimitSup} de {totalPeople}
-              </p>
-              <div onClick={handlePreviousPageClick}>
-                <FiChevronLeft size={16} />
-              </div>
-              <div onClick={handleNextPageClick}>
-                <FiChevronRight size={16} />
-              </div>
-            </PageNumbersContainer>
-          </Pagination>
-        </TableContainer>
-      </Content>
+          <PageNumbersContainer>
+            <p>
+              {pageLimitInf}-{pageLimitSup} de {totalPeople}
+            </p>
+            <div onClick={handlePreviousPageClick}>
+              <FiChevronLeft size={16} />
+            </div>
+            <div onClick={handleNextPageClick}>
+              <FiChevronRight size={16} />
+            </div>
+          </PageNumbersContainer>
+        </Pagination>
+      </TableContainer>
     </Container>
   );
 };

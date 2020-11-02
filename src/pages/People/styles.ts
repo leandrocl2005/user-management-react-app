@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div``;
-export const Content = styled.div``;
 
 export const PageNumbersContainer = styled.div`
   display: grid;
@@ -131,6 +130,14 @@ export const TableContainer = styled.div`
         :hover {
           background: #f3f4f5;
           cursor: pointer;
+        }
+        height: 55px;
+
+        td:first-child {
+          display: grid;
+          grid-template-columns: 28px auto;
+          column-gap: 8px;
+          align-items: center;
         }
       }
     }

@@ -12,6 +12,7 @@ export default createGlobalStyle`
     background: #fff;
     color: #182c1e;
     -wekit-font-smoothing: antialiased;
+    width: 100vw;
   }
 
   body, input, button {
