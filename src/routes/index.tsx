@@ -12,6 +12,7 @@ import Reception from '../pages/Reception';
 import HomeServices from '../pages/HomeServices';
 import ProfessionalServices from '../pages/ProfessionalServices';
 import Reports from '../pages/Reports';
+import PeopleUpdate from '../pages/PeopleUpdate';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -24,6 +25,7 @@ const Routes: React.FC = () => (
     <Route path="/dashboard" component={Dashboard} isPrivate />
     <Route path="/people" component={People} isPrivate />
     <Route path="/reception" component={Reception} isPrivate />
+    <Route path="/people-update" component={PeopleUpdate} isPrivate />
     <Route path="/home-services" component={HomeServices} isPrivate />
     <Route
       path="/professional-services"

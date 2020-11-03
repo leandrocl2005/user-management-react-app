@@ -54,7 +54,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     /* const {user, token} = response.data */
     const { access_token: token } = response.data;
     const user_response = await api.get(`users?email=${email}`);
-    const user = user_response.data;
+    const user = user_response.data[0];
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));

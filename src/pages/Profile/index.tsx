@@ -32,7 +32,6 @@ const Profile: React.FC = () => {
 
   const { user, updateUser } = useAuth();
 
-
   const handleSubmit = useCallback(
     async (data: ProfileFormData) => {
       try {
@@ -130,14 +129,14 @@ const Profile: React.FC = () => {
         });
       }
     },
-    [addToast, updateUser]
+    [addToast, updateUser],
   );
 
   return (
     <Container>
       <header>
         <div>
-          <Link to="/dashboard">
+          <Link to="/people">
             <FiArrowLeft />
           </Link>
         </div>
