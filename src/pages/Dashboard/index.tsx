@@ -137,7 +137,6 @@ const Dashboard: React.FC = () => {
         <HeaderContent>
           <img src={logoImg} alt="GoBarber" />
           <Profile>
-            <img src={user.avatar_url} alt={user.name} />
             <div>
               <span>Bem-vindo,</span>
               <Link to="/profile">
@@ -165,11 +164,6 @@ const Dashboard: React.FC = () => {
             <NextAppointment>
               <strong>Agendamento a seguir</strong>
               <div>
-                <img
-                  src={nextAppointment.user.avatar_url}
-                  alt={nextAppointment.user.name}
-                />
-
                 <strong>{nextAppointment.user.name}</strong>
                 <span>
                   <FiClock /> {nextAppointment.hourFormatted}{' '}
@@ -192,10 +186,6 @@ const Dashboard: React.FC = () => {
                 </span>
 
                 <div>
-                  <img
-                    src={appointment.user.avatar_url}
-                    alt={appointment.user.name}
-                  />
                   <strong>{appointment.user.name}</strong>
                 </div>
               </Appointment>
@@ -216,10 +206,6 @@ const Dashboard: React.FC = () => {
                 </span>
 
                 <div>
-                  <img
-                    src={appointment.user.avatar_url}
-                    alt={appointment.user.name}
-                  />
                   <strong>{appointment.user.name}</strong>
                 </div>
               </Appointment>

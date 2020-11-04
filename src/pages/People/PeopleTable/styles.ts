@@ -6,6 +6,7 @@ export const PageNumbersContainer = styled.div`
   column-gap: 16px;
   justify-content: center;
   align-items: center;
+
   div {
     display: flex;
     align-items: center;
@@ -67,7 +68,7 @@ export const RowsPerPageContainer = styled.div`
 
 export const SearchInput = styled.form`
   border: 1px solid #d3d4d5;
-  width: 280px;
+  width: 200px;
   border-radius: 8px;
   display: flex;
   flex-direction: row;

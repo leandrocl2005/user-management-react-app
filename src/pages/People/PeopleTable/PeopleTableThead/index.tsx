@@ -16,7 +16,7 @@ const PeopleTableThead: React.FC<PeopleTableTheadProps> = ({
         <th onClick={handleNameOrder} style={{ cursor: 'pointer' }}>
           {nameOrder === 'asc' ? <FiArrowDown /> : <FiArrowUp />} Nome
         </th>
-        <th>Dt. Nasc.</th>
+        <th></th>
       </tr>
     </thead>
   );

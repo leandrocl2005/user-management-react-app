@@ -6,7 +6,18 @@ interface User {
   id: string;
   name: string;
   email: string;
-  avatar_url: string;
+  mother_name: string;
+  cpf: string;
+  born_day: string;
+  born_month: string;
+  born_year: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+  };
+  phone: string;
 }
 
 interface AuthState {

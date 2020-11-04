@@ -1,5 +1,32 @@
 import styled from 'styled-components';
 
+export const CustomTableCell = styled.div`
+  p:first-child {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 4px;
+    color: #111;
+    span {
+      margin-left: 16px;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    strong {
+      font-weight: 700;
+      margin-left: 32px;
+    }
+    span {
+      margin-left: 8px;
+    }
+  }
+`;
+
 export const Container = styled.tbody`
   tr {
     :hover {
@@ -9,47 +36,14 @@ export const Container = styled.tbody`
 
     td {
       border-bottom: 1px solid #d3d4d5;
-      padding: 16px 0;
-    }
-
-    td:first-child div.person-name-and-born {
-      display: flex;
-      span {
-        margin-left: 16px;
-        display: block;
-      }
-    }
-
-    td:first-child div.person-more-info {
       padding: 8px 0;
-      margin-left: 32px;
-      border: 1px solid #d3d4d5;
-      padding-left: 8px;
-      margin-top: 16px;
-      max-width: 250px;
-      border-radius: 8px;
-    }
 
-    p {
-      margin: 8px;
-    }
-
-    div.btn-update-people {
-      display: flex;
       a {
         text-decoration: none;
-        background-color: #245c2b;
-        color: white;
+        font-weight: 700;
+        color: #245c2b;
         padding: 2px 8px;
-        border-radius: 8px;
-        width: 100%;
         text-align: center;
-      }
-
-      margin: 0 8px;
-
-      :hover {
-        cursor: pointer;
       }
     }
   }

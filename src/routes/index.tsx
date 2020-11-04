@@ -22,10 +22,9 @@ const Routes: React.FC = () => (
     <Route path="/reset-password" component={ResetPassword} />
 
     <Route path="/profile" component={Profile} isPrivate />
-    <Route path="/dashboard" component={Dashboard} isPrivate />
-    <Route path="/people" component={People} isPrivate />
+    <Route path="/people" exact component={People} isPrivate />
     <Route path="/reception" component={Reception} isPrivate />
-    <Route path="/people-update" component={PeopleUpdate} isPrivate />
+    <Route path="/people/:id" component={PeopleUpdate} isPrivate />
     <Route path="/home-services" component={HomeServices} isPrivate />
     <Route
       path="/professional-services"

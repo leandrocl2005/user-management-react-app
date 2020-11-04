@@ -14,7 +14,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { Container, Content, AvatarInput } from './styles';
+import { Container, Content } from './styles';
 import { useAuth } from '../../hooks/auth';
 
 interface ProfileFormData {
@@ -112,26 +112,6 @@ const Profile: React.FC = () => {
     [addToast, history, updateUser],
   );
 
-  const handleAvatarChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const data = new FormData();
-
-        data.append('avatar', e.target.files[0]);
-
-        api.patch('/users/avatar', data).then(response => {
-          updateUser(response.data);
-
-          addToast({
-            type: 'success',
-            title: 'Avatar atualizado!',
-          });
-        });
-      }
-    },
-    [addToast, updateUser],
-  );
-
   return (
     <Container>
       <header>
@@ -151,15 +131,6 @@ const Profile: React.FC = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <AvatarInput>
-            <img src={user.avatar_url} alt={user.name} />
-            <label htmlFor="avatar">
-              <FiCamera />
-
-              <input type="file" id="avatar" onChange={handleAvatarChange} />
-            </label>
-          </AvatarInput>
-
           <h1>Meu perfil</h1>
 
           <Input name="name" icon={FiUser} placeholder="Nome" />

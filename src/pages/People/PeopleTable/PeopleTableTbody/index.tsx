@@ -1,7 +1,7 @@
 import React from 'react';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiEdit } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { Container } from './styles';
+import { Container, CustomTableCell } from './styles';
 
 interface People {
   id: number;
@@ -37,69 +37,58 @@ const PeopleTableTbody: React.FC<PeopleTableTbodyProps> = ({
       {people.map(person => (
         <tr key={person.id} onClick={() => handleShowPersonRow(person.id)}>
           <td>
-            <div className="person-name-and-born">
-              <FiChevronDown size={18} />
-              <span>{person.name}</span>
-            </div>
-            <div>
+            <CustomTableCell>
+              <p>
+                <FiChevronDown size={16} />
+                <span>{person.name}</span>
+              </p>
+              <p>
+                <strong>Dt. Nasc.:</strong>{' '}
+                <span>
+                  {`${person.born_day}/${person.born_month}/${person.born_year}`}
+                </span>
+              </p>
+            </CustomTableCell>
+            <CustomTableCell>
               {openRow &&
                 (openRow === person.id ? (
                   <div className="person-more-info">
+                    <p></p>
                     <p>
-                      <strong>
-                        <b>Mãe:</b>
-                      </strong>{' '}
-                      <span>{person.mother_name}</span>
+                      <strong>Mãe:</strong> <span>{person.mother_name}</span>
                     </p>
                     <p>
-                      <strong>
-                        <b>CPF:</b>
-                      </strong>{' '}
-                      <span>{person.cpf}</span>
+                      <strong>CPF:</strong> <span>{person.cpf}</span>
                     </p>
                     <p>
-                      <strong>
-                        <b>Rua:</b>
-                      </strong>{' '}
-                      <span>{person.address.street}</span>
+                      <strong>Rua:</strong> <span>{person.address.street}</span>
                     </p>
                     <p>
-                      <strong>
-                        <b>Complemento:</b>
-                      </strong>{' '}
+                      <strong>Complemento:</strong>{' '}
                       <span>{person.address.suite}</span>
                     </p>
                     <p>
-                      <strong>
-                        <b>Cidade:</b>
-                      </strong>{' '}
+                      <strong>Cidade:</strong>{' '}
                       <span>{person.address.city}</span>
                     </p>
                     <p>
-                      <strong>
-                        <b>Estado:</b>
-                      </strong>{' '}
-                      <span>Minas gerais</span>
+                      <strong>Estado:</strong> <span>Minas gerais</span>
                     </p>
                     <p>
-                      <strong>
-                        <b>Telefone:</b>
-                      </strong>{' '}
-                      <span>{person.phone}</span>
+                      <strong>Telefone:</strong> <span>{person.phone}</span>
                     </p>
-                    <div className="btn-update-people">
-                      <Link to="/people-update">Atualizar</Link>
-                    </div>
                   </div>
                 ) : (
                   ''
                 ))}
-            </div>
+            </CustomTableCell>
           </td>
           <td>
-            <span>
-              {`${person.born_day}/${person.born_month}/${person.born_year}`}
-            </span>
+            <div>
+              <Link to={`/people/${person.id}`}>
+                <FiEdit />
+              </Link>
+            </div>
           </td>
         </tr>
       ))}
