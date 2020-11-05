@@ -13,6 +13,67 @@ export const Content = styled.div`
     text-align: left;
   }
 `;
+
+export const SelectInput = styled.form`
+  border: 1px solid #d3d4d5;
+  margin-top: 16px;
+  width: 260px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  padding: 8px 4px;
+
+  input {
+    width: 100%;
+    border: none;
+    padding-left: 8px;
+    color: #333;
+    background: inherit;
+
+    :-webkit-autofill,
+    :-webkit-autofill:hover,
+    :-webkit-autofill:focus,
+    :-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+    }
+  }
+
+  button {
+    background: #fff;
+    border: none;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+  }
+
+  ul {
+    position: absolute;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    top: 36px;
+    left: -1px;
+    background: #fff;
+    border: 1px solid #d3d4d5;
+    border-radius: 8px;
+    li {
+      margin: 0;
+      width: 260px;
+      box-sizing: border-box;
+      padding: 4px 12px;
+      color: #555;
+      :hover {
+        cursor: pointer;
+        background: #f3f4f5;
+        border-radius: inherit;
+      }
+    }
+  }
+`;
+
 export const SearchInput = styled.form`
   border: 1px solid #d3d4d5;
   margin-top: 16px;
@@ -52,6 +113,7 @@ export const SearchInput = styled.form`
     margin: 0;
     padding: 0;
     top: 32px;
+    left: -2px;
     background: #fff;
     border: 1px solid #d3d4d5;
     border-radius: 8px;
@@ -69,5 +131,3 @@ export const SearchInput = styled.form`
     }
   }
 `;
-
-export const SearchPeopleList = styled.ul``;
