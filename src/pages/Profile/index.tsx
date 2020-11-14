@@ -16,6 +16,7 @@ import Button from '../../components/Button';
 
 import { Container, Content } from './styles';
 import { useAuth } from '../../hooks/auth';
+import Header from '../../components/Header';
 
 interface ProfileFormData {
   name: string;
@@ -114,13 +115,7 @@ const Profile: React.FC = () => {
 
   return (
     <Container>
-      <header>
-        <div>
-          <Link to="/people">
-            <FiArrowLeft />
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       <Content>
         <Form

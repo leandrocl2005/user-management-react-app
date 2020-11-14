@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
-import { type } from 'os';
 import { Container, Content, SearchInput, SelectInput } from './styles';
 import Header from '../../components/Header';
 import api from '../../services/api';
@@ -19,7 +18,7 @@ interface PersonType {
   name: string;
 }
 
-const Reception: React.FC = () => {
+const CheckIn: React.FC = () => {
   const [people, setPeople] = useState<Person[]>([]);
   const [searchingPeople, setSearchingPeople] = useState<Person[]>([]);
   const [searchInputPerson, setSearchInputPerson] = useState<Person | null>(
@@ -199,4 +198,4 @@ const Reception: React.FC = () => {
   );
 };
 
-export default Reception;
+export default CheckIn;
