@@ -13,13 +13,21 @@ import { Container } from './styles';
 export default function SiteMenu(): JSX.Element {
   const [menuVisibility, setMenuVisibility] = React.useState(false);
 
-  const handleClick = (): void => {
+  const handleMenuClick = (): void => {
     setMenuVisibility(!menuVisibility);
+  };
+
+  const handleMenuItemClick = (): void => {
+    setMenuVisibility(false);
   };
 
   return (
     <Container>
-      <FiMenu onClick={handleClick} size={48} style={{ cursor: 'pointer' }} />
+      <FiMenu
+        onClick={handleMenuClick}
+        size={48}
+        style={{ cursor: 'pointer' }}
+      />
 
       <ul
         style={
@@ -34,7 +42,7 @@ export default function SiteMenu(): JSX.Element {
               }
         }
       >
-        <Link to={'/people'}>
+        <Link to={'/people'} onClick={handleMenuItemClick}>
           <div>
             <MdPeople size={24} color={'#265e2b'} />
           </div>
@@ -43,21 +51,21 @@ export default function SiteMenu(): JSX.Element {
 
         <Divider variant="middle" style={{ marginTop: 8, marginBottom: 8 }} />
 
-        <Link to={'/checkin'}>
+        <Link to={'/checkin'} onClick={handleMenuItemClick}>
           <div>
             <MdLoyalty size={24} color={'#265e2b'} />
           </div>
           <p>Check-in</p>
         </Link>
 
-        <Link to={'/home-services'}>
+        <Link to={'/home-services'} onClick={handleMenuItemClick}>
           <div>
             <MdLocalDining size={24} color={'#265e2b'} />
           </div>
           <p>Serviços da casa</p>
         </Link>
 
-        <Link to={'/checkout'}>
+        <Link to={'/checkout'} onClick={handleMenuItemClick}>
           <div>
             <FiLogOut size={24} color={'#f44336'} />
           </div>
@@ -66,14 +74,14 @@ export default function SiteMenu(): JSX.Element {
 
         <Divider variant="middle" style={{ marginTop: 8, marginBottom: 8 }} />
 
-        <Link to={'/professional-services'}>
+        <Link to={'/professional-services'} onClick={handleMenuItemClick}>
           <div>
             <FaUserTie size={24} color={'#b8d866'} />
           </div>
           <p>Serviços profissionais</p>
         </Link>
 
-        <Link to={'/reports'}>
+        <Link to={'/reports'} onClick={handleMenuItemClick}>
           <div>
             <GoGraph size={24} color={'#b8d866'} />
           </div>
