@@ -18,13 +18,13 @@ const toastTypeVariations = {
 
 interface ContainerProps {
   type?: 'success' | 'error' | 'info';
-  $hasDescription: Number;
+  $hasDescription: number;
 }
 
 export const Container = styled(animated.div)<ContainerProps>`
-  width: 360px;
+  width: 250px;
   position: relative;
-  padding: 16px 30px 16px 16px;
+  padding: 16px 16px 16px 16px;
   border-radius: 10px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
