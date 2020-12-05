@@ -1,15 +1,33 @@
 import React from 'react';
 
-import { Container, Content } from './styles';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { Container } from './styles';
 import Header from '../../components/Header';
+import api from '../../services/api';
+
+interface HomeService {
+  id: number;
+  home_service: string;
+}
 
 const HomeServices: React.FC = () => {
-  return (
-    <Container>
-      <Header />
+  const [homeServices, setHomeServices] = useState<HomeService[]>([]);
 
-      <Content>This is the People page content</Content>
-    </Container>
+  useEffect(() => {
+    async function loadHomeServices(): Promise<void> {
+      const response = await api.get('home_services');
+      setHomeServices(response.data);
+    }
+    loadHomeServices();
+  }, []);
+
+  return (
+    <ul>
+      {homeServices.map(({ id, home_service }: HomeService) => (
+        <li key={id}>{home_service}</li>
+      ))}
+    </ul>
   );
 };
 

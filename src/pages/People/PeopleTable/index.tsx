@@ -25,9 +25,7 @@ interface People {
   name: string;
   mother_name: string;
   cpf: string;
-  born_day: string;
-  born_month: string;
-  born_year: string;
+  born_date: string;
   email: string;
   address: {
     street: string;
@@ -42,10 +40,15 @@ const PeopleTable: React.FC = () => {
   const { addToast } = useToast();
 
   const [people, setPeople] = useState<People[]>([]);
-
+  const [limit, setLimit] = useState(0);
+  const [offset, setOffSeat] = useState(0);
+  const [nextPage, setNextPage] = useState<string | null>(null);
+  const [previousPage, setPreviousPage] = useState<string | null>(null);
   const [totalPeople, setTotalPeople] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rowsPerPageVisibility, setRowsPerPageVisibility] = useState(false);
   const [pageLimitInf, setPageLimitInf] = useState(1);
@@ -59,11 +62,10 @@ const PeopleTable: React.FC = () => {
     async function loadPeople(): Promise<void> {
       try {
         const response = await api.get(
-          `users?_sort=name&_order=${nameOrder}&_page=${currentPage}&_limit=${rowsPerPage}&name_like=${searchName}`,
+          `api/v1/people/?limit=${limit}&offset=${offset}`,
         );
-        setPeople(response.data);
-
-        const totalPeopleValue = response.headers['x-total-count'];
+        setPeople(response.data.results);
+        const totalPeopleValue = response.data.count;
         setTotalPeople(totalPeopleValue);
 
         const lastPageNumber = Math.ceil(totalPeopleValue / rowsPerPage);
@@ -83,7 +85,15 @@ const PeopleTable: React.FC = () => {
     }
 
     loadPeople();
-  }, [currentPage, rowsPerPage, nameOrder, searchName, addToast]);
+  }, [
+    offset,
+    limit,
+    nameOrder,
+    searchName,
+    rowsPerPage,
+    addToast,
+    currentPage,
+  ]);
 
   function handleNextPageClick(): void {
     if (currentPage === lastPage) {
@@ -152,11 +162,11 @@ const PeopleTable: React.FC = () => {
             style={
               rowsPerPageVisibility
                 ? {
-                    visibility: 'visible',
-                  }
+                  visibility: 'visible',
+                }
                 : {
-                    visibility: 'hidden',
-                  }
+                  visibility: 'hidden',
+                }
             }
           >
             {[5, 10, 25].map(rows => (

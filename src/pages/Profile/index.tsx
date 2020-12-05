@@ -75,10 +75,10 @@ const Profile: React.FC = () => {
           email,
           ...(old_password
             ? {
-                old_password,
-                password,
-                password_confirmation,
-              }
+              old_password,
+              password,
+              password_confirmation,
+            }
             : {}),
         };
 
@@ -121,7 +121,7 @@ const Profile: React.FC = () => {
         <Form
           ref={formRef}
           initialData={{
-            name: user.name,
+            name: user.username,
             email: user.email,
           }}
           onSubmit={handleSubmit}

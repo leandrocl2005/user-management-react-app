@@ -4,20 +4,8 @@ import api from '../services/api';
 
 interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
-  mother_name: string;
-  cpf: string;
-  born_day: string;
-  born_month: string;
-  born_year: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-  };
-  phone: string;
 }
 
 interface AuthState {
@@ -26,7 +14,7 @@ interface AuthState {
 }
 
 interface SignInCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -41,49 +29,49 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@GoBarber:token');
-    const user = localStorage.getItem('@GoBarber:user');
+    const token = localStorage.getItem('@CasaDanielle:token');
+    const user = localStorage.getItem('@CasaDanielle:user');
 
     if (token && user) {
-      api.defaults.headers.authorization = `Bearer ${token}`;
+      api.defaults.headers.authorization = `Token ${token}`;
       return { token, user: JSON.parse(user) };
     }
 
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ email, password }) => {
-    /* const response = await api.post('sessions', {
-      email,
-      password,
-    }); */
-    const response = await api.post('login', {
-      email,
+  const signIn = useCallback(async ({ username, password }) => {
+    // const response = await api.post('sessions', {
+    //  email,
+    //  password,
+    // });
+    const response = await api.post('/login/', {
+      username,
       password,
     });
 
     /* const {user, token} = response.data */
-    const { access_token: token } = response.data;
-    const user_response = await api.get(`users?email=${email}`);
-    const user = user_response.data[0];
+    const { id, token } = response.data;
+    const user_response = await api.get(`users/${id}/`);
+    const user = user_response.data;
 
-    localStorage.setItem('@GoBarber:token', token);
-    localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+    localStorage.setItem('@CasaDanielle:token', token);
+    localStorage.setItem('@CasaDanielle:user', JSON.stringify(user));
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
+    api.defaults.headers.authorization = `Token ${token}`;
 
     setData({ token, user });
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@GoBarber:token');
-    localStorage.removeItem('@GoBarber:user');
+    localStorage.removeItem('@CasaDanielle:token');
+    localStorage.removeItem('@CasaDanielle:user');
     setData({} as AuthState);
   }, []);
 
   const updateUser = useCallback(
     (user: User) => {
-      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+      localStorage.setItem('@CasaDanielle:user', JSON.stringify(user));
       setData({
         token: data.token,
         user,
