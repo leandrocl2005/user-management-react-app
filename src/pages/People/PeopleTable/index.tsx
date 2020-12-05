@@ -27,33 +27,30 @@ interface People {
   cpf: string;
   born_date: string;
   email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-  };
-  phone: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  state: string;
+  ddd_private_phone: string;
+  private_phone: string;
 }
 
 const PeopleTable: React.FC = () => {
   const { addToast } = useToast();
 
   const [people, setPeople] = useState<People[]>([]);
-  const [limit, setLimit] = useState(0);
-  const [offset, setOffSeat] = useState(0);
-  const [nextPage, setNextPage] = useState<string | null>(null);
-  const [previousPage, setPreviousPage] = useState<string | null>(null);
+  const [limit, setLimit] = useState(5);
+  const [offset, setOffSet] = useState(0);
   const [totalPeople, setTotalPeople] = useState(0);
+  const [ordering, setOrdering] = useState('name');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [rowsPerPageVisibility, setRowsPerPageVisibility] = useState(false);
   const [pageLimitInf, setPageLimitInf] = useState(1);
   const [pageLimitSup, setPageLimitSup] = useState(1);
-  const [nameOrder, setNameOrder] = useState('asc');
+
   const [searchName, setSearchName] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
   const [openRow, setOpenRow] = useState<number | null>(null);
@@ -61,18 +58,20 @@ const PeopleTable: React.FC = () => {
   useEffect(() => {
     async function loadPeople(): Promise<void> {
       try {
-        const response = await api.get(
-          `api/v1/people/?limit=${limit}&offset=${offset}`,
-        );
+        let url = 'api/v1/people/';
+        url += `?limit=${limit}&offset=${offset}`;
+        url += `&ordering=${ordering}`;
+        if (searchName) url += `&search=${searchName}`;
+        const response = await api.get(url);
         setPeople(response.data.results);
         const totalPeopleValue = response.data.count;
         setTotalPeople(totalPeopleValue);
 
-        const lastPageNumber = Math.ceil(totalPeopleValue / rowsPerPage);
+        const lastPageNumber = Math.ceil(totalPeopleValue / limit);
         setLastPage(lastPageNumber);
 
-        const inf = (currentPage - 1) * rowsPerPage + 1;
-        const sup = Math.min(currentPage * rowsPerPage, totalPeopleValue);
+        const inf = (currentPage - 1) * limit + 1;
+        const sup = Math.min(currentPage * limit, totalPeopleValue);
         setPageLimitInf(inf);
         setPageLimitSup(sup);
       } catch (error) {
@@ -85,21 +84,14 @@ const PeopleTable: React.FC = () => {
     }
 
     loadPeople();
-  }, [
-    offset,
-    limit,
-    nameOrder,
-    searchName,
-    rowsPerPage,
-    addToast,
-    currentPage,
-  ]);
+  }, [offset, limit, ordering, searchName, addToast, currentPage]);
 
   function handleNextPageClick(): void {
     if (currentPage === lastPage) {
       return;
     }
     setCurrentPage(currentPage + 1);
+    setOffSet(offset + limit);
   }
 
   function handlePreviousPageClick(): void {
@@ -107,12 +99,15 @@ const PeopleTable: React.FC = () => {
       return;
     }
     setCurrentPage(currentPage - 1);
+    setOffSet(offset - limit);
   }
 
   function handleSearch(event: FormEvent): void {
     event.preventDefault();
     setSearchName(searchInputValue);
     setCurrentPage(1);
+    setOffSet(0);
+    setLimit(5);
   }
 
   function handleShowPersonRow(id: number): void {
@@ -124,7 +119,7 @@ const PeopleTable: React.FC = () => {
   }
 
   function handleNameOrder(): void {
-    setNameOrder(nameOrder === 'asc' ? 'desc' : 'asc');
+    setOrdering(ordering === 'name' ? '-name' : 'name');
   }
   return (
     <TableContainer>
@@ -143,7 +138,7 @@ const PeopleTable: React.FC = () => {
       <table>
         <PeopleTableThead
           handleNameOrder={handleNameOrder}
-          nameOrder={nameOrder}
+          nameOrder={ordering}
         />
 
         <PeopleTableTbody
@@ -157,7 +152,7 @@ const PeopleTable: React.FC = () => {
         <RowsPerPageContainer
           onClick={() => setRowsPerPageVisibility(!rowsPerPageVisibility)}
         >
-          {rowsPerPage} <FiChevronDown />
+          {limit} <FiChevronDown />
           <ul
             style={
               rowsPerPageVisibility
@@ -173,7 +168,8 @@ const PeopleTable: React.FC = () => {
               <li
                 key={rows}
                 onClick={() => {
-                  setRowsPerPage(rows);
+                  setLimit(rows);
+                  setOffSet(0);
                   setRowsPerPageVisibility(false);
                   setCurrentPage(1);
                 }}

@@ -10,13 +10,12 @@ interface People {
   cpf: string;
   born_date: string;
   email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-  };
-  phone: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  state: string;
+  ddd_private_phone: string;
+  private_phone: string;
 }
 
 interface PeopleTableTbodyProps {
@@ -56,21 +55,22 @@ const PeopleTableTbody: React.FC<PeopleTableTbodyProps> = ({
                       <strong>CPF:</strong> <span>{person.cpf}</span>
                     </p>
                     <p>
-                      <strong>Rua:</strong> <span>{person.address.street}</span>
+                      <strong>Endereço:</strong>{' '}
+                      <span>{person.address_line_1}</span>
                     </p>
                     <p>
                       <strong>Complemento:</strong>{' '}
-                      <span>{person.address.suite}</span>
+                      <span>{person.address_line_2}</span>
                     </p>
                     <p>
-                      <strong>Cidade:</strong>{' '}
-                      <span>{person.address.city}</span>
+                      <strong>Cidade:</strong> <span>{person.city}</span>
                     </p>
                     <p>
-                      <strong>Estado:</strong> <span>Minas gerais</span>
+                      <strong>Estado:</strong> <span>{person.state}</span>
                     </p>
                     <p>
-                      <strong>Telefone:</strong> <span>{person.phone}</span>
+                      <strong>Telefone:</strong>{' '}
+                      <span>{`(${person.ddd_private_phone}) ${person.private_phone}`}</span>
                     </p>
                   </div>
                 ) : (

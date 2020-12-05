@@ -24,10 +24,10 @@ interface ProfileFormData {
   mother_name: string;
   cpf: string;
   password: number;
-  street: string;
-  suite: string;
+  address_line_1: string;
+  address_line_2: string;
+  postal_code: string;
   city: string;
-  zipcode: string;
   phone: string;
 }
 
@@ -36,17 +36,15 @@ interface Person {
   name: string;
   mother_name: string;
   cpf: string;
-  born_day: string;
-  born_month: string;
-  born_year: string;
+  born_date: string;
   email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-  };
-  phone: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  ddd_private_phone: string;
+  private_phone: string;
 }
 
 interface PersonParams {
@@ -62,7 +60,7 @@ const PeopleUpdate: React.FC = () => {
   useEffect(() => {
     async function loadPerson(): Promise<void> {
       try {
-        const response = await api.get(`/users/${id}`);
+        const response = await api.get(`api/v1/people/${id}/`);
         setPerson(response.data);
       } catch (error) {
         console.log(error);
@@ -92,10 +90,9 @@ const PeopleUpdate: React.FC = () => {
           mother_name,
           cpf,
           phone,
-          street,
-          suite,
-          city,
-          zipcode,
+          address_line_1,
+          address_line_2,
+          postal_code,
         } = data;
 
         const formData = {
@@ -106,14 +103,9 @@ const PeopleUpdate: React.FC = () => {
           email,
           mother_name,
           cpf,
-          phone,
-          address: {
-            phone,
-            street,
-            suite,
-            city,
-            zipcode,
-          },
+          address_line_1,
+          address_line_2,
+          postal_code,
         };
 
         await api.put('/users', formData);
@@ -153,13 +145,12 @@ const PeopleUpdate: React.FC = () => {
           initialData={{
             name: person ? person.name : '',
             email: person ? person.email : '',
-            phone: person ? person.phone : '',
             cpf: person ? person.cpf : '',
             mother_name: person ? person.mother_name : '',
-            street: person ? person.address.street : '',
-            suite: person ? person.address.suite : '',
-            zipcode: person ? person.address.zipcode : '',
-            city: person ? person.address.city : '',
+            street: person ? person.address_line_1 : '',
+            suite: person ? person.address_line_2 : '',
+            zipcode: person ? person.postal_code : '',
+            city: person ? person.city : '',
           }}
           onSubmit={handleSubmit}
         >
@@ -167,13 +158,21 @@ const PeopleUpdate: React.FC = () => {
           <Input name="name" icon={FiUser} placeholder="Nome" />
 
           <Input name="cpf" icon={FiCreditCard} placeholder="CPF" />
-          <Input name="phone" icon={FiPhone} placeholder="Telefone" />
           <Input name="email" icon={FiMail} placeholder="E-mail" />
           <Input name="mother_name" icon={FaFemale} placeholder="Nome da mãe" />
 
           <h3 style={{ marginTop: '24px' }}>Endereço</h3>
-          <Input name="street" icon={FiHome} placeholder="Nome da rua" />
-          <Input name="zipcode" icon={FaEnvelopeOpenText} placeholder="CEP" />
+          <Input name="address_line_1" icon={FiHome} placeholder="Endereço" />
+          <Input
+            name="address_line_2"
+            icon={FiHome}
+            placeholder="Complemento"
+          />
+          <Input
+            name="postal_code"
+            icon={FaEnvelopeOpenText}
+            placeholder="CEP"
+          />
           <Input name="city" icon={FaCity} placeholder="Cidade" />
 
           <Button type="submit">Confirmar mudanças</Button>
