@@ -8,7 +8,7 @@ interface People {
   name: string;
   mother_name: string;
   cpf: string;
-  born_date: string;
+  formatted_born_date: string;
   email: string;
   address_line_1: string;
   address_line_2: string;
@@ -40,7 +40,8 @@ const PeopleTableTbody: React.FC<PeopleTableTbodyProps> = ({
                 <span>{person.name}</span>
               </p>
               <p>
-                <strong>Dt. Nasc.:</strong> <span>{person.born_date}</span>
+                <strong>Dt. Nasc.:</strong>{' '}
+                <span>{person.formatted_born_date}</span>
               </p>
             </CustomTableCell>
             <CustomTableCell>

@@ -1,198 +1,71 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-
-import { FiChevronDown, FiSearch } from 'react-icons/fi';
-import { Container, Content, SearchInput, SelectInput } from './styles';
+import React, { useState, useEffect } from 'react';
+import { Container, Content } from './styles';
 import Header from '../../components/Header';
 import api from '../../services/api';
 
-interface Person {
+interface Checkin {
   id: number;
-  name: string;
-  born_day: number;
-  born_month: number;
-  born_year: number;
-}
-
-interface PersonType {
-  id: number;
-  name: string;
+  companion_name: null | string;
+  person_name: string;
+  formatted_created_at: string;
+  active: boolean;
 }
 
 const CheckIn: React.FC = () => {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [searchingPeople, setSearchingPeople] = useState<Person[]>([]);
-  const [searchInputPerson, setSearchInputPerson] = useState<Person | null>(
-    null,
-  );
-  const [searchInputValue, setSearchInputValue] = useState('');
-  const [searchListVisibility, setSearchListVisibility] = useState(false);
-
-  const [personTypeVisibility, setPersonTypeVisibility] = useState(false);
-  const [personTypes, setPersonTypes] = useState<PersonType[]>([]);
-  const [
-    selectedPersonType,
-    setSelectedPersonType,
-  ] = useState<PersonType | null>(null);
-  const [personTypesListVisibility, setPersonTypesListVisibility] = useState(
-    false,
-  );
+  const [checkins, setCheckins] = useState<Checkin[]>([]);
 
   useEffect(() => {
-    async function loadPeople(): Promise<void> {
-      const response = await api.get('/users');
-      setPeople(
-        response.data.map((person: Person) => {
-          return {
-            ...person,
-            born: `${person.born_day}/${person.born_month}/${person.born_year}`,
-          };
-        }),
-      );
-    }
-
-    loadPeople();
-  }, []);
-
-  useEffect(() => {
-    async function loadPersonTypes(): Promise<void> {
+    async function loadCheckins(): Promise<void> {
       try {
-        const response = await api.get('/people_types');
-        setPersonTypes(response.data);
-      } catch (error) {
-        console.log(error);
+        const response = await api.get('api/v1/checkins/?limit=20');
+        setCheckins(response.data.results);
+      } catch (err) {
+        console.log(err);
       }
     }
-    loadPersonTypes();
+    loadCheckins();
   }, []);
 
-  function handleSearchInputOnChange(name: string): void {
-    if (name === '') {
-      setSearchListVisibility(false);
-      setSearchInputValue('');
-      return;
+  const handleCheckinClick = ({ id, active }: Checkin): void => {
+    async function changeActive(): Promise<void> {
+      try {
+        await api.patch(`api/v1/checkins/${id}/`, {
+          reason: 'professional',
+          active: !active,
+        });
+
+        const actualCheckins = [...checkins];
+
+        const index = actualCheckins.findIndex(checkin => checkin.id === id);
+        actualCheckins[index].active = !active;
+
+        setCheckins(actualCheckins);
+      } catch (err) {
+        console.log(err);
+      }
     }
-    if (people.length >= 1) {
-      const searchingPeopleArray = people
-        .filter(person =>
-          person.name ? person.name.toLowerCase().includes(name) : false,
-        )
-        .slice(0, 5);
-
-      setSearchingPeople(searchingPeopleArray);
-    }
-    setSearchInputValue(name);
-    setSearchListVisibility(true);
-  }
-
-  function handleClickListSearch(person: Person): void {
-    setSearchInputPerson(person);
-    setSearchListVisibility(false);
-    setSearchInputValue(person.name);
-    setPersonTypeVisibility(true);
-    setSelectedPersonType(null);
-  }
-
-  function handlePersonTypeListClick(personType: PersonType): void {
-    setSelectedPersonType(personType);
-    setPersonTypesListVisibility(false);
-  }
+    changeActive();
+  };
 
   return (
     <Container>
       <Header />
-
       <Content>
-        <h1>Quem você deseja recepcionar?</h1>
-        <SearchInput
-          onSubmit={event => {
-            event.preventDefault();
-          }}
-        >
-          <input
-            autoComplete="off"
-            placeholder="Buscar por nome"
-            name="person"
-            value={searchInputValue}
-            onChange={event => handleSearchInputOnChange(event.target.value)}
-            onClick={() => setPersonTypeVisibility(false)}
-          />
-          <button type="submit">
-            <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
-          </button>
-          <ul
+        {checkins.map(checkin => (
+          <div
+            key={checkin.id}
+            onClick={() => handleCheckinClick(checkin)}
             style={
-              searchListVisibility
-                ? {
-                    visibility: 'visible',
-                    display: 'block',
-                  }
-                : {
-                    visibility: 'hidden',
-                    display: 'none',
-                  }
+              checkin.active
+                ? { backgroundColor: '#335522', color: 'white' }
+                : { backgroundColor: '#3b070e', color: 'white' }
             }
           >
-            {searchingPeople.map(person => {
-              return (
-                <li
-                  onClick={() => handleClickListSearch(person)}
-                  key={person.id}
-                >
-                  {person.name}
-                </li>
-              );
-            })}
-          </ul>
-        </SearchInput>
-
-        {personTypeVisibility && (
-          <>
-            <h1>Qual a função do visitante na casa?</h1>
-            <SelectInput onClick={event => event.preventDefault()}>
-              <input
-                autoComplete="off"
-                disabled
-                placeholder=""
-                name="person"
-                value={selectedPersonType ? selectedPersonType.name : ''}
-                onClick={() => setPersonTypeVisibility(true)}
-              />
-              <button
-                type="submit"
-                onClick={() =>
-                  setPersonTypesListVisibility(!personTypesListVisibility)
-                }
-              >
-                <FiChevronDown />
-              </button>
-
-              <ul
-                style={
-                  personTypesListVisibility
-                    ? {
-                        visibility: 'visible',
-                        display: 'block',
-                      }
-                    : {
-                        visibility: 'hidden',
-                        display: 'none',
-                      }
-                }
-              >
-                {personTypes.map(personType => {
-                  return (
-                    <li
-                      onClick={() => handlePersonTypeListClick(personType)}
-                      key={personType.id}
-                    >
-                      {personType.name}
-                    </li>
-                  );
-                })}
-              </ul>
-            </SelectInput>
-          </>
-        )}
+            <h3>{checkin.person_name}</h3>
+            <p>{checkin.companion_name}</p>
+            <p>{checkin.formatted_created_at}</p>
+          </div>
+        ))}
       </Content>
     </Container>
   );

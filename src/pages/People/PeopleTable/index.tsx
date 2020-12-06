@@ -25,7 +25,7 @@ interface People {
   name: string;
   mother_name: string;
   cpf: string;
-  born_date: string;
+  formatted_born_date: string;
   email: string;
   address_line_1: string;
   address_line_2: string;
