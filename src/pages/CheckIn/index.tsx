@@ -1,36 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Content } from './styles';
+import React, { useState, useEffect, FormEvent } from 'react';
+import { FiSearch } from 'react-icons/fi';
+import { TiLockOpen, TiLockClosed } from 'react-icons/ti';
+import {
+  Container,
+  SearchInput,
+  CheckinGallery,
+  Nav,
+  CheckinItem,
+  OpenCheckinButton,
+  CloseCheckinButton,
+} from './styles';
 import Header from '../../components/Header';
 import api from '../../services/api';
+import { useToast } from '../../hooks/toast';
 
 interface Checkin {
   id: number;
   companion_name: null | string;
   person_name: string;
+  reason: string;
   formatted_created_at: string;
   active: boolean;
 }
 
 const CheckIn: React.FC = () => {
   const [checkins, setCheckins] = useState<Checkin[]>([]);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchSubmit, setSearchSubmit] = useState('');
+  const [totalCheckins, setTotalCheckins] = useState(0);
+  const [filterActive, setFilterActive] = useState<string | null>(null);
+  const { addToast } = useToast();
 
   useEffect(() => {
     async function loadCheckins(): Promise<void> {
       try {
-        const response = await api.get('api/v1/checkins/?limit=20');
+        let url = 'api/v1/checkins/?';
+        url += 'limit=12';
+        url += `&search=${searchSubmit}`;
+        if (filterActive) {
+          url += `&active=${filterActive}`;
+        }
+        const response = await api.get(url);
         setCheckins(response.data.results);
+        setTotalCheckins(response.data.count);
       } catch (err) {
-        console.log(err);
+        addToast({
+          type: 'error',
+          title: 'Erro no servidor',
+          description: 'Servidor offline. Tente mais tarde!',
+        });
       }
     }
     loadCheckins();
-  }, []);
+  }, [addToast, searchSubmit, filterActive]);
 
   const handleCheckinClick = ({ id, active }: Checkin): void => {
     async function changeActive(): Promise<void> {
       try {
         await api.patch(`api/v1/checkins/${id}/`, {
-          reason: 'professional',
           active: !active,
         });
 
@@ -45,28 +72,68 @@ const CheckIn: React.FC = () => {
       }
     }
     changeActive();
+    setTotalCheckins(totalCheckins - 1);
+  };
+
+  const handleSearchSubmit = (event: FormEvent): void => {
+    event.preventDefault();
+    setSearchSubmit(searchInput);
   };
 
   return (
     <Container>
       <Header />
-      <Content>
+      <Nav>
+        <SearchInput onSubmit={handleSearchSubmit}>
+          <input
+            placeholder="Buscar por nome"
+            name="filter"
+            value={searchInput}
+            onChange={event => setSearchInput(event.target.value)}
+          />
+          <button type="submit">
+            <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
+          </button>
+        </SearchInput>
+        <OpenCheckinButton onClick={() => setFilterActive('true')}>
+          Abertos
+        </OpenCheckinButton>
+        <CloseCheckinButton onClick={() => setFilterActive('false')}>
+          Fechados
+        </CloseCheckinButton>
+        <p>
+          (Total{' '}
+          <strong>
+            <b>{totalCheckins})</b>
+          </strong>
+        </p>
+      </Nav>
+      <CheckinGallery>
         {checkins.map(checkin => (
-          <div
+          <CheckinItem
             key={checkin.id}
-            onClick={() => handleCheckinClick(checkin)}
             style={
               checkin.active
                 ? { backgroundColor: '#335522', color: 'white' }
-                : { backgroundColor: '#3b070e', color: 'white' }
+                : { backgroundColor: '#6b6b6b', color: 'white' }
             }
           >
             <h3>{checkin.person_name}</h3>
             <p>{checkin.companion_name}</p>
             <p>{checkin.formatted_created_at}</p>
-          </div>
+            <div>
+              {checkin.active && (
+                <TiLockOpen
+                  size={24}
+                  onClick={() => handleCheckinClick(checkin)}
+                  style={{ cursor: 'pointer' }}
+                />
+              )}
+              {!checkin.active && <TiLockClosed size={24} />}
+            </div>
+          </CheckinItem>
         ))}
-      </Content>
+      </CheckinGallery>
     </Container>
   );
 };
