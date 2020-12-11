@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Divider } from '@material-ui/core';
 
-import { FiLogOut, FiMenu } from 'react-icons/fi';
+import { FiMenu } from 'react-icons/fi';
 
 import { MdPeople, MdLoyalty, MdLocalDining } from 'react-icons/md';
 import { FaUserTie } from 'react-icons/fa';
@@ -33,13 +33,13 @@ export default function SiteMenu(): JSX.Element {
         style={
           menuVisibility
             ? {
-                visibility: 'visible',
-                display: 'block',
-              }
+              visibility: 'visible',
+              display: 'block',
+            }
             : {
-                visibility: 'hidden',
-                display: 'none',
-              }
+              visibility: 'hidden',
+              display: 'none',
+            }
         }
       >
         <Link to={'/people'} onClick={handleMenuItemClick}>
@@ -51,11 +51,11 @@ export default function SiteMenu(): JSX.Element {
 
         <Divider variant="middle" style={{ marginTop: 8, marginBottom: 8 }} />
 
-        <Link to={'/checkin'} onClick={handleMenuItemClick}>
+        <Link to={'/checkins'} onClick={handleMenuItemClick}>
           <div>
             <MdLoyalty size={24} color={'#265e2b'} />
           </div>
-          <p>Check-in</p>
+          <p>Check-in's</p>
         </Link>
 
         <Link to={'/home-services'} onClick={handleMenuItemClick}>
@@ -63,13 +63,6 @@ export default function SiteMenu(): JSX.Element {
             <MdLocalDining size={24} color={'#265e2b'} />
           </div>
           <p>Serviços da casa</p>
-        </Link>
-
-        <Link to={'/checkout'} onClick={handleMenuItemClick}>
-          <div>
-            <FiLogOut size={24} color={'#f44336'} />
-          </div>
-          <p>Check-out</p>
         </Link>
 
         <Divider variant="middle" style={{ marginTop: 8, marginBottom: 8 }} />

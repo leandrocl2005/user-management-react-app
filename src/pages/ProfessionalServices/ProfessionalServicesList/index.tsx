@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Container, Content } from './styles';
-import Header from '../../components/Header';
+import Header from '../../../components/Header';
 
-const ProfessionalServices: React.FC = () => {
+const ProfessionalServicesList: React.FC = () => {
   return (
     <Container>
       <Header />
@@ -13,4 +13,4 @@ const ProfessionalServices: React.FC = () => {
   );
 };
 
-export default ProfessionalServices;
+export default ProfessionalServicesList;

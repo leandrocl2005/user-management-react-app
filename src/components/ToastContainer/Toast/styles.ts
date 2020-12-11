@@ -21,8 +21,8 @@ interface ContainerProps {
   $hasDescription: number;
 }
 
-export const Container = styled(animated.div)<ContainerProps>`
-  width: 250px;
+export const Container = styled(animated.div) <ContainerProps>`
+  width: 360px;
   position: relative;
   padding: 16px 16px 16px 16px;
   border-radius: 10px;

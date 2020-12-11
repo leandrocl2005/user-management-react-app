@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { TiLockOpen, TiLockClosed } from 'react-icons/ti';
+import { TiLockOpen, TiLockClosed, TiEye } from 'react-icons/ti';
+import { Link } from 'react-router-dom';
 import {
   Container,
   SearchInput,
@@ -9,10 +10,11 @@ import {
   CheckinItem,
   OpenCheckinButton,
   CloseCheckinButton,
+  AllCheckinButton,
 } from './styles';
-import Header from '../../components/Header';
-import api from '../../services/api';
-import { useToast } from '../../hooks/toast';
+import Header from '../../../components/Header';
+import api from '../../../services/api';
+import { useToast } from '../../../hooks/toast';
 
 interface Checkin {
   id: number;
@@ -23,7 +25,7 @@ interface Checkin {
   active: boolean;
 }
 
-const CheckIn: React.FC = () => {
+const CheckInList: React.FC = () => {
   const [checkins, setCheckins] = useState<Checkin[]>([]);
   const [searchInput, setSearchInput] = useState('');
   const [searchSubmit, setSearchSubmit] = useState('');
@@ -101,6 +103,9 @@ const CheckIn: React.FC = () => {
         <CloseCheckinButton onClick={() => setFilterActive('false')}>
           Fechados
         </CloseCheckinButton>
+        <AllCheckinButton onClick={() => setFilterActive(null)}>
+          Todos
+        </AllCheckinButton>
         <p>
           (Total{' '}
           <strong>
@@ -114,8 +119,8 @@ const CheckIn: React.FC = () => {
             key={checkin.id}
             style={
               checkin.active
-                ? { backgroundColor: '#335522', color: 'white' }
-                : { backgroundColor: '#6b6b6b', color: 'white' }
+                ? { backgroundColor: '#245c2b', color: 'white' }
+                : { backgroundColor: '#414941', color: 'white' }
             }
           >
             <h3>{checkin.person_name}</h3>
@@ -130,6 +135,13 @@ const CheckIn: React.FC = () => {
                 />
               )}
               {!checkin.active && <TiLockClosed size={24} />}
+              <Link to={`/checkins/${checkin.id}/`}>
+                <TiEye
+                  size={24}
+                  style={{ cursor: 'pointer' }}
+                  color={'white'}
+                />
+              </Link>
             </div>
           </CheckinItem>
         ))}
@@ -138,4 +150,4 @@ const CheckIn: React.FC = () => {
   );
 };
 
-export default CheckIn;
+export default CheckInList;
