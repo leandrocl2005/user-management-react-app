@@ -18,7 +18,8 @@ export const CheckinGallery = styled.div`
 export const Nav = styled.div`
   display: flex;
   justify-content: space-evenly;
-  gap: 16px;
+  column-gap: 16px;
+  row-gap: 16px;
   flex-wrap: wrap;
   align-items: center;
   border: 1px solid #d3d4d5;
