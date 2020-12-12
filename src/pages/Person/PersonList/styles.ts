@@ -18,6 +18,7 @@ export const PersonGallery = styled.div`
 export const Nav = styled.div`
   display: flex;
   justify-content: space-evenly;
+  gap: 16px;
   flex-wrap: wrap;
   align-items: center;
   border: 1px solid #d3d4d5;
@@ -27,12 +28,12 @@ export const Nav = styled.div`
   max-width: 600px;
 
   a {
-    margin: 8px 32px;
-    padding: 4px 8px;
-    border: none;
-    border-radius: 8px;
-    background-color: #245c2b;
-    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #b8d866;
+    cursor: pointer;
     box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
     text-decoration: none;
   }
@@ -85,6 +86,16 @@ export const CardBody = styled.div`
     margin-top: 8px;
     color: #777;
   }
+`;
+
+export const PlusButtonContainer = styled.a`
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #b8d866;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
 `;
 
 export const PersonItem = styled.div`

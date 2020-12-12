@@ -10,14 +10,15 @@ import SignUp from '../pages/SignUp';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 
-import CheckInList from '../pages/CheckIn/CheckinList';
-import HomeServices from '../pages/HomeServices';
 import Reports from '../pages/Reports';
 
 import PersonList from '../pages/Person/PersonList';
 import PersonCreate from '../pages/Person/PersonCreate';
 import PersonUpdate from '../pages/Person/PersonUpdate';
+
 import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
+import HomeServicesList from '../pages/HomeServices/HomeServicesList';
+import CheckInList from '../pages/CheckIn/CheckinList';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -42,7 +43,7 @@ const Routes: React.FC = () => (
 
     <Route path="/notifications" component={Notifications} isPrivate />
 
-    <Route path="/home-services" component={HomeServices} isPrivate />
+    <Route path="/home-services" component={HomeServicesList} isPrivate />
 
     <Route path="/reports" component={Reports} isPrivate />
   </Switch>

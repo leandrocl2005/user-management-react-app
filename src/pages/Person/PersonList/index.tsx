@@ -1,8 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import { FiSearch } from 'react-icons/fi';
+import { FiPlus, FiSearch } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
 
-import avatar from '../../../assets/avatar.png';
 import Header from '../../../components/Header';
 import { useToast } from '../../../hooks/toast';
 import api from '../../../services/api';
@@ -73,13 +72,15 @@ const Personlist: React.FC = () => {
             <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
           </button>
         </SearchInput>
-        <Link to={'/create-people'}>Novo cadastro</Link>
         <p>
           (Total{' '}
           <strong>
             <b>{totalPerson})</b>
           </strong>
         </p>
+        <Link to={'/create-people'}>
+          <FiPlus size={22} color="white" />
+        </Link>
       </Nav>
       <PersonGallery>
         {listPerson.map(person => (

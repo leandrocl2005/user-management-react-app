@@ -74,7 +74,11 @@ const CheckInList: React.FC = () => {
 
         setCheckins(actualCheckins);
       } catch (err) {
-        console.log(err);
+        addToast({
+          type: 'error',
+          title: 'Erro no servidor',
+          description: 'Servidor offline. Tente mais tarde!',
+        });
       }
     }
     changeActive();
