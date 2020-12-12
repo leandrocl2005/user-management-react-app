@@ -97,6 +97,11 @@ export const PlusButtonContainer = styled.a`
   background: #b8d866;
   cursor: pointer;
   box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
+  transition: 400ms;
+
+  :hover {
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.7);
+  }
 `;
 
 export const PersonItem = styled.div`

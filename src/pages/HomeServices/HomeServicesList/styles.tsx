@@ -28,6 +28,11 @@ export const Nav = styled.div`
     cursor: pointer;
     box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
     text-decoration: none;
+    transition: 400ms;
+
+    :hover {
+      box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.7);
+    }
   }
 
   p {
@@ -36,6 +41,7 @@ export const Nav = styled.div`
       color: #111;
       font-weight: 700;
     }
+    margin-right: 16px;
   }
 `;
 
@@ -47,6 +53,7 @@ export const SearchInput = styled.form`
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  margin-right: 16px;
 
   input {
     width: 100%;
@@ -154,8 +161,9 @@ export const ServicesContainer = styled.div`
   line-height: 24px;
 
   p {
-    border: 1px solid #efefef;
+    border: none;
     border-radius: 8px;
+    box-shadow: 1px 1px 2px 1px rgba(24, 44, 30, 0.7);
   }
 `;
 

@@ -18,6 +18,8 @@ import api from '../../../services/api';
 
 interface HomeService {
   id: number;
+  person_name: string;
+  formatted_created_at: string;
   breakfast: string;
   lunch: string;
   shower: string;
@@ -82,9 +84,10 @@ const HomeServicesList: React.FC = () => {
         {homeServices.map(homeService => (
           <HomeServicesItem key={homeService.id}>
             <CardHeader>
-              <p>Marcos Paulo Siqueira Malandro</p>
+              <p>{homeService.person_name}</p>
               <p>
-                <strong>Data dos serviços:</strong> 23/12/2019
+                <strong>Data dos serviços:</strong>{' '}
+                {homeService.formatted_created_at}
               </p>
             </CardHeader>
             <CardBody>
@@ -100,6 +103,7 @@ const HomeServicesList: React.FC = () => {
                     backgroundColor: homeService.breakfast
                       ? '#84c4b7'
                       : '#414941',
+                    opacity: homeService.breakfast ? 1 : 0.1,
                     color: 'white',
                   }}
                 >
@@ -108,6 +112,7 @@ const HomeServicesList: React.FC = () => {
                 <p
                   style={{
                     backgroundColor: homeService.lunch ? '#84c4b7' : '#414941',
+                    opacity: homeService.lunch ? 1 : 0.1,
                     color: 'white',
                   }}
                 >
@@ -116,6 +121,7 @@ const HomeServicesList: React.FC = () => {
                 <p
                   style={{
                     backgroundColor: homeService.snack ? '#84c4b7' : '#414941',
+                    opacity: homeService.snack ? 1 : 0.1,
                     color: 'white',
                   }}
                 >
@@ -124,6 +130,7 @@ const HomeServicesList: React.FC = () => {
                 <p
                   style={{
                     backgroundColor: homeService.shower ? '#84c4b7' : '#414941',
+                    opacity: homeService.shower ? 1 : 0.1,
                     color: 'white',
                   }}
                 >
@@ -132,6 +139,7 @@ const HomeServicesList: React.FC = () => {
                 <p
                   style={{
                     backgroundColor: homeService.sleep ? '#84c4b7' : '#414941',
+                    opacity: homeService.sleep ? 1 : 0.1,
                     color: 'white',
                   }}
                 >
@@ -140,6 +148,7 @@ const HomeServicesList: React.FC = () => {
                 <p
                   style={{
                     backgroundColor: homeService.dinner ? '#84c4b7' : '#414941',
+                    opacity: homeService.dinner ? 1 : 0.1,
                     color: 'white',
                   }}
                 >

@@ -48,7 +48,7 @@ const PersonCreate: React.FC = () => {
   const [mother_name, setMotherName] = useState('');
   /* const [born_date, setBornDate] = useState(''); */
   const [email, setEmail] = useState('');
-  const [selectedGender, setSelectedGender] = useState('0');
+  const [selectedGender, setSelectedGender] = useState('');
   const [cpf, setCpf] = useState('');
   const [rg, setRg] = useState('');
   const [rg_ssp, setRgSsp] = useState('');
@@ -160,7 +160,7 @@ const PersonCreate: React.FC = () => {
                 setSelectedGender(event.target.value);
               }}
             >
-              <option value={'0'}>Selecione sexo</option>
+              <option value="0">Selecione sexo</option>
               <option value={'F'}>Feminino</option>
               <option value={'M'}>Masculino</option>
               <option value={'O'}>Outro</option>
