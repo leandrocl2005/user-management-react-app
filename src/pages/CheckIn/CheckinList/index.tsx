@@ -11,6 +11,10 @@ import {
   OpenCheckinButton,
   CloseCheckinButton,
   AllCheckinButton,
+  Avatar,
+  CardBody,
+  Actions,
+  AvatarBodyContainer,
 } from './styles';
 import Header from '../../../components/Header';
 import api from '../../../services/api';
@@ -115,34 +119,42 @@ const CheckInList: React.FC = () => {
       </Nav>
       <CheckinGallery>
         {checkins.map(checkin => (
-          <CheckinItem
-            key={checkin.id}
-            style={
-              checkin.active
-                ? { backgroundColor: '#245c2b', color: 'white' }
-                : { backgroundColor: '#414941', color: 'white' }
-            }
-          >
-            <h3>{checkin.person_name}</h3>
-            <p>{checkin.companion_name}</p>
-            <p>{checkin.formatted_created_at}</p>
-            <div>
+          <CheckinItem key={checkin.id}>
+            <AvatarBodyContainer>
+              <Avatar>
+                <img
+                  src={`https://i.pravatar.cc/250/img=${checkin.id}`}
+                  alt={checkin.person_name}
+                />
+              </Avatar>
+              <CardBody>
+                <h3>{checkin.person_name}</h3>
+                <p>{checkin.companion_name}</p>
+                <p>{checkin.formatted_created_at}</p>
+              </CardBody>
+            </AvatarBodyContainer>
+            <Actions
+              style={{
+                backgroundColor: checkin.active ? '#84c4b7' : '#414941',
+              }}
+            >
               {checkin.active && (
                 <TiLockOpen
                   size={24}
                   onClick={() => handleCheckinClick(checkin)}
                   style={{ cursor: 'pointer' }}
+                  color={'#fffffe'}
                 />
               )}
-              {!checkin.active && <TiLockClosed size={24} />}
+              {!checkin.active && <TiLockClosed size={24} color={'#fffffe'} />}
               <Link to={`/checkins/${checkin.id}/`}>
                 <TiEye
                   size={24}
                   style={{ cursor: 'pointer' }}
-                  color={'white'}
+                  color={'#fffffe'}
                 />
               </Link>
-            </div>
+            </Actions>
           </CheckinItem>
         ))}
       </CheckinGallery>

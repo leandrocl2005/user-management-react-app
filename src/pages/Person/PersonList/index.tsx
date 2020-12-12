@@ -88,7 +88,10 @@ const Personlist: React.FC = () => {
             onClick={() => handleCardClick(person.id)}
           >
             <Avatar>
-              <img src={avatar} alt={person.name} />
+              <img
+                src={`https://i.pravatar.cc/250/img=${person.id}`}
+                alt={person.name}
+              />
             </Avatar>
             <CardBody>
               <p>Nome</p>

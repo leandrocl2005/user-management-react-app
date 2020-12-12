@@ -1,22 +1,28 @@
 import styled, { keyframes } from 'styled-components';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const CheckinGallery = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   align-items: center;
-  margin: 32px 16px 0 16px;
+  margin: 0px 16px 0 16px;
 `;
 
 export const Nav = styled.div`
   display: flex;
   justify-content: space-evenly;
+  gap: 16px;
   flex-wrap: wrap;
   align-items: center;
   border: 1px solid #d3d4d5;
-  margin: 32px 32px 0 32px;
+  margin: 16px 32px;
   border-radius: 8px;
   padding: 8px 16px;
 
@@ -34,7 +40,7 @@ export const OpenCheckinButton = styled.button`
   padding: 4px 8px;
   border: none;
   border-radius: 8px;
-  background-color: #245c2b;
+  background-color: #84c4b7;
   color: white;
   box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
 `;
@@ -68,26 +74,73 @@ const fadeIn = keyframes`
   }
 `;
 
+export const Avatar = styled.div`
+  img {
+    width: 64px;
+    height: 64px;
+    display: cover;
+    border-radius: 50%;
+    border: 1px solid #d3d4d5;
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
+  }
+`;
+
+export const CardBody = styled.div`
+  margin: 16px;
+
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+
+  p {
+    font-size: 8px;
+    margin-top: 8px;
+    color: #777;
+  }
+`;
+
+export const Actions = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-right: -16px;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  border-radius: 0 8px 8px 0;
+  padding: 8px 8px 8px 0;
+  width: 48px;
+`;
+
+export const AvatarBodyContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+`;
+
 export const CheckinItem = styled.div`
-  height: 160px;
-  width: 200px;
-  background-color: #efefef;
+  height: 120px;
+  width: 320px;
+  background: #fffffe;
   padding: 8px 16px;
   border-radius: 8px;
   margin: 16px 8px;
-  position: relative;
   box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
   animation: ${fadeIn} 1s;
+  transition: 400ms;
+  display: flex;
+  flex-direction: row;
 
-  div {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 180px;
+  :hover {
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.7);
   }
 `;
 

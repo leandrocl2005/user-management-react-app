@@ -57,8 +57,8 @@ const fadeIn = keyframes`
 
 export const Avatar = styled.div`
   img {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     display: cover;
     border-radius: 50%;
     border: 1px solid #d3d4d5;
@@ -89,9 +89,9 @@ export const CardBody = styled.div`
 
 export const PersonItem = styled.div`
   height: 120px;
-  width: 260px;
+  width: 320px;
   background: #fffffe;
-  padding: 8px 8px;
+  padding: 8px 16px;
   border-radius: 8px;
   margin: 16px 8px;
   position: relative;

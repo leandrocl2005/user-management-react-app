@@ -317,7 +317,7 @@ const PersonCreate: React.FC = () => {
           <div
             className="input-block"
             style={{
-              width: '20%',
+              width: '30%',
               display: 'inline-block',
               marginRight: '10%',
             }}
@@ -333,7 +333,7 @@ const PersonCreate: React.FC = () => {
           </div>
           <div
             className="input-block"
-            style={{ display: 'inline-block', width: '70%' }}
+            style={{ display: 'inline-block', width: '60%' }}
           >
             <label htmlFor="private_phone">Telefone pessoal</label>
             <input
@@ -347,7 +347,7 @@ const PersonCreate: React.FC = () => {
           <div
             className="input-block"
             style={{
-              width: '20%',
+              width: '30%',
               display: 'inline-block',
               marginRight: '10%',
             }}
@@ -363,7 +363,7 @@ const PersonCreate: React.FC = () => {
           </div>
           <div
             className="input-block"
-            style={{ display: 'inline-block', width: '70%' }}
+            style={{ display: 'inline-block', width: '60%' }}
           >
             <label htmlFor="message_phone">Telefone para mensagem</label>
             <input
