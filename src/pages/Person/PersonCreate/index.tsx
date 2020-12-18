@@ -8,7 +8,10 @@ import { useToast } from '../../../hooks/toast';
 
 import api from '../../../services/api';
 
-import { Container, Form } from './styles';
+import { Container, Form, InputSelect } from './styles';
+import FieldContainer from '../../../components/FieldContainer';
+import FieldSet from '../../../components/FieldSet';
+import ConfirmButton from '../../../components/ConfirmButton';
 
 const PersonCreate: React.FC = () => {
   const history = useHistory();
@@ -122,13 +125,13 @@ const PersonCreate: React.FC = () => {
     <Container>
       <Header />
       <Form onSubmit={handleSubmit}>
-        <fieldset>
+        <FieldSet>
           <legend>
             <strong>Identificação</strong>
             <FiChevronDown />
           </legend>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="name">Nome</label>
             <input
               id="name"
@@ -137,9 +140,9 @@ const PersonCreate: React.FC = () => {
                 setName(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="mother_name">Nome da mãe</label>
             <input
               id="mother_name"
@@ -148,11 +151,11 @@ const PersonCreate: React.FC = () => {
                 setMotherName(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="gender">Sexo</label>
-            <select
+            <InputSelect
               id="gender"
               value={selectedGender}
               disabled={selectedGender === '0'}
@@ -164,15 +167,15 @@ const PersonCreate: React.FC = () => {
               <option value={'F'}>Feminino</option>
               <option value={'M'}>Masculino</option>
               <option value={'O'}>Outro</option>
-            </select>
-          </div>
-        </fieldset>{' '}
-        <fieldset>
+            </InputSelect>
+          </FieldContainer>
+        </FieldSet>{' '}
+        <FieldSet>
           <legend>
             <strong>Documentos</strong>
             <FiChevronDown />
           </legend>
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="rg">RG</label>
             <input
               id="rg"
@@ -181,9 +184,9 @@ const PersonCreate: React.FC = () => {
                 setRg(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="rg_ssp">SSP</label>
             <input
               id="rg_ssp"
@@ -192,9 +195,9 @@ const PersonCreate: React.FC = () => {
                 setRgSsp(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="cpf">CPF</label>
             <input
               id="cpf"
@@ -203,15 +206,15 @@ const PersonCreate: React.FC = () => {
                 setCpf(event.target.value);
               }}
             />
-          </div>
-        </fieldset>
-        <fieldset>
+          </FieldContainer>
+        </FieldSet>
+        <FieldSet>
           <legend>
             <strong>Endereço</strong>
             <FiChevronDown />
           </legend>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="address_line_1">Rua, número, quadra ...</label>
             <input
               id="address_line_1"
@@ -220,9 +223,9 @@ const PersonCreate: React.FC = () => {
                 setAddressLine1(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="address_line_2">Complemento</label>
             <input
               id="address_line_2"
@@ -231,9 +234,9 @@ const PersonCreate: React.FC = () => {
                 setAddressLine2(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="neighbourhood">Bairro</label>
             <input
               id="neighbourhood"
@@ -242,11 +245,11 @@ const PersonCreate: React.FC = () => {
                 setNeighbourhood(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="residence_type">Tipo de residência</label>
-            <select
+            <InputSelect
               id="residence_type"
               value={selectedResidenceType}
               disabled={selectedResidenceType === '0'}
@@ -257,10 +260,10 @@ const PersonCreate: React.FC = () => {
               <option value="0">Selecione tipo</option>
               <option value={'urban'}>Urbana</option>
               <option value={'rural'}>Rural</option>
-            </select>
-          </div>
+            </InputSelect>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="city">Cidade</label>
             <input
               id="city"
@@ -269,11 +272,11 @@ const PersonCreate: React.FC = () => {
                 setCity(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="state">Estado</label>
-            <select
+            <InputSelect
               disabled={selectedUf === '0'}
               id="state"
               onChange={event => setSelectedUf(event.target.value)}
@@ -285,10 +288,10 @@ const PersonCreate: React.FC = () => {
                   {uf.name}
                 </option>
               ))}
-            </select>
-          </div>
+            </InputSelect>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="postal_code">CEP</label>
             <input
               id="postal_code"
@@ -297,14 +300,14 @@ const PersonCreate: React.FC = () => {
                 setPostalCode(event.target.value);
               }}
             />
-          </div>
-        </fieldset>{' '}
-        <fieldset>
+          </FieldContainer>
+        </FieldSet>{' '}
+        <FieldSet>
           <legend>
             <strong>Contatos</strong>
             <FiChevronDown />
           </legend>
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="email">E-mail</label>
             <input
               id="email"
@@ -313,10 +316,9 @@ const PersonCreate: React.FC = () => {
                 setEmail(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{
               width: '30%',
               display: 'inline-block',
               marginRight: '10%',
@@ -330,10 +332,9 @@ const PersonCreate: React.FC = () => {
                 setDddPrivatePhone(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{ display: 'inline-block', width: '60%' }}
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{ display: 'inline-block', width: '60%' }}
           >
             <label htmlFor="private_phone">Telefone pessoal</label>
             <input
@@ -343,10 +344,9 @@ const PersonCreate: React.FC = () => {
                 setPrivatePhone(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{
               width: '30%',
               display: 'inline-block',
               marginRight: '10%',
@@ -360,10 +360,9 @@ const PersonCreate: React.FC = () => {
                 setDddMessagePhone(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{ display: 'inline-block', width: '60%' }}
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{ display: 'inline-block', width: '60%' }}
           >
             <label htmlFor="message_phone">Telefone para mensagem</label>
             <input
@@ -373,11 +372,9 @@ const PersonCreate: React.FC = () => {
                 setMessagePhone(event.target.value);
               }}
             />
-          </div>
-        </fieldset>
-        <button className="confirm-button" type="submit">
-          Cadastrar
-        </button>
+          </FieldContainer>
+        </FieldSet>
+        <ConfirmButton text={'Cadastrar'} />
       </Form>
     </Container>
   );

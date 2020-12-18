@@ -19,13 +19,26 @@ import PersonUpdate from '../pages/Person/PersonUpdate';
 import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
 import HomeServicesList from '../pages/HomeServices/HomeServicesList';
 import CheckInList from '../pages/CheckIn/CheckinList';
+import CheckInCreate from '../pages/CheckIn/CheckinCreate';
 
 const Routes: React.FC = () => (
   <Switch>
-    <Route path="/create-people" exact component={PersonCreate} isPrivate />
-    <Route path="/people/:id" component={PersonUpdate} isPrivate />
-    <Route path="/people" component={PersonList} isPrivate />
+    <Route path="/" exact component={SignIn} />
+    <Route path="/signup" component={SignUp} />
 
+    <Route path="/forgot-password" component={ForgotPassword} />
+    <Route path="/reset-password" component={ResetPassword} />
+
+    <Route
+      path="/create-people"
+      exact={true}
+      component={PersonCreate}
+      isPrivate
+    />
+    <Route path="/people/:id" exact component={PersonUpdate} isPrivate />
+    <Route path="/people" exact component={PersonList} isPrivate />
+
+    <Route path="/create-checkin" exact component={CheckInCreate} isPrivate />
     <Route path="/checkins" exact component={CheckInList} isPrivate />
 
     <Route
@@ -34,12 +47,6 @@ const Routes: React.FC = () => (
       component={ProfessionalServicesList}
       isPrivate
     />
-
-    <Route path="/" exact component={SignIn} />
-    <Route path="/signup" component={SignUp} />
-
-    <Route path="/forgot-password" component={ForgotPassword} />
-    <Route path="/reset-password" component={ResetPassword} />
 
     <Route path="/notifications" component={Notifications} isPrivate />
 

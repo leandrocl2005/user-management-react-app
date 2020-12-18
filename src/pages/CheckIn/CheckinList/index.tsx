@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { FiSearch } from 'react-icons/fi';
+import { FiPlus, FiSearch } from 'react-icons/fi';
 import { TiLockOpen, TiLockClosed, TiEye } from 'react-icons/ti';
 import { Link } from 'react-router-dom';
 import {
@@ -8,9 +8,6 @@ import {
   CheckinGallery,
   Nav,
   CheckinItem,
-  OpenCheckinButton,
-  CloseCheckinButton,
-  AllCheckinButton,
   Avatar,
   CardBody,
   Actions,
@@ -19,6 +16,7 @@ import {
 import Header from '../../../components/Header';
 import api from '../../../services/api';
 import { useToast } from '../../../hooks/toast';
+import FilterButton from '../../../components/FilterButton';
 
 interface Checkin {
   id: number;
@@ -105,21 +103,30 @@ const CheckInList: React.FC = () => {
             <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
           </button>
         </SearchInput>
-        <OpenCheckinButton onClick={() => setFilterActive('true')}>
-          Abertos
-        </OpenCheckinButton>
-        <CloseCheckinButton onClick={() => setFilterActive('false')}>
-          Fechados
-        </CloseCheckinButton>
-        <AllCheckinButton onClick={() => setFilterActive(null)}>
-          Todos
-        </AllCheckinButton>
+        <FilterButton
+          color={'#84c4b7'}
+          text={'Abertos'}
+          onClick={() => setFilterActive('true')}
+        />
+        <FilterButton
+          color={'#414941'}
+          onClick={() => setFilterActive('false')}
+          text={'Fechados'}
+        />
+        <FilterButton
+          color={'#c68a12'}
+          text={'Todos'}
+          onClick={() => setFilterActive(null)}
+        />
         <p>
           (Total{' '}
           <strong>
             <b>{totalCheckins})</b>
           </strong>
         </p>
+        <Link to={'/create-checkin'}>
+          <FiPlus size={22} color="white" />
+        </Link>
       </Nav>
       <CheckinGallery>
         {checkins.map(checkin => (

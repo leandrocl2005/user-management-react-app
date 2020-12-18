@@ -34,36 +34,21 @@ export const Nav = styled.div`
       font-weight: 700;
     }
   }
-`;
 
-export const OpenCheckinButton = styled.button`
-  margin: 8px 0;
-  padding: 4px 8px;
-  border: none;
-  border-radius: 8px;
-  background-color: #84c4b7;
-  color: white;
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
-`;
+  a {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #b8d866;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
+    transition: 400ms;
 
-export const CloseCheckinButton = styled.button`
-  margin: 8px 0;
-  padding: 4px 8px;
-  border: none;
-  border-radius: 8px;
-  background-color: #414941;
-  color: white;
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
-`;
-
-export const AllCheckinButton = styled.button`
-  margin: 8px 0;
-  padding: 4px 8px;
-  border: none;
-  border-radius: 8px;
-  background-color: #c68a12;
-  color: white;
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
+    :hover {
+      box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.7);
+    }
+  }
 `;
 
 const fadeIn = keyframes`
