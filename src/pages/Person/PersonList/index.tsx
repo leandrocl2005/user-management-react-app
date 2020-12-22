@@ -1,19 +1,17 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import { FiPlus, FiSearch } from 'react-icons/fi';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+import { useToast } from '../../../hooks/toast';
+
+import api from '../../../services/api';
+
+import { Container, PersonItem, CardBody } from './styles';
 
 import Header from '../../../components/Header';
-import { useToast } from '../../../hooks/toast';
-import api from '../../../services/api';
-import {
-  Container,
-  PersonGallery,
-  PersonItem,
-  Nav,
-  SearchInput,
-  Avatar,
-  CardBody,
-} from './styles';
+import SearchForm from '../../../components/SearchForm';
+import Nav from '../../../components/Nav';
+import Avatar from '../../../components/Avatar';
+import GalleryContainer from '../../../components/GalleryContainer';
 
 interface Person {
   id: number;
@@ -60,40 +58,23 @@ const Personlist: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Nav>
-        <SearchInput onSubmit={handleSearchSubmit}>
+      <Nav total={totalPerson} pathCreate={'/create-people'}>
+        <SearchForm onSubmit={handleSearchSubmit}>
           <input
             placeholder="Buscar por nome"
             name="filter"
             value={searchInput}
             onChange={event => setSearchInput(event.target.value)}
           />
-          <button type="submit">
-            <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
-          </button>
-        </SearchInput>
-        <p>
-          (Total{' '}
-          <strong>
-            <b>{totalPerson})</b>
-          </strong>
-        </p>
-        <Link to={'/create-people'}>
-          <FiPlus size={22} color="white" />
-        </Link>
+        </SearchForm>
       </Nav>
-      <PersonGallery>
+      <GalleryContainer>
         {listPerson.map(person => (
           <PersonItem
             key={person.id}
             onClick={() => handleCardClick(person.id)}
           >
-            <Avatar>
-              <img
-                src={`https://i.pravatar.cc/250/img=${person.id}`}
-                alt={person.name}
-              />
-            </Avatar>
+            <Avatar src={''} alt={''} />
             <CardBody>
               <p>Nome</p>
               <h3>{person.name}</h3>
@@ -102,7 +83,7 @@ const Personlist: React.FC = () => {
             </CardBody>
           </PersonItem>
         ))}
-      </PersonGallery>
+      </GalleryContainer>
     </Container>
   );
 };

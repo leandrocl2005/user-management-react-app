@@ -1,19 +1,19 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
-import { FiPlus, FiSearch } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
 import {
   Container,
-  Nav,
-  SearchInput,
-  HomeServicesGallery,
   HomeServicesItem,
   CardHeader,
   CardBody,
-  Avatar,
   ServicesContainer,
 } from './styles';
+
 import Header from '../../../components/Header';
+import SearchForm from '../../../components/SearchForm';
+import Avatar from '../../../components/Avatar';
+import Nav from '../../../components/Nav';
+import GalleryContainer from '../../../components/GalleryContainer';
+
 import api from '../../../services/api';
 
 interface HomeService {
@@ -58,29 +58,17 @@ const HomeServicesList: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Nav>
-        <SearchInput onSubmit={event => handleSearchSubmit(event)}>
+      <Nav total={totalHomeServices} pathCreate={'/create-home-services'}>
+        <SearchForm onSubmit={event => handleSearchSubmit(event)}>
           <input
             placeholder="Buscar por nome"
             name="filter"
             value={searchInput}
             onChange={event => setSearchInput(event.target.value)}
           />
-          <button type="submit">
-            <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
-          </button>
-        </SearchInput>
-        <p>
-          (Total{' '}
-          <strong>
-            <b>{totalHomeServices})</b>
-          </strong>
-        </p>
-        <Link to={'/create-home-services'}>
-          <FiPlus size={22} color="white" />
-        </Link>
+        </SearchForm>
       </Nav>
-      <HomeServicesGallery>
+      <GalleryContainer>
         {homeServices.map(homeService => (
           <HomeServicesItem key={homeService.id}>
             <CardHeader>
@@ -91,12 +79,7 @@ const HomeServicesList: React.FC = () => {
               </p>
             </CardHeader>
             <CardBody>
-              <Avatar>
-                <img
-                  src={`https://i.pravatar.cc/250/img=${homeService.id}`}
-                  alt="Marcos Paulo Siqueira Malandro"
-                />
-              </Avatar>
+              <Avatar src={''} alt={''} />
               <ServicesContainer>
                 <p
                   style={{
@@ -158,7 +141,7 @@ const HomeServicesList: React.FC = () => {
             </CardBody>
           </HomeServicesItem>
         ))}
-      </HomeServicesGallery>
+      </GalleryContainer>
     </Container>
   );
 };

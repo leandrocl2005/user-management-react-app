@@ -1,22 +1,26 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { FiPlus, FiSearch } from 'react-icons/fi';
-import { TiLockOpen, TiLockClosed, TiEye } from 'react-icons/ti';
 import { Link } from 'react-router-dom';
+
+import { TiLockOpen, TiLockClosed, TiEye } from 'react-icons/ti';
+
 import {
   Container,
-  SearchInput,
-  CheckinGallery,
-  Nav,
   CheckinItem,
-  Avatar,
   CardBody,
   Actions,
   AvatarBodyContainer,
 } from './styles';
-import Header from '../../../components/Header';
+
 import api from '../../../services/api';
+
 import { useToast } from '../../../hooks/toast';
+
+import Header from '../../../components/Header';
 import FilterButton from '../../../components/FilterButton';
+import SearchForm from '../../../components/SearchForm';
+import Nav from '../../../components/Nav';
+import GalleryContainer from '../../../components/GalleryContainer';
+import Avatar from '../../../components/Avatar';
 
 interface Checkin {
   id: number;
@@ -91,18 +95,15 @@ const CheckInList: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Nav>
-        <SearchInput onSubmit={handleSearchSubmit}>
+      <Nav total={totalCheckins} pathCreate={'/create-checkin'}>
+        <SearchForm onSubmit={handleSearchSubmit}>
           <input
             placeholder="Buscar por nome"
             name="filter"
             value={searchInput}
             onChange={event => setSearchInput(event.target.value)}
           />
-          <button type="submit">
-            <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />
-          </button>
-        </SearchInput>
+        </SearchForm>
         <FilterButton
           color={'#84c4b7'}
           text={'Abertos'}
@@ -118,26 +119,12 @@ const CheckInList: React.FC = () => {
           text={'Todos'}
           onClick={() => setFilterActive(null)}
         />
-        <p>
-          (Total{' '}
-          <strong>
-            <b>{totalCheckins})</b>
-          </strong>
-        </p>
-        <Link to={'/create-checkin'}>
-          <FiPlus size={22} color="white" />
-        </Link>
       </Nav>
-      <CheckinGallery>
+      <GalleryContainer>
         {checkins.map(checkin => (
           <CheckinItem key={checkin.id}>
             <AvatarBodyContainer>
-              <Avatar>
-                <img
-                  src={`https://i.pravatar.cc/250/img=${checkin.id}`}
-                  alt={checkin.person_name}
-                />
-              </Avatar>
+              <Avatar src={''} alt={''} />
               <CardBody>
                 <h3>{checkin.person_name}</h3>
                 <p>{checkin.companion_name}</p>
@@ -168,7 +155,7 @@ const CheckInList: React.FC = () => {
             </Actions>
           </CheckinItem>
         ))}
-      </CheckinGallery>
+      </GalleryContainer>
     </Container>
   );
 };
