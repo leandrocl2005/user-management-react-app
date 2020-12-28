@@ -50,11 +50,12 @@ export const CardHeader = styled.div`
   border-bottom: 1px solid #d3d4d5;
 
   div {
-    margin-left: 16px;
+    margin-left: 8px;
     margin-bottom: 8px;
   }
 
   h3 {
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 4px;
   }
@@ -68,10 +69,12 @@ export const CardBody = styled.div`
   margin-top: 16px;
   h4 {
     font-weight: 700;
+    font-size: 14px;
     color: #555;
     margin-bottom: 4px;
   }
   p {
     color: #999;
+    font-size: 12px;
   }
 `;

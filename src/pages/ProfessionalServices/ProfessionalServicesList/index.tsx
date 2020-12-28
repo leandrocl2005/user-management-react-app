@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useHistory } from 'react-router-dom';
 import {
   Container,
   CardHeader,
@@ -29,6 +30,8 @@ const ProfessionalServicesList: React.FC = () => {
     ProfessionalService[]
   >([]);
 
+  const history = useHistory();
+
   useEffect(() => {
     async function loadProfessionalServices(): Promise<void> {
       const response = await api.get('/api/v1/professional_services/');
@@ -36,6 +39,10 @@ const ProfessionalServicesList: React.FC = () => {
     }
     loadProfessionalServices();
   }, []);
+
+  const handleCardClick = (id: number): void => {
+    history.push(`/professional-services/${id}`);
+  };
 
   return (
     <Container>
@@ -53,7 +60,10 @@ const ProfessionalServicesList: React.FC = () => {
       </Nav>
       <GalleryContainer>
         {professionalServices.map(professionalService => (
-          <ProfessionalServicesItem key={professionalService.id}>
+          <ProfessionalServicesItem
+            onClick={() => handleCardClick(professionalService.id)}
+            key={professionalService.id}
+          >
             <CardHeader>
               <Avatar src="" alt="" />
               <div>

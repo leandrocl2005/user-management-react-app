@@ -3,11 +3,16 @@ import { FiSearch } from 'react-icons/fi';
 
 import { Container } from './styles';
 
-const SearchForm: React.FC<FormHTMLAttributes<HTMLFormElement>> = ({
+interface SearchFormProps extends FormHTMLAttributes<HTMLFormElement> {
+  containerStyle?: object;
+}
+
+const SearchForm: React.FC<SearchFormProps> = ({
   children,
+  containerStyle,
   ...rest
 }) => (
-  <Container {...rest}>
+  <Container {...rest} style={containerStyle}>
     {children}{' '}
     <button type="submit">
       <FiSearch size={16} style={{ margin: '8px', cursor: 'pointer' }} />

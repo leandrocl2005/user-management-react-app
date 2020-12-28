@@ -16,10 +16,13 @@ import PersonList from '../pages/Person/PersonList';
 import PersonCreate from '../pages/Person/PersonCreate';
 import PersonUpdate from '../pages/Person/PersonUpdate';
 
-import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
 import HomeServicesList from '../pages/HomeServices/HomeServicesList';
 import CheckInList from '../pages/CheckIn/CheckinList';
 import CheckInCreate from '../pages/CheckIn/CheckinCreate';
+
+import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
+import ProfessionalServicesUpdate from '../pages/ProfessionalServices/ProfessionalServicesUpdate';
+import ProfessionalServicesCreate from '../pages/ProfessionalServices/ProfessionalServicesCreate';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -41,6 +44,18 @@ const Routes: React.FC = () => (
     <Route path="/create-checkin" exact component={CheckInCreate} isPrivate />
     <Route path="/checkins" exact component={CheckInList} isPrivate />
 
+    <Route
+      path="/create-professional-services"
+      exact
+      component={ProfessionalServicesCreate}
+      isPrivate
+    />
+    <Route
+      path="/professional-services/:id"
+      exact
+      component={ProfessionalServicesUpdate}
+      isPrivate
+    />
     <Route
       path="/professional-services"
       exact

@@ -4,6 +4,15 @@ export const Container = styled.form`
   @media (min-width: 600px) {
     min-width: 500px;
   }
+
+  @media (min-width: 700px) {
+    min-width: 600px;
+  }
+
+  @media (min-width: 800px) {
+    min-width: 700px;
+  }
+
   max-width: 700px;
 
   margin: 32px 16px;
@@ -14,5 +23,5 @@ export const Container = styled.form`
 
   padding: 32px 64px;
 
-  overflow: hidden;
+  // overflow: hidden;
 `;

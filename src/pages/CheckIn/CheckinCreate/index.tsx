@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { FiChevronDown, FiSearch } from 'react-icons/fi';
+import FieldContainer from '../../../components/FieldContainer';
+import FieldSet from '../../../components/FieldSet';
 import Header from '../../../components/Header';
+import Nav from '../../../components/Nav';
+import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
+import SearchForm from '../../../components/SearchForm';
+import SelectPersonItem from '../../../components/SelectPersonItem';
+
 import { useToast } from '../../../hooks/toast';
 import api from '../../../services/api';
 
 import {
   Container,
-  Nav,
   SearchInput,
+  InputSelect,
   SelectContainer,
-  SelectItem,
-  Avatar,
-  SelectTextContainer,
-  Form,
   CheckBoxContainer,
   MedicalProceduresContainer,
 } from './styles';
@@ -21,6 +24,7 @@ interface Person {
   id: number;
   name: string;
   formatted_born_date: string;
+  avatar: string;
 }
 
 const CheckInCreate: React.FC = () => {
@@ -103,7 +107,10 @@ const CheckInCreate: React.FC = () => {
     <Container>
       <Header />
       <Nav>
-        <SearchInput onSubmit={event => event.preventDefault()}>
+        <SearchForm
+          containerStyle={{ position: 'relative' }}
+          onSubmit={event => event.preventDefault()}
+        >
           <input
             placeholder="Buscar por nome"
             name="filter"
@@ -115,14 +122,6 @@ const CheckInCreate: React.FC = () => {
             }}
             autoComplete="off"
           />
-          <button type="button">
-            <FiSearch
-              size={16}
-              style={{
-                margin: '8px',
-              }}
-            />
-          </button>
           <SelectContainer
             style={{
               display: allPeople.length !== 0 ? 'block' : 'none',
@@ -130,41 +129,31 @@ const CheckInCreate: React.FC = () => {
           >
             {allPeople &&
               allPeople.map(person => (
-                <SelectItem
+                <SelectPersonItem
+                  person={person}
                   key={person.id}
-                  onClick={() => handleSelectPersonClick(person)}
-                >
-                  <Avatar>
-                    <img
-                      src={`https://i.pravatar.cc/250/img=${person.id}`}
-                      alt={person.name}
-                    />
-                  </Avatar>
-                  <SelectTextContainer>
-                    <h3>{person.name}</h3>
-                    <p>Dt. Nasc.: {person.formatted_born_date}</p>
-                  </SelectTextContainer>
-                </SelectItem>
+                  handleClick={() => handleSelectPersonClick(person)}
+                />
               ))}
           </SelectContainer>
-        </SearchInput>
+        </SearchForm>
       </Nav>
       {selectedPerson && (
-        <Form>
-          <fieldset>
+        <RegisterUpdateForm>
+          <FieldSet>
             <legend>
               <strong>Identificação do checkin</strong>
               <FiChevronDown />
             </legend>
 
-            <div className="input-block">
+            <FieldContainer>
               <label htmlFor="name">Nome</label>
               <input id="name" value={selectedPerson.name} disabled={true} />
-            </div>
+            </FieldContainer>
 
-            <div className="input-block">
+            <FieldContainer>
               <label htmlFor="reason">Tipo do checkin</label>
-              <select
+              <InputSelect
                 id="reason"
                 value={selectedReason}
                 disabled={selectedReason === '0'}
@@ -179,17 +168,21 @@ const CheckInCreate: React.FC = () => {
                 <option value={'voluntary'}>Voluntário</option>
                 <option value={'visitor'}>Visitante</option>
                 <option value={'other'}>Outro</option>
-              </select>
-            </div>
-          </fieldset>
+              </InputSelect>
+            </FieldContainer>
+          </FieldSet>
           {selectedReason === 'patient' && (
-            <fieldset>
+            <FieldSet>
               <legend>
                 <strong>Acompanhante</strong>
                 <FiChevronDown />
               </legend>
               {!selectedCompanion && (
-                <SearchInput onSubmit={event => event.preventDefault()}>
+                <SearchForm
+                  containerStyle={{ position: 'relative' }}
+                  onSubmit={event => event.preventDefault()}
+                >
+                  {' '}
                   <input
                     placeholder="Acompanhante"
                     name="filter"
@@ -200,58 +193,43 @@ const CheckInCreate: React.FC = () => {
                     }}
                     autoComplete="off"
                   />
-                  <button type="button">
-                    <FiSearch
-                      size={16}
-                      style={{
-                        margin: '8px',
-                      }}
-                    />
-                  </button>
                   <SelectContainer
                     style={{
                       display: allCompanions.length !== 0 ? 'block' : 'none',
+                      overflow: 'hidden',
                     }}
                   >
                     {allCompanions &&
                       allCompanions.map(companion => (
-                        <SelectItem
+                        <SelectPersonItem
                           key={companion.id}
-                          onClick={() => handleSelectCompanionClick(companion)}
-                        >
-                          <Avatar>
-                            <img
-                              src={`https://i.pravatar.cc/250/img=${companion.id}`}
-                              alt={companion.name}
-                            />
-                          </Avatar>
-                          <SelectTextContainer>
-                            <h3>{companion.name}</h3>
-                            <p>Dt. Nasc.: {companion.formatted_born_date}</p>
-                          </SelectTextContainer>
-                        </SelectItem>
+                          handleClick={() =>
+                            handleSelectCompanionClick(companion)
+                          }
+                          person={companion}
+                        />
                       ))}
                   </SelectContainer>
-                </SearchInput>
+                </SearchForm>
               )}
               {selectedCompanion && (
-                <div className="input-block">
+                <FieldContainer>
                   <input
                     id="companion_name"
                     value={selectedCompanion.name}
                     disabled={true}
                   />
-                </div>
+                </FieldContainer>
               )}
-            </fieldset>
+            </FieldSet>
           )}
           {selectedCompanion && selectedReason === 'patient' && (
-            <fieldset>
+            <FieldSet>
               <legend>
                 <strong>Informações do paciente</strong>
                 <FiChevronDown />
               </legend>
-              <div className="input-block">
+              <FieldContainer>
                 <label htmlFor="ca_number">Nº do CA</label>
                 <input
                   id="ca_number"
@@ -260,7 +238,7 @@ const CheckInCreate: React.FC = () => {
                     setCaNumber(event.target.value);
                   }}
                 />
-              </div>
+              </FieldContainer>
               <CheckBoxContainer htmlFor="social_vacancy">
                 <strong>Vaga social</strong>
                 <input
@@ -391,7 +369,7 @@ const CheckInCreate: React.FC = () => {
                 </CheckBoxContainer>
               </MedicalProceduresContainer>
 
-              <div className="input-block">
+              <FieldContainer>
                 <label htmlFor="observation">Observação</label>
                 <textarea
                   id="observation"
@@ -400,10 +378,10 @@ const CheckInCreate: React.FC = () => {
                     setObservation(event.target.value);
                   }}
                 />
-              </div>
-            </fieldset>
+              </FieldContainer>
+            </FieldSet>
           )}
-        </Form>
+        </RegisterUpdateForm>
       )}
     </Container>
   );

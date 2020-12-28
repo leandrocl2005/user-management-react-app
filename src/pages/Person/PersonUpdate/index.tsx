@@ -11,6 +11,7 @@ import { Container, InputSelect } from './styles';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
+import FieldContainer from '../../../components/FieldContainer';
 
 interface RouteParams {
   id: string;
@@ -179,7 +180,7 @@ const PersonUpdate: React.FC = () => {
             <FiChevronDown />
           </legend>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="name">Nome</label>
             <input
               id="name"
@@ -188,9 +189,9 @@ const PersonUpdate: React.FC = () => {
                 setName(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="mother_name">Nome da mãe</label>
             <input
               id="mother_name"
@@ -199,9 +200,9 @@ const PersonUpdate: React.FC = () => {
                 setMotherName(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="gender">Sexo</label>
             <InputSelect
               id="gender"
@@ -216,14 +217,14 @@ const PersonUpdate: React.FC = () => {
               <option value={'M'}>Masculino</option>
               <option value={'O'}>Outro</option>
             </InputSelect>
-          </div>
+          </FieldContainer>
         </FieldSet>{' '}
         <FieldSet>
           <legend>
             <strong>Documentos</strong>
             <FiChevronDown />
           </legend>
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="rg">RG</label>
             <input
               id="rg"
@@ -232,9 +233,9 @@ const PersonUpdate: React.FC = () => {
                 setRg(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="rg_ssp">SSP</label>
             <input
               id="rg_ssp"
@@ -243,9 +244,9 @@ const PersonUpdate: React.FC = () => {
                 setRgSsp(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="cpf">CPF</label>
             <input
               id="cpf"
@@ -254,7 +255,7 @@ const PersonUpdate: React.FC = () => {
                 setCpf(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
         </FieldSet>
         <FieldSet>
           <legend>
@@ -262,7 +263,7 @@ const PersonUpdate: React.FC = () => {
             <FiChevronDown />
           </legend>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="address_line_1">Rua, número, quadra ...</label>
             <input
               id="address_line_1"
@@ -271,9 +272,9 @@ const PersonUpdate: React.FC = () => {
                 setAddressLine1(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="address_line_2">Complemento</label>
             <input
               id="address_line_2"
@@ -282,9 +283,9 @@ const PersonUpdate: React.FC = () => {
                 setAddressLine2(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="neighbourhood">Bairro</label>
             <input
               id="neighbourhood"
@@ -293,9 +294,9 @@ const PersonUpdate: React.FC = () => {
                 setNeighbourhood(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="residence_type">Tipo de residência</label>
             <InputSelect
               id="residence_type"
@@ -309,9 +310,9 @@ const PersonUpdate: React.FC = () => {
               <option value={'urban'}>Urbana</option>
               <option value={'rural'}>Rural</option>
             </InputSelect>
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="city">Cidade</label>
             <input
               id="city"
@@ -320,9 +321,9 @@ const PersonUpdate: React.FC = () => {
                 setCity(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="state">Estado</label>
             <InputSelect
               disabled={selectedUf === '0'}
@@ -337,9 +338,9 @@ const PersonUpdate: React.FC = () => {
                 </option>
               ))}
             </InputSelect>
-          </div>
+          </FieldContainer>
 
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="postal_code">CEP</label>
             <input
               id="postal_code"
@@ -348,14 +349,14 @@ const PersonUpdate: React.FC = () => {
                 setPostalCode(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
         </FieldSet>{' '}
         <FieldSet>
           <legend>
             <strong>Contatos</strong>
             <FiChevronDown />
           </legend>
-          <div className="input-block">
+          <FieldContainer>
             <label htmlFor="email">E-mail</label>
             <input
               id="email"
@@ -364,10 +365,9 @@ const PersonUpdate: React.FC = () => {
                 setEmail(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{
               width: '20%',
               display: 'inline-block',
               marginRight: '10%',
@@ -381,10 +381,9 @@ const PersonUpdate: React.FC = () => {
                 setDddPrivatePhone(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{ display: 'inline-block', width: '70%' }}
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{ display: 'inline-block', width: '70%' }}
           >
             <label htmlFor="private_phone">Telefone pessoal</label>
             <input
@@ -394,10 +393,9 @@ const PersonUpdate: React.FC = () => {
                 setPrivatePhone(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{
               width: '20%',
               display: 'inline-block',
               marginRight: '10%',
@@ -411,10 +409,9 @@ const PersonUpdate: React.FC = () => {
                 setDddMessagePhone(event.target.value);
               }}
             />
-          </div>
-          <div
-            className="input-block"
-            style={{ display: 'inline-block', width: '70%' }}
+          </FieldContainer>
+          <FieldContainer
+            containerStyle={{ display: 'inline-block', width: '70%' }}
           >
             <label htmlFor="message_phone">Telefone para mensagem</label>
             <input
@@ -424,7 +421,7 @@ const PersonUpdate: React.FC = () => {
                 setMessagePhone(event.target.value);
               }}
             />
-          </div>
+          </FieldContainer>
         </FieldSet>
         <ConfirmButton text={'Atualizar'} />
       </RegisterUpdateForm>

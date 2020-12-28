@@ -15,7 +15,7 @@ export default createGlobalStyle`
     width: 100vw;
   }
 
-  body, input, button {
+  body, input, textarea, button {
     font-family: 'Nunito', sans-serif;
     font-size: 16px;
   }
