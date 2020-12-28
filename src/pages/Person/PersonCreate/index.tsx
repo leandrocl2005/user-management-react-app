@@ -8,10 +8,15 @@ import { useToast } from '../../../hooks/toast';
 
 import api from '../../../services/api';
 
-import { Container, Form, InputSelect } from './styles';
+import { Container, InputSelect } from './styles';
 import FieldContainer from '../../../components/FieldContainer';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
+import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
+
+interface LooseObject {
+  [key: string]: string; // if string, email: '' not null
+}
 
 const PersonCreate: React.FC = () => {
   const history = useHistory();
@@ -70,39 +75,29 @@ const PersonCreate: React.FC = () => {
   async function handleSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
 
-    const state = selectedUf;
-    const residence_type = selectedResidenceType;
+    const data: LooseObject = {};
 
-    // eslint-disable-next-line no-undef
-    let data = {
-      name,
-      mother_name,
-      cpf,
-      rg,
-      rg_ssp,
-      state,
-      email,
-      address_line_1,
-      address_line_2,
-      neighbourhood,
-      city,
-      residence_type,
-      ddd_message_phone,
-      ddd_private_phone,
-      message_phone,
-      private_phone,
-      gender: 'F',
-    };
+    data.name = name;
 
-    if (selectedGender !== '0' && selectedGender) {
-      data = {
-        ...data,
-        gender: selectedGender,
-      };
-    }
+    if (mother_name) data.mother_name = mother_name;
+    if (cpf) data.cpf = cpf.replace(/[^0-9]/g, '');
+    if (rg) data.rg = rg;
+    if (rg_ssp) data.rg_ssp = rg_ssp;
+    if (email) data.email = email;
+    if (address_line_1) data.address_line_1 = address_line_1;
+    if (address_line_2) data.address_line_2 = address_line_2;
+    if (neighbourhood) data.neighbourhood = neighbourhood;
+    if (city) data.city = city;
+    if (postal_code) data.postal_code = postal_code.replace(/[^0-9]/g, '');
+    if (ddd_message_phone) data.ddd_message_phone = ddd_message_phone;
+    if (ddd_private_phone) data.ddd_private_phone = ddd_private_phone;
+    if (message_phone) data.message_phone = message_phone;
+    if (private_phone) data.private_phone = private_phone;
+    if (selectedGender !== '0' && selectedGender) data.gender = selectedGender;
+    if (selectedUf !== '0' && selectedUf) data.state = selectedUf;
 
     try {
-      console.log(data);
+      // console.log(data);
       await api.post('/api/v1/people/', data);
 
       history.push('/people');
@@ -124,7 +119,7 @@ const PersonCreate: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Form onSubmit={handleSubmit}>
+      <RegisterUpdateForm onSubmit={handleSubmit}>
         <FieldSet>
           <legend>
             <strong>Identificação</strong>
@@ -203,7 +198,7 @@ const PersonCreate: React.FC = () => {
               id="cpf"
               value={cpf}
               onChange={event => {
-                setCpf(event.target.value);
+                setCpf(event.target.value.replace(/^\D+/g, ''));
               }}
             />
           </FieldContainer>
@@ -375,7 +370,7 @@ const PersonCreate: React.FC = () => {
           </FieldContainer>
         </FieldSet>
         <ConfirmButton text={'Cadastrar'} />
-      </Form>
+      </RegisterUpdateForm>
     </Container>
   );
 };

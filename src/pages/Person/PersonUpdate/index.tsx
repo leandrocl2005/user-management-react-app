@@ -6,7 +6,11 @@ import Header from '../../../components/Header';
 import api from '../../../services/api';
 import { useToast } from '../../../hooks/toast';
 
-import { Container, Form } from './styles';
+import { Container, InputSelect } from './styles';
+
+import FieldSet from '../../../components/FieldSet';
+import ConfirmButton from '../../../components/ConfirmButton';
+import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 
 interface RouteParams {
   id: string;
@@ -109,6 +113,7 @@ const PersonUpdate: React.FC = () => {
         setSelectedGender(response.data.gender);
         setSelectedResidenceType(response.data.residence_type);
         setSelectedUf(response.data.state);
+        setPostalCode(response.data.formatted_postal_code);
         setCpf(response.data.formatted_cpf);
       } catch (err) {
         addToast({
@@ -167,8 +172,8 @@ const PersonUpdate: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Form onSubmit={handleSubmit}>
-        <fieldset>
+      <RegisterUpdateForm onSubmit={handleSubmit}>
+        <FieldSet>
           <legend>
             <strong>Identificação</strong>
             <FiChevronDown />
@@ -198,7 +203,7 @@ const PersonUpdate: React.FC = () => {
 
           <div className="input-block">
             <label htmlFor="gender">Sexo</label>
-            <select
+            <InputSelect
               id="gender"
               value={selectedGender}
               disabled={selectedGender === '0'}
@@ -210,10 +215,10 @@ const PersonUpdate: React.FC = () => {
               <option value={'F'}>Feminino</option>
               <option value={'M'}>Masculino</option>
               <option value={'O'}>Outro</option>
-            </select>
+            </InputSelect>
           </div>
-        </fieldset>{' '}
-        <fieldset>
+        </FieldSet>{' '}
+        <FieldSet>
           <legend>
             <strong>Documentos</strong>
             <FiChevronDown />
@@ -250,8 +255,8 @@ const PersonUpdate: React.FC = () => {
               }}
             />
           </div>
-        </fieldset>
-        <fieldset>
+        </FieldSet>
+        <FieldSet>
           <legend>
             <strong>Endereço</strong>
             <FiChevronDown />
@@ -292,7 +297,7 @@ const PersonUpdate: React.FC = () => {
 
           <div className="input-block">
             <label htmlFor="residence_type">Tipo de residência</label>
-            <select
+            <InputSelect
               id="residence_type"
               value={selectedResidenceType}
               disabled={selectedResidenceType === '0'}
@@ -303,7 +308,7 @@ const PersonUpdate: React.FC = () => {
               <option value="0">Selecione tipo</option>
               <option value={'urban'}>Urbana</option>
               <option value={'rural'}>Rural</option>
-            </select>
+            </InputSelect>
           </div>
 
           <div className="input-block">
@@ -319,7 +324,7 @@ const PersonUpdate: React.FC = () => {
 
           <div className="input-block">
             <label htmlFor="state">Estado</label>
-            <select
+            <InputSelect
               disabled={selectedUf === '0'}
               id="state"
               onChange={event => setSelectedUf(event.target.value)}
@@ -331,11 +336,11 @@ const PersonUpdate: React.FC = () => {
                   {uf.name}
                 </option>
               ))}
-            </select>
+            </InputSelect>
           </div>
 
           <div className="input-block">
-            <label htmlFor="postal_code">postal_code</label>
+            <label htmlFor="postal_code">CEP</label>
             <input
               id="postal_code"
               value={postal_code}
@@ -344,8 +349,8 @@ const PersonUpdate: React.FC = () => {
               }}
             />
           </div>
-        </fieldset>{' '}
-        <fieldset>
+        </FieldSet>{' '}
+        <FieldSet>
           <legend>
             <strong>Contatos</strong>
             <FiChevronDown />
@@ -420,11 +425,9 @@ const PersonUpdate: React.FC = () => {
               }}
             />
           </div>
-        </fieldset>
-        <button className="confirm-button" type="submit">
-          Cadastrar
-        </button>
-      </Form>
+        </FieldSet>
+        <ConfirmButton text={'Atualizar'} />
+      </RegisterUpdateForm>
     </Container>
   );
 };
