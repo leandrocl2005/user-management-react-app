@@ -20,7 +20,6 @@ export const ProfessionalServicesItem = styled.div`
   height: 200px;
   width: 320px;
   background: #fffffe;
-  padding: 8px 16px;
   border-radius: 8px;
   margin: 16px 8px;
   padding: 0px 16px;
@@ -45,12 +44,12 @@ export const CardHeader = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-top: 16px;
   border-bottom: 1px solid #d3d4d5;
 
-  div {
-    margin-left: 8px;
+  div + div {
+    margin-left: 16px;
     margin-bottom: 8px;
   }
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FiChevronDown, FiSearch } from 'react-icons/fi';
+import { FiChevronDown } from 'react-icons/fi';
 import FieldContainer from '../../../components/FieldContainer';
 import FieldSet from '../../../components/FieldSet';
 import Header from '../../../components/Header';
@@ -13,7 +13,6 @@ import api from '../../../services/api';
 
 import {
   Container,
-  SearchInput,
   InputSelect,
   SelectContainer,
   CheckBoxContainer,

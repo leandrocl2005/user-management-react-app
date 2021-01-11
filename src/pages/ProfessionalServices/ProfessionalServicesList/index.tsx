@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import {
   Container,
   CardHeader,
-  ProfessionalServicesItem,
   CardBody,
+  ProfessionalServicesItem,
 } from './styles';
 
 import Header from '../../../components/Header';
@@ -16,40 +16,55 @@ import SearchForm from '../../../components/SearchForm';
 
 import api from '../../../services/api';
 
-interface ProfessionalService {
-  id: number;
-  professional_name: string;
-  professional: number;
-  title: string;
-  description: string;
-}
+import { ProfessionalServiceListData } from '../types';
+import { useToast } from '../../../hooks/toast';
 
 const ProfessionalServicesList: React.FC = () => {
-  const [searchInput, setSearchInput] = useState('');
-  const [professionalServices, setProfessionalServices] = useState<
-    ProfessionalService[]
-  >([]);
-
+  const { addToast } = useToast();
   const history = useHistory();
+
+  const [searchInput, setSearchInput] = useState('');
+  const [searchSubmit, setSearchSubmit] = useState('');
+  const [total, setTotal] = useState(0);
+
+  const [professionalServices, setProfessionalServices] = useState<
+    ProfessionalServiceListData[]
+  >([]);
 
   useEffect(() => {
     async function loadProfessionalServices(): Promise<void> {
-      const response = await api.get('/api/v1/professional_services/');
-      setProfessionalServices(response.data.results);
+      try {
+        let url = '/api/v1/professional_services/?';
+        url += `search=${searchSubmit}`;
+        const response = await api.get(url);
+        setProfessionalServices(response.data.results);
+        setTotal(response.data.count);
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro no servidor',
+          description: 'Servidor offline. Tente mais tarde!',
+        });
+      }
     }
     loadProfessionalServices();
-  }, []);
+  }, [addToast, searchSubmit]);
 
   const handleCardClick = (id: number): void => {
     history.push(`/professional-services/${id}`);
+  };
+
+  const handleSearchSubmit = (event: FormEvent): void => {
+    event.preventDefault();
+    setSearchSubmit(searchInput);
   };
 
   return (
     <Container>
       <Header />
 
-      <Nav total={100} pathCreate={'/create-professional-services'}>
-        <SearchForm>
+      <Nav total={total} pathCreate={'/create-professional-services'}>
+        <SearchForm onSubmit={handleSearchSubmit}>
           <input
             placeholder="Buscar profissional"
             name="filter"

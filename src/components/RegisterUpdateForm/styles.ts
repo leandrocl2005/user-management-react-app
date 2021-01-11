@@ -15,7 +15,7 @@ export const Container = styled.form`
 
   max-width: 700px;
 
-  margin: 32px 16px;
+  margin: 16px 16px;
 
   background: #ffffff;
   border: 1px solid #d3e2e5;
