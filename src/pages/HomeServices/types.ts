@@ -22,7 +22,6 @@ export type HomeServiceListData = {
 };
 
 export type HomeServiceUpdateData = {
-  id: number;
   breakfast: boolean;
   lunch: boolean;
   shower: boolean;

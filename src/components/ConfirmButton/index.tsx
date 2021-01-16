@@ -3,7 +3,7 @@ import React from 'react';
 import { Container } from './styles';
 
 interface ConfirmButtonProps {
-  text: string;
+  text?: string;
   type?: 'button' | 'submit' | 'reset';
 }
 
@@ -15,7 +15,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
 }) => {
   return (
     <Container type={type} {...rest}>
-      {text}
+      {text || ''}
       {children}
     </Container>
   );

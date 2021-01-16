@@ -24,6 +24,7 @@ import ProfessionalServicesList from '../pages/ProfessionalServices/Professional
 import ProfessionalServicesUpdate from '../pages/ProfessionalServices/ProfessionalServicesUpdate';
 import ProfessionalServicesCreate from '../pages/ProfessionalServices/ProfessionalServicesCreate';
 import HomeServicesCreate from '../pages/HomeServices/HomeServicesCreate';
+import HomeServicesUpdate from '../pages/HomeServices/HomeServicesUpdate';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -70,6 +71,12 @@ const Routes: React.FC = () => (
       path="/create-home-services"
       exact
       component={HomeServicesCreate}
+      isPrivate
+    />
+    <Route
+      path="/home-services/:id"
+      exact
+      component={HomeServicesUpdate}
       isPrivate
     />
     <Route path="/home-services" component={HomeServicesList} isPrivate />

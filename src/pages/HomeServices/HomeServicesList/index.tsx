@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import {
   Container,
@@ -22,6 +23,7 @@ import { HomeServiceListData } from '../types';
 
 const HomeServicesList: React.FC = () => {
   const { addToast } = useToast();
+  const history = useHistory();
 
   const [searchInput, setSearchInput] = useState('');
   const [searchSubmit, setSearchSubmit] = useState('');
@@ -54,6 +56,10 @@ const HomeServicesList: React.FC = () => {
     setSearchSubmit(searchInput);
   };
 
+  const handleCardClick = (id: number): void => {
+    history.push(`/home-services/${id}`);
+  };
+
   return (
     <Container>
       <Header />
@@ -69,7 +75,10 @@ const HomeServicesList: React.FC = () => {
       </Nav>
       <GalleryContainer>
         {homeServices.map(homeService => (
-          <HomeServicesItem key={homeService.id}>
+          <HomeServicesItem
+            key={homeService.id}
+            onClick={() => handleCardClick(homeService.id)}
+          >
             <CardHeader>
               <p>{homeService.person_name}</p>
               <p>
