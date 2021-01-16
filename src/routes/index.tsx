@@ -23,6 +23,7 @@ import CheckInCreate from '../pages/CheckIn/CheckinCreate';
 import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
 import ProfessionalServicesUpdate from '../pages/ProfessionalServices/ProfessionalServicesUpdate';
 import ProfessionalServicesCreate from '../pages/ProfessionalServices/ProfessionalServicesCreate';
+import HomeServicesCreate from '../pages/HomeServices/HomeServicesCreate';
 
 const Routes: React.FC = () => (
   <Switch>
@@ -65,6 +66,12 @@ const Routes: React.FC = () => (
 
     <Route path="/notifications" component={Notifications} isPrivate />
 
+    <Route
+      path="/create-home-services"
+      exact
+      component={HomeServicesCreate}
+      isPrivate
+    />
     <Route path="/home-services" component={HomeServicesList} isPrivate />
 
     <Route path="/reports" component={Reports} isPrivate />

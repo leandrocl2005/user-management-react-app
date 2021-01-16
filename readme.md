@@ -1,4 +1,12 @@
-## Issues
+## Done
 
-- Colar máscaras nos campos.
-- Refatorar checkout, ficou confuso o código e com duas querys para a api.
+
+## Todo
+
+
+## Add-ons
+
+- Colocar máscaras nos campos.
+- Colocar campos de datas para people.
+- colocar botões para paginação.
+

@@ -76,4 +76,10 @@ export const CardBody = styled.div`
     color: #999;
     font-size: 12px;
   }
+
+  p + p {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #ccc;
+  }
 `;

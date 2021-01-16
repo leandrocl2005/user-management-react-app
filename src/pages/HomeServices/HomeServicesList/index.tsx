@@ -16,23 +16,18 @@ import GalleryContainer from '../../../components/GalleryContainer';
 
 import api from '../../../services/api';
 
-interface HomeService {
-  id: number;
-  person_name: string;
-  formatted_created_at: string;
-  breakfast: string;
-  lunch: string;
-  shower: string;
-  dinner: string;
-  snack: string;
-  sleep: string;
-}
+import { useToast } from '../../../hooks/toast';
+
+import { HomeServiceListData } from '../types';
 
 const HomeServicesList: React.FC = () => {
+  const { addToast } = useToast();
+
   const [searchInput, setSearchInput] = useState('');
-  const [totalHomeServices, setTotalHomeServices] = useState(0);
-  const [homeServices, setHomeServices] = useState<HomeService[]>([]);
   const [searchSubmit, setSearchSubmit] = useState('');
+  const [total, setTotal] = useState(0);
+
+  const [homeServices, setHomeServices] = useState<HomeServiceListData[]>([]);
 
   useEffect(() => {
     async function loadHomeServices(): Promise<void> {
@@ -42,13 +37,17 @@ const HomeServicesList: React.FC = () => {
         url += `&search=${searchSubmit}`;
         const response = await api.get(url);
         setHomeServices(response.data.results);
-        setTotalHomeServices(response.data.count);
+        setTotal(response.data.count);
       } catch (err) {
-        console.log(err);
+        addToast({
+          type: 'error',
+          title: 'Erro no servidor',
+          description: 'Servidor offline. Tente mais tarde!',
+        });
       }
     }
     loadHomeServices();
-  }, [searchSubmit]);
+  }, [searchSubmit, addToast]);
 
   const handleSearchSubmit = (event: FormEvent): void => {
     event.preventDefault();
@@ -58,7 +57,7 @@ const HomeServicesList: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Nav total={totalHomeServices} pathCreate={'/create-home-services'}>
+      <Nav total={total} pathCreate={'/create-home-services'}>
         <SearchForm onSubmit={event => handleSearchSubmit(event)}>
           <input
             placeholder="Buscar por nome"

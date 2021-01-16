@@ -89,6 +89,7 @@ const ProfessionalServicesList: React.FC = () => {
             <CardBody>
               <h4>Descrição</h4>
               <p>{professionalService.description.slice(0, 80)}...</p>
+              <p>Data do serviço: {professionalService.formatted_created_at}</p>
             </CardBody>
           </ProfessionalServicesItem>
         ))}
