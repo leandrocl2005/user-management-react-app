@@ -22,22 +22,17 @@ import Nav from '../../../components/Nav';
 import GalleryContainer from '../../../components/GalleryContainer';
 import Avatar from '../../../components/Avatar';
 
-interface Checkin {
-  id: number;
-  companion_name: null | string;
-  person_name: string;
-  reason: string;
-  formatted_created_at: string;
-  active: boolean;
-}
+import { CheckinListData } from '../types';
 
 const CheckInList: React.FC = () => {
-  const [checkins, setCheckins] = useState<Checkin[]>([]);
+  const { addToast } = useToast();
+
+  const [checkins, setCheckins] = useState<CheckinListData[]>([]);
+
   const [searchInput, setSearchInput] = useState('');
   const [searchSubmit, setSearchSubmit] = useState('');
   const [totalCheckins, setTotalCheckins] = useState(0);
   const [filterActive, setFilterActive] = useState<string | null>(null);
-  const { addToast } = useToast();
 
   useEffect(() => {
     async function loadCheckins(): Promise<void> {
@@ -62,7 +57,7 @@ const CheckInList: React.FC = () => {
     loadCheckins();
   }, [addToast, searchSubmit, filterActive]);
 
-  const handleCheckinClick = ({ id, active }: Checkin): void => {
+  const handleCheckinClick = ({ id, active }: CheckinListData): void => {
     async function changeActive(): Promise<void> {
       try {
         await api.patch(`api/v1/checkins/${id}/`, {

@@ -36,6 +36,7 @@ const HomeServicesCreate: React.FC = () => {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [allPeople, setAllPeople] = useState<Person[]>([]);
 
+  // Load people on input search submit
   useEffect(() => {
     async function loadPeople(): Promise<void> {
       try {
@@ -58,6 +59,7 @@ const HomeServicesCreate: React.FC = () => {
     loadPeople();
   }, [addToast, searchPersonInput]);
 
+  // Register new home service and redirect to home service page
   async function handleSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
 
@@ -80,6 +82,7 @@ const HomeServicesCreate: React.FC = () => {
     }
   }
 
+  // handle person select
   const handleSelectPersonClick = (person: Person): void => {
     setSelectedPerson(person);
     setSearchPersonInput('');
