@@ -13,16 +13,13 @@ import Nav from '../../../components/Nav';
 import Avatar from '../../../components/Avatar';
 import GalleryContainer from '../../../components/GalleryContainer';
 
-interface Person {
-  id: number;
-  name: string;
-  formatted_born_date: string;
-}
+import { PersonListData } from '../types';
 
 const Personlist: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchSubmit, setSearchSubmit] = useState('');
-  const [listPerson, setListPerson] = useState<Person[]>([]);
+
+  const [listPerson, setListPerson] = useState<PersonListData[]>([]);
   const [totalPerson, setTotalPerson] = useState(0);
   const { addToast } = useToast();
   const history = useHistory();

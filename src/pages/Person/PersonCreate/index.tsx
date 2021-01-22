@@ -13,88 +13,114 @@ import FieldContainer from '../../../components/FieldContainer';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
+import { PersonCreateData } from '../types';
 
-interface LooseObject {
-  [key: string]: string; // if string, email: '' not null
-}
+const stateChoices = [
+  { name: 'São Paulo', abbreviation: 'SP' },
+  { name: 'Paraná', abbreviation: 'PR' },
+  { name: 'Santa Catarina', abbreviation: 'SC' },
+  { name: 'Rio Grande do Sul', abbreviation: 'RS' },
+  { name: 'Mato Grosso do Sul', abbreviation: 'MS' },
+  { name: 'Rondônia', abbreviation: 'RO' },
+  { name: 'Acre', abbreviation: 'AC' },
+  { name: 'Amazonas', abbreviation: 'AM' },
+  { name: 'Roraima', abbreviation: 'RR' },
+  { name: 'Pará', abbreviation: 'PA' },
+  { name: 'Amapá', abbreviation: 'AP' },
+  { name: 'Tocantins', abbreviation: 'TO' },
+  { name: 'Maranhão', abbreviation: 'MA' },
+  { name: 'Rio Grande do Norte', abbreviation: 'RN' },
+  { name: 'Paraíba', abbreviation: 'PB' },
+  { name: 'Pernambuco', abbreviation: 'PE' },
+  { name: 'Alagoas', abbreviation: 'AL' },
+  { name: 'Sergipe', abbreviation: 'SE' },
+  { name: 'Bahia', abbreviation: 'BA' },
+  { name: 'Minas Gerais', abbreviation: 'MG' },
+  { name: 'Rio de Janeiro', abbreviation: 'RJ' },
+  { name: 'Mato Grosso', abbreviation: 'MT' },
+  { name: 'Goiás', abbreviation: 'GO' },
+  { name: 'Distrito Federal', abbreviation: 'DF' },
+  { name: 'Piauí', abbreviation: 'PI' },
+  { name: 'Ceará', abbreviation: 'CE' },
+  { name: 'Espírito Santo', abbreviation: 'ES' },
+];
 
 const PersonCreate: React.FC = () => {
   const history = useHistory();
   const { addToast } = useToast();
 
-  const stateChoices = [
-    { name: 'São Paulo', abbreviation: 'SP' },
-    { name: 'Paraná', abbreviation: 'PR' },
-    { name: 'Santa Catarina', abbreviation: 'SC' },
-    { name: 'Rio Grande do Sul', abbreviation: 'RS' },
-    { name: 'Mato Grosso do Sul', abbreviation: 'MS' },
-    { name: 'Rondônia', abbreviation: 'RO' },
-    { name: 'Acre', abbreviation: 'AC' },
-    { name: 'Amazonas', abbreviation: 'AM' },
-    { name: 'Roraima', abbreviation: 'RR' },
-    { name: 'Pará', abbreviation: 'PA' },
-    { name: 'Amapá', abbreviation: 'AP' },
-    { name: 'Tocantins', abbreviation: 'TO' },
-    { name: 'Maranhão', abbreviation: 'MA' },
-    { name: 'Rio Grande do Norte', abbreviation: 'RN' },
-    { name: 'Paraíba', abbreviation: 'PB' },
-    { name: 'Pernambuco', abbreviation: 'PE' },
-    { name: 'Alagoas', abbreviation: 'AL' },
-    { name: 'Sergipe', abbreviation: 'SE' },
-    { name: 'Bahia', abbreviation: 'BA' },
-    { name: 'Minas Gerais', abbreviation: 'MG' },
-    { name: 'Rio de Janeiro', abbreviation: 'RJ' },
-    { name: 'Mato Grosso', abbreviation: 'MT' },
-    { name: 'Goiás', abbreviation: 'GO' },
-    { name: 'Distrito Federal', abbreviation: 'DF' },
-    { name: 'Piauí', abbreviation: 'PI' },
-    { name: 'Ceará', abbreviation: 'CE' },
-    { name: 'Espírito Santo', abbreviation: 'ES' },
-  ];
-
-  const [name, setName] = useState('');
-  const [mother_name, setMotherName] = useState('');
-  /* const [born_date, setBornDate] = useState(''); */
-  const [email, setEmail] = useState('');
-  const [selectedGender, setSelectedGender] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [rg, setRg] = useState('');
-  const [rg_ssp, setRgSsp] = useState('');
-  const [selectedUf, setSelectedUf] = useState('');
-  const [address_line_1, setAddressLine1] = useState('');
-  const [address_line_2, setAddressLine2] = useState('');
-  const [neighbourhood, setNeighbourhood] = useState('');
-  const [city, setCity] = useState('');
-  const [postal_code, setPostalCode] = useState('');
-  const [selectedResidenceType, setSelectedResidenceType] = useState('');
-  const [ddd_private_phone, setDddPrivatePhone] = useState('');
-  const [private_phone, setPrivatePhone] = useState('');
-  const [ddd_message_phone, setDddMessagePhone] = useState('');
-  const [message_phone, setMessagePhone] = useState('');
+  // payload to create data
+  const [person, setPerson] = useState<PersonCreateData>({
+    name: '',
+    mother_name: '',
+    born_date: '1987-07-09',
+    death_date: '1987-07-09',
+    email: '',
+    gender: '0',
+    cpf: '',
+    rg: '',
+    rg_ssp: '0',
+    state: '0',
+    address_line_1: '',
+    address_line_2: '',
+    neighbourhood: '',
+    city: '',
+    postal_code: '',
+    residence_type: '0',
+    ddd_private_phone: '',
+    private_phone: '',
+    ddd_message_phone: '',
+    message_phone: '',
+    observation: '',
+  });
 
   async function handleSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
 
-    const data: LooseObject = {};
+    // fix dates and cpf
+    const data = {
+      ...person,
+    };
 
-    data.name = name;
+    if (data.gender === '0') {
+      delete data.gender;
+    }
 
-    if (mother_name) data.mother_name = mother_name;
-    if (cpf) data.cpf = cpf.replace(/[^0-9]/g, '');
-    if (rg) data.rg = rg;
-    if (rg_ssp) data.rg_ssp = rg_ssp;
-    if (email) data.email = email;
-    if (address_line_1) data.address_line_1 = address_line_1;
-    if (address_line_2) data.address_line_2 = address_line_2;
-    if (neighbourhood) data.neighbourhood = neighbourhood;
-    if (city) data.city = city;
-    if (postal_code) data.postal_code = postal_code.replace(/[^0-9]/g, '');
-    if (ddd_message_phone) data.ddd_message_phone = ddd_message_phone;
-    if (ddd_private_phone) data.ddd_private_phone = ddd_private_phone;
-    if (message_phone) data.message_phone = message_phone;
-    if (private_phone) data.private_phone = private_phone;
-    if (selectedGender !== '0' && selectedGender) data.gender = selectedGender;
-    if (selectedUf !== '0' && selectedUf) data.state = selectedUf;
+    if (data.rg_ssp === '0') {
+      delete data.rg_ssp;
+    }
+
+    if (data.state === '0') {
+      delete data.state;
+    }
+
+    if (data.residence_type === '0') {
+      delete data.residence_type;
+    }
+
+    if (data.email === '') {
+      delete data.email;
+    }
+
+    if (data.cpf === '') {
+      delete data.cpf;
+    }
+
+    if (data.ddd_message_phone === '') {
+      delete data.ddd_message_phone;
+    }
+
+    if (data.message_phone === '') {
+      delete data.message_phone;
+    }
+
+    if (data.ddd_private_phone === '') {
+      delete data.ddd_private_phone;
+    }
+
+    if (data.private_phone === '') {
+      delete data.private_phone;
+    }
 
     try {
       // console.log(data);
@@ -130,9 +156,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="name">Nome</label>
             <input
               id="name"
-              value={name}
+              value={person.name}
               onChange={event => {
-                setName(event.target.value);
+                setPerson({ ...person, name: event.target.value });
               }}
             />
           </FieldContainer>
@@ -141,9 +167,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="mother_name">Nome da mãe</label>
             <input
               id="mother_name"
-              value={mother_name}
+              value={person.mother_name}
               onChange={event => {
-                setMotherName(event.target.value);
+                setPerson({ ...person, mother_name: event.target.value });
               }}
             />
           </FieldContainer>
@@ -152,13 +178,14 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="gender">Sexo</label>
             <InputSelect
               id="gender"
-              value={selectedGender}
-              disabled={selectedGender === '0'}
+              value={person.gender}
               onChange={event => {
-                setSelectedGender(event.target.value);
+                setPerson({ ...person, gender: event.target.value });
               }}
             >
-              <option value="0">Selecione sexo</option>
+              <option disabled value="0">
+                Selecione...
+              </option>
               <option value={'F'}>Feminino</option>
               <option value={'M'}>Masculino</option>
               <option value={'O'}>Outro</option>
@@ -174,9 +201,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="rg">RG</label>
             <input
               id="rg"
-              value={rg}
+              value={person.rg}
               onChange={event => {
-                setRg(event.target.value);
+                setPerson({ ...person, rg: event.target.value });
               }}
             />
           </FieldContainer>
@@ -185,9 +212,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="rg_ssp">SSP</label>
             <input
               id="rg_ssp"
-              value={rg_ssp}
+              value={person.rg_ssp}
               onChange={event => {
-                setRgSsp(event.target.value);
+                setPerson({ ...person, rg_ssp: event.target.value });
               }}
             />
           </FieldContainer>
@@ -196,9 +223,12 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="cpf">CPF</label>
             <input
               id="cpf"
-              value={cpf}
+              value={person.cpf}
               onChange={event => {
-                setCpf(event.target.value.replace(/^\D+/g, ''));
+                setPerson({
+                  ...person,
+                  cpf: event.target.value.replace(/^\D+/g, ''),
+                });
               }}
             />
           </FieldContainer>
@@ -213,9 +243,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="address_line_1">Rua, número, quadra ...</label>
             <input
               id="address_line_1"
-              value={address_line_1}
+              value={person.address_line_1}
               onChange={event => {
-                setAddressLine1(event.target.value);
+                setPerson({ ...person, address_line_1: event.target.value });
               }}
             />
           </FieldContainer>
@@ -224,9 +254,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="address_line_2">Complemento</label>
             <input
               id="address_line_2"
-              value={address_line_2}
+              value={person.address_line_2}
               onChange={event => {
-                setAddressLine2(event.target.value);
+                setPerson({ ...person, address_line_2: event.target.value });
               }}
             />
           </FieldContainer>
@@ -235,9 +265,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="neighbourhood">Bairro</label>
             <input
               id="neighbourhood"
-              value={neighbourhood}
+              value={person.neighbourhood}
               onChange={event => {
-                setNeighbourhood(event.target.value);
+                setPerson({ ...person, neighbourhood: event.target.value });
               }}
             />
           </FieldContainer>
@@ -246,13 +276,17 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="residence_type">Tipo de residência</label>
             <InputSelect
               id="residence_type"
-              value={selectedResidenceType}
-              disabled={selectedResidenceType === '0'}
+              value={person.residence_type}
               onChange={event => {
-                setSelectedResidenceType(event.target.value);
+                setPerson({
+                  ...person,
+                  residence_type: event.target.value,
+                });
               }}
             >
-              <option value="0">Selecione tipo</option>
+              <option disabled value="0">
+                Selecione...
+              </option>
               <option value={'urban'}>Urbana</option>
               <option value={'rural'}>Rural</option>
             </InputSelect>
@@ -262,9 +296,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="city">Cidade</label>
             <input
               id="city"
-              value={city}
+              value={person.city}
               onChange={event => {
-                setCity(event.target.value);
+                setPerson({ ...person, city: event.target.value });
               }}
             />
           </FieldContainer>
@@ -272,12 +306,15 @@ const PersonCreate: React.FC = () => {
           <FieldContainer>
             <label htmlFor="state">Estado</label>
             <InputSelect
-              disabled={selectedUf === '0'}
               id="state"
-              onChange={event => setSelectedUf(event.target.value)}
-              value={selectedUf}
+              onChange={event =>
+                setPerson({ ...person, state: event.target.value })
+              }
+              value={person.state}
             >
-              <option value="0">Selecione uma UF</option>
+              <option disabled value="0">
+                Selecione...
+              </option>
               {stateChoices.map(uf => (
                 <option value={uf.abbreviation} key={uf.abbreviation}>
                   {uf.name}
@@ -290,9 +327,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="postal_code">CEP</label>
             <input
               id="postal_code"
-              value={postal_code}
+              value={person.postal_code}
               onChange={event => {
-                setPostalCode(event.target.value);
+                setPerson({ ...person, postal_code: event.target.value });
               }}
             />
           </FieldContainer>
@@ -306,9 +343,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="email">E-mail</label>
             <input
               id="email"
-              value={email}
+              value={person.email}
               onChange={event => {
-                setEmail(event.target.value);
+                setPerson({ ...person, email: event.target.value });
               }}
             />
           </FieldContainer>
@@ -322,9 +359,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="ddd_private_phone">DDD</label>
             <input
               id="ddd_private_phone"
-              value={ddd_private_phone}
+              value={person.ddd_private_phone}
               onChange={event => {
-                setDddPrivatePhone(event.target.value);
+                setPerson({ ...person, ddd_private_phone: event.target.value });
               }}
             />
           </FieldContainer>
@@ -334,9 +371,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="private_phone">Telefone pessoal</label>
             <input
               id="private_phone"
-              value={private_phone}
+              value={person.private_phone}
               onChange={event => {
-                setPrivatePhone(event.target.value);
+                setPerson({ ...person, private_phone: event.target.value });
               }}
             />
           </FieldContainer>
@@ -350,9 +387,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="ddd_message_phone">DDD</label>
             <input
               id="ddd_message_phone"
-              value={ddd_message_phone}
+              value={person.ddd_message_phone}
               onChange={event => {
-                setDddMessagePhone(event.target.value);
+                setPerson({ ...person, ddd_message_phone: event.target.value });
               }}
             />
           </FieldContainer>
@@ -362,9 +399,9 @@ const PersonCreate: React.FC = () => {
             <label htmlFor="message_phone">Telefone para mensagem</label>
             <input
               id="message_phone"
-              value={message_phone}
+              value={person.message_phone}
               onChange={event => {
-                setMessagePhone(event.target.value);
+                setPerson({ ...person, message_phone: event.target.value });
               }}
             />
           </FieldContainer>
