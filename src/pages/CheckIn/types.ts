@@ -13,8 +13,9 @@ export type CheckinCreatePatientData = {
   appointment: boolean;
   other: boolean;
   ca_number: string;
-  social_vacancy: string;
+  social_vacancy: boolean;
   observation: string;
+  companion: number;
 };
 
 export type CheckinListData = {
