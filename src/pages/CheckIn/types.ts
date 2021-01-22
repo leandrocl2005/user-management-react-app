@@ -26,14 +26,29 @@ export type CheckinListData = {
   active: boolean;
 };
 
-export type CheckinUpdateData = {
-  breakfast: boolean;
-  lunch: boolean;
-  shower: boolean;
-  dinner: boolean;
-  snack: boolean;
-  sleep: boolean;
+export type CheckinUpdatePatientData = {
+  id: number;
   person: number;
+  person_name: string;
+  companion: number;
+  companion_name: number;
+  reason: 'patient';
+  chemotherapy: boolean;
+  radiotherapy: boolean;
+  surgery: boolean;
+  exams: boolean;
+  appointment: boolean;
+  other: boolean;
+  ca_number: string;
+  social_vacancy: boolean;
+  observation: string;
+};
+
+export type CheckinUpdateNoPatientData = {
+  id?: number;
+  person: number;
+  person_name: string;
+  reason: string;
 };
 
 export type Person = {

@@ -1,9 +1,7 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 
-import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Header from '../../../components/Header';
-import Nav from '../../../components/Nav';
-import FilterButton from '../../../components/FilterButton';
 import SelectPersonItem from '../../../components/SelectPersonItem';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
@@ -15,8 +13,8 @@ import api from '../../../services/api';
 import { useToast } from '../../../hooks/toast';
 
 import {
-  CheckinCreateNoPatientData,
-  CheckinCreatePatientData,
+  CheckinUpdateNoPatientData,
+  CheckinUpdatePatientData,
   Person,
 } from '../types';
 
@@ -37,35 +35,24 @@ const reasonOptions = [
   { value: 'other', label: 'Outro' },
 ];
 
-const CheckInCreate: React.FC = () => {
+interface RouteParams {
+  id: string;
+}
+
+const CheckInUpdate: React.FC = () => {
   const { addToast } = useToast();
-  const history = useHistory();
+  const params = useParams<RouteParams>();
 
   const [isPatient, setIsPatient] = useState(false);
-  const [formVisibility, setFormVisibility] = useState(false);
-
-  // Select List, Input and Selected
-  const [searchPersonInput, setSearchPersonInput] = useState('');
-  const [searchCompanionInput, setSearchCompanionInput] = useState('');
-  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-  const [selectedCompanion, setSelectedCompanion] = useState<Person | null>(
-    null,
-  );
-  const [allPeople, setAllPeople] = useState<Person[]>([]);
-  const [allCompanions, setAllCompanions] = useState<Person[]>([]);
-
-  const [checkinNoPatient, setCheckinNoPatient] = useState<
-    CheckinCreateNoPatientData
-  >({
-    person: 0,
-    reason: '0',
-  });
 
   const [checkinPatient, setCheckinPatient] = useState<
-    CheckinCreatePatientData
+    CheckinUpdatePatientData
   >({
+    id: 0,
     person: 0,
+    person_name: '',
     companion: 0,
+    companion_name: 0,
     reason: 'patient',
     chemotherapy: false,
     radiotherapy: false,
@@ -77,30 +64,58 @@ const CheckInCreate: React.FC = () => {
     social_vacancy: false,
     observation: '',
   });
+  const [checkinNoPatient, setCheckinNoPatient] = useState<
+    CheckinUpdateNoPatientData
+  >({
+    id: 0,
+    person: 0,
+    person_name: '',
+    reason: '',
+  });
 
-  // Load people on input search submit
+  // Select List, Input and Selected
+  const [searchCompanionInput, setSearchCompanionInput] = useState('');
+  const [selectedCompanion, setSelectedCompanion] = useState<Person | null>(
+    null,
+  );
+  const [allCompanions, setAllCompanions] = useState<Person[]>([]);
+
+  // load checkin data to update
   useEffect(() => {
-    async function loadPeople(): Promise<void> {
+    async function loadCheckin(): Promise<void> {
       try {
-        let url = '/api/v1/people/?limit=4';
-        if (searchPersonInput) {
-          url += `&search=${searchPersonInput}`;
-          const response = await api.get(url);
-          setAllPeople(response.data.results);
+        const response = await api.get(`/api/v1/checkins/${params.id}/`);
+        if (response.data.reason === 'patient') {
+          setIsPatient(true);
+          setCheckinPatient(response.data);
+          setSelectedCompanion({
+            id: response.data.companion,
+            name: response.data.companion_name,
+            formatted_born_date: '',
+            avatar: response.data.companion,
+          });
         } else {
-          setAllPeople([]);
+          setIsPatient(false);
+          const data = {
+            id: response.data.id,
+            person: response.data.person,
+            person_name: response.data.person_name,
+            reason: response.data.reason,
+          };
+          setCheckinNoPatient(data);
         }
       } catch (err) {
         addToast({
           type: 'error',
           title: 'Erro no servidor',
-          description: 'Servidor offline. Tente mais tarde!',
+          description: 'Ocorreu um erro no servidor, tente mais tarde!',
         });
       }
     }
-    loadPeople();
-  }, [addToast, searchPersonInput]);
+    loadCheckin();
+  }, [addToast, params]);
 
+  // load companion input items to select
   useEffect(() => {
     async function loadCompanions(): Promise<void> {
       try {
@@ -123,22 +138,7 @@ const CheckInCreate: React.FC = () => {
     loadCompanions();
   }, [addToast, searchCompanionInput]);
 
-  // handle person select
-  const handleSelectPersonClick = (person: Person): void => {
-    setSelectedPerson(person);
-    setSearchPersonInput('');
-    setCheckinNoPatient({
-      ...checkinNoPatient,
-      person: person.id,
-    });
-    setCheckinPatient({
-      ...checkinPatient,
-      person: person.id,
-    });
-    setFormVisibility(true);
-  };
-
-  // handle person select
+  // handle companion select
   const handleSelectCompanionClick = (person: Person): void => {
     setSelectedCompanion(person);
     setSearchCompanionInput('');
@@ -146,21 +146,33 @@ const CheckInCreate: React.FC = () => {
       ...checkinPatient,
       companion: person.id,
     });
-    setFormVisibility(true);
   };
 
   async function handleSubmitPatient(event: FormEvent): Promise<void> {
     event.preventDefault();
 
-    try {
-      await api.post(`/api/v1/checkins/`, checkinPatient);
+    const data = {
+      person: checkinPatient.person,
+      reason: 'patient',
+      companion: checkinPatient.companion,
+      chemotherapy: checkinPatient.chemotherapy,
+      radiotherapy: checkinPatient.radiotherapy,
+      surgery: checkinPatient.surgery,
+      exams: checkinPatient.exams,
+      appointment: checkinPatient.appointment,
+      other: checkinPatient.other,
+      ca_number: checkinPatient.ca_number,
+      social_vacancy: checkinPatient.social_vacancy,
+      observation: checkinPatient.observation,
+    };
 
-      history.push('/checkins');
+    try {
+      await api.put(`/api/v1/checkins/${params.id}/`, data);
 
       addToast({
         type: 'success',
         title: 'Checkin registrado',
-        description: 'Checkin registrado com sucesso!',
+        description: 'Checkin atualizado com sucesso!',
       });
     } catch (err) {
       addToast({
@@ -175,10 +187,13 @@ const CheckInCreate: React.FC = () => {
   async function handleSubmitNoPatient(event: FormEvent): Promise<void> {
     event.preventDefault();
 
-    try {
-      await api.post(`/api/v1/checkins/`, checkinNoPatient);
+    const data = {
+      person: checkinNoPatient.person,
+      reason: checkinNoPatient.reason,
+    };
 
-      history.push('/checkins');
+    try {
+      await api.put(`/api/v1/checkins/${params.id}/`, data);
 
       addToast({
         type: 'success',
@@ -197,50 +212,8 @@ const CheckInCreate: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Nav>
-        <FilterButton
-          color={isPatient ? '#84c4b7' : '#414941'}
-          text={'Paciente'}
-          onClick={() => setIsPatient(true)}
-        />
-        <FilterButton
-          color={!isPatient ? '#84c4b7' : '#414941'}
-          text={'Não é paciente'}
-          onClick={() => setIsPatient(false)}
-        />
-      </Nav>
 
-      <Nav>
-        <SearchForm>
-          <input
-            placeholder="Buscar pessoa"
-            name="filter"
-            value={searchPersonInput}
-            onChange={event => {
-              setSearchPersonInput(event.target.value);
-              setSelectedPerson(null);
-            }}
-            autoComplete="off"
-            onFocus={() => setFormVisibility(false)}
-          />
-          <SelectContainer
-            style={{
-              display: allPeople.length !== 0 ? 'block' : 'none',
-            }}
-          >
-            {allPeople &&
-              allPeople.map(person => (
-                <SelectPersonItem
-                  person={person}
-                  key={person.id}
-                  handleClick={() => handleSelectPersonClick(person)}
-                />
-              ))}
-          </SelectContainer>
-        </SearchForm>
-      </Nav>
-
-      {!isPatient && formVisibility && (
+      {!isPatient && (
         <>
           <RegisterUpdateForm onSubmit={handleSubmitNoPatient}>
             <FieldSet>
@@ -255,7 +228,7 @@ const CheckInCreate: React.FC = () => {
                   id="person_name"
                   type="text"
                   name="person_name"
-                  value={selectedPerson ? selectedPerson.name : ''}
+                  value={checkinNoPatient.person_name}
                   placeholder="Nome da pessoa"
                   autoComplete="off"
                   disabled
@@ -286,12 +259,12 @@ const CheckInCreate: React.FC = () => {
                 </InputSelect>
               </FieldContainer>
             </FieldSet>
-            <ConfirmButton text={'Fazer checkin'} />
+            <ConfirmButton text={'Atualizar checkin'} />
           </RegisterUpdateForm>
         </>
       )}
 
-      {isPatient && formVisibility && (
+      {isPatient && (
         <>
           <RegisterUpdateForm onSubmit={handleSubmitPatient}>
             <FieldSet>
@@ -306,7 +279,7 @@ const CheckInCreate: React.FC = () => {
                   id="person_name"
                   type="text"
                   name="person_name"
-                  value={selectedPerson ? selectedPerson.name : ''}
+                  value={checkinPatient.person_name || ''}
                   placeholder="Nome da pessoa"
                   autoComplete="off"
                   disabled
@@ -457,7 +430,7 @@ const CheckInCreate: React.FC = () => {
               <label htmlFor="ca_number">Nº do CA</label>
               <input
                 id="ca_number"
-                value={checkinPatient.ca_number}
+                value={checkinPatient.ca_number || ''}
                 onChange={event => {
                   setCheckinPatient({
                     ...checkinPatient,
@@ -471,7 +444,7 @@ const CheckInCreate: React.FC = () => {
               <input
                 id="social_vacancy"
                 type="checkbox"
-                checked={checkinPatient.social_vacancy}
+                checked={checkinPatient.social_vacancy || false}
                 onChange={event => {
                   setCheckinPatient({
                     ...checkinPatient,
@@ -485,7 +458,7 @@ const CheckInCreate: React.FC = () => {
               <input
                 placeholder="Acompanhante"
                 name="filter"
-                value={searchCompanionInput}
+                value={searchCompanionInput || ''}
                 onChange={event => {
                   setSearchCompanionInput(event.target.value);
                   setSelectedCompanion(null);
@@ -520,8 +493,7 @@ const CheckInCreate: React.FC = () => {
                 disabled
               />
             </FieldContainer>
-
-            <ConfirmButton text={'Fazer checkin'} />
+            <ConfirmButton text={'Atualizar checkin'} />
           </RegisterUpdateForm>
         </>
       )}
@@ -529,4 +501,4 @@ const CheckInCreate: React.FC = () => {
   );
 };
 
-export default CheckInCreate;
+export default CheckInUpdate;

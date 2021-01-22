@@ -19,7 +19,7 @@ import PersonUpdate from '../pages/Person/PersonUpdate';
 import HomeServicesList from '../pages/HomeServices/HomeServicesList';
 import CheckInList from '../pages/CheckIn/CheckinList';
 import CheckInCreate from '../pages/CheckIn/CheckinCreate';
-
+import CheckInUpdate from '../pages/CheckIn/CheckinUpdate';
 import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
 import ProfessionalServicesUpdate from '../pages/ProfessionalServices/ProfessionalServicesUpdate';
 import ProfessionalServicesCreate from '../pages/ProfessionalServices/ProfessionalServicesCreate';
@@ -44,6 +44,7 @@ const Routes: React.FC = () => (
     <Route path="/people" exact component={PersonList} isPrivate />
 
     <Route path="/create-checkin" exact component={CheckInCreate} isPrivate />
+    <Route path="/checkins/:id" exact component={CheckInUpdate} isPrivate />
     <Route path="/checkins" exact component={CheckInList} isPrivate />
 
     <Route
