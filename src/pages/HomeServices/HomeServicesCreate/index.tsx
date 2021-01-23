@@ -1,18 +1,20 @@
 import React, { FormEvent, useState } from 'react';
-
 import { useHistory } from 'react-router-dom';
-import Header from '../../../components/Header';
+
 import api from '../../../services/api';
+
 import { useToast } from '../../../hooks/toast';
 
 import { Container, CheckBoxContainer } from './styles';
 
+import Header from '../../../components/Header';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
+import DynamicSearchForm from '../../../components/DynamicSearchForm';
+
 import { Person, HomeServiceCreateData } from '../types';
-import DynamicSearchForm from '../../../components/DynamicSearchForm/indext';
 
 const HomeServicesCreate: React.FC = () => {
   const { addToast } = useToast();
@@ -80,14 +82,14 @@ const HomeServicesCreate: React.FC = () => {
           <DynamicSearchForm handleSelect={handleSelectPersonClick} />
 
           <FieldContainer>
-            <label htmlFor="professional_name">Nome da pessoa</label>
+            <label htmlFor="person_name">Nome da pessoa</label>
             <input
               style={{ color: '#999' }}
-              id="professional_name"
+              id="person_name"
               type="text"
-              name="professional_name"
+              name="person_name"
               value={selectedPerson ? selectedPerson.name : ''}
-              placeholder="Nome do profissional"
+              placeholder="Nome da pessoa"
               autoComplete="off"
               disabled
             />

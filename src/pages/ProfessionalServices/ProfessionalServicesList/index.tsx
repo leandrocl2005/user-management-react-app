@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -12,12 +12,12 @@ import Header from '../../../components/Header';
 import GalleryContainer from '../../../components/GalleryContainer';
 import Avatar from '../../../components/Avatar';
 import Nav from '../../../components/Nav';
-import SearchForm from '../../../components/SearchForm';
 
 import api from '../../../services/api';
 
 import { ProfessionalServiceListData } from '../types';
 import { useToast } from '../../../hooks/toast';
+import StaticSearchForm from '../../../components/StaticSearchForm';
 
 const ProfessionalServicesList: React.FC = () => {
   const { addToast } = useToast();
@@ -54,8 +54,7 @@ const ProfessionalServicesList: React.FC = () => {
     history.push(`/professional-services/${id}`);
   };
 
-  const handleSearchSubmit = (event: FormEvent): void => {
-    event.preventDefault();
+  const handleSearchSubmit = (): void => {
     setSearchSubmit(searchInput);
   };
 
@@ -64,15 +63,15 @@ const ProfessionalServicesList: React.FC = () => {
       <Header />
 
       <Nav total={total} pathCreate={'/create-professional-services'}>
-        <SearchForm onSubmit={handleSearchSubmit}>
-          <input
-            placeholder="Buscar profissional"
-            name="filter"
-            value={searchInput}
-            onChange={event => setSearchInput(event.target.value)}
-          />
-        </SearchForm>
+        <StaticSearchForm
+          name={'filter'}
+          placeholder={'Buscar profissional'}
+          onClickSearch={handleSearchSubmit}
+          value={searchInput}
+          onChange={event => setSearchInput(event.target.value)}
+        />
       </Nav>
+
       <GalleryContainer>
         {professionalServices.map(professionalService => (
           <ProfessionalServicesItem

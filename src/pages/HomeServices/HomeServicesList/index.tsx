@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -10,7 +10,6 @@ import {
 } from './styles';
 
 import Header from '../../../components/Header';
-import SearchForm from '../../../components/SearchForm';
 import Avatar from '../../../components/Avatar';
 import Nav from '../../../components/Nav';
 import GalleryContainer from '../../../components/GalleryContainer';
@@ -20,6 +19,7 @@ import api from '../../../services/api';
 import { useToast } from '../../../hooks/toast';
 
 import { HomeServiceListData } from '../types';
+import StaticSearchForm from '../../../components/StaticSearchForm';
 
 const HomeServicesList: React.FC = () => {
   const { addToast } = useToast();
@@ -51,8 +51,7 @@ const HomeServicesList: React.FC = () => {
     loadHomeServices();
   }, [searchSubmit, addToast]);
 
-  const handleSearchSubmit = (event: FormEvent): void => {
-    event.preventDefault();
+  const handleSearchSubmit = (): void => {
     setSearchSubmit(searchInput);
   };
 
@@ -63,16 +62,17 @@ const HomeServicesList: React.FC = () => {
   return (
     <Container>
       <Header />
+
       <Nav total={total} pathCreate={'/create-home-services'}>
-        <SearchForm onSubmit={event => handleSearchSubmit(event)}>
-          <input
-            placeholder="Buscar por nome"
-            name="filter"
-            value={searchInput}
-            onChange={event => setSearchInput(event.target.value)}
-          />
-        </SearchForm>
+        <StaticSearchForm
+          name={'filter'}
+          placeholder={'Buscar por nome'}
+          onClickSearch={handleSearchSubmit}
+          value={searchInput}
+          onChange={event => setSearchInput(event.target.value)}
+        />
       </Nav>
+
       <GalleryContainer>
         {homeServices.map(homeService => (
           <HomeServicesItem

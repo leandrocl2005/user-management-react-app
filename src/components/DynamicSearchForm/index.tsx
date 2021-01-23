@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { FiSearch } from 'react-icons/fi';
 import { useToast } from '../../hooks/toast';
 import api from '../../services/api';
 import SelectPersonItem from '../SelectPersonItem';
@@ -77,6 +78,9 @@ const DynamicSearchForm: React.FC<DynamicSearchFormProps> = ({
             />
           ))}
       </SelectContainer>
+      <button type="button">
+        <FiSearch size={16} style={{ margin: '8px' }} />
+      </button>
     </Container>
   );
 };

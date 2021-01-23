@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-
 import { useHistory, useParams } from 'react-router-dom';
 
 import api from '../../../services/api';
+
 import { useToast } from '../../../hooks/toast';
 
 import { Container } from './styles';
@@ -12,10 +12,8 @@ import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
-import {
-  ProfessionalServiceListData,
-  ProfessionalServiceUpdateData,
-} from '../types';
+
+import { ProfessionalServiceUpdateData } from '../types';
 
 interface RouteParams {
   id: string;
@@ -28,10 +26,15 @@ const ProfessionalServicesUpdate: React.FC = () => {
   const history = useHistory();
 
   // Payload to update professional service
-  const [
-    professionalService,
-    setProfessionalService,
-  ] = useState<ProfessionalServiceListData | null>(null);
+  const [professionalService, setProfessionalService] = useState<
+    ProfessionalServiceUpdateData
+  >({
+    professional: 0,
+    title: '',
+    description: '',
+    professional_name: '',
+    formatted_created_at: '',
+  });
 
   useEffect(() => {
     async function loadProfessionalService(): Promise<void> {
@@ -54,29 +57,28 @@ const ProfessionalServicesUpdate: React.FC = () => {
   async function handleSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
 
-    if (professionalService) {
-      const data: ProfessionalServiceUpdateData = {
-        title: professionalService.title,
-        professional: professionalService.professional,
-        description: professionalService.description,
-      };
-      try {
-        await api.put(`/api/v1/professional_services/${params.id}/`, data);
+    const data = {
+      professional: professionalService.professional,
+      title: professionalService.title,
+      description: professionalService.description,
+    };
 
-        history.push('/professional-services');
+    try {
+      await api.put(`/api/v1/professional_services/${params.id}/`, data);
 
-        addToast({
-          type: 'success',
-          title: 'Serviço atualizado',
-          description: 'Serviço atualizado com sucesso!',
-        });
-      } catch (err) {
-        addToast({
-          type: 'error',
-          title: 'Erro no servidor',
-          description: 'Servidor offline. Tente mais tarde!',
-        });
-      }
+      history.push('/professional-services');
+
+      addToast({
+        type: 'success',
+        title: 'Serviço atualizado',
+        description: 'Serviço atualizado com sucesso!',
+      });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: 'Erro no servidor',
+        description: 'Servidor offline. Tente mais tarde!',
+      });
     }
   }
 
@@ -114,9 +116,7 @@ const ProfessionalServicesUpdate: React.FC = () => {
             <input
               style={{ color: '#999' }}
               id="professional_name"
-              value={
-                professionalService ? professionalService.professional_name : ''
-              }
+              value={professionalService.professional_name}
               disabled
             />
           </FieldContainer>
@@ -126,11 +126,7 @@ const ProfessionalServicesUpdate: React.FC = () => {
             <input
               style={{ color: '#999' }}
               id="service_date"
-              value={
-                professionalService
-                  ? professionalService.formatted_created_at
-                  : ''
-              }
+              value={professionalService.formatted_created_at}
               disabled
             />
           </FieldContainer>
@@ -142,7 +138,7 @@ const ProfessionalServicesUpdate: React.FC = () => {
               type="text"
               name="title"
               placeholder="Digite um título"
-              value={professionalService ? professionalService.title : ''}
+              value={professionalService.title}
               onChange={onChangeInput}
               autoComplete="off"
             />
@@ -154,7 +150,7 @@ const ProfessionalServicesUpdate: React.FC = () => {
               id="description"
               name="description"
               placeholder="Descrição ..."
-              value={professionalService ? professionalService.description : ''}
+              value={professionalService.description}
               onChange={onChangeTextArea}
               autoComplete="off"
             />

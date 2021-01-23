@@ -15,6 +15,8 @@ export type ProfessionalServiceListData = {
 
 export type ProfessionalServiceUpdateData = {
   professional: number;
+  professional_name: string;
+  formatted_created_at: string;
   title: string;
   description: string;
 };

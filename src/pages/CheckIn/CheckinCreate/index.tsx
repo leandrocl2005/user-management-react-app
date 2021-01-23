@@ -25,7 +25,7 @@ import {
   InputSelect,
   MedicalProceduresContainer,
 } from './styles';
-import DynamicSearchForm from '../../../components/DynamicSearchForm/indext';
+import DynamicSearchForm from '../../../components/DynamicSearchForm';
 
 const reasonOptions = [
   { value: 'companion', label: 'Acompanhante' },

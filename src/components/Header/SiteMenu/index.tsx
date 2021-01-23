@@ -55,7 +55,7 @@ export default function SiteMenu(): JSX.Element {
           <div>
             <MdLoyalty size={24} color={'#265e2b'} />
           </div>
-          <p>Check-in's</p>
+          <p>Check-in&apos;s</p>
         </Link>
 
         <Link to={'/home-services'} onClick={handleMenuItemClick}>

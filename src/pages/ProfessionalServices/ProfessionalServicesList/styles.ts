@@ -18,7 +18,7 @@ const fadeIn = keyframes`
 
 export const ProfessionalServicesItem = styled.div`
   height: 200px;
-  width: 320px;
+  width: 380px;
   background: #fffffe;
   border-radius: 8px;
   margin: 16px 8px;

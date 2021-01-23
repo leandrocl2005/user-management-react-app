@@ -1,18 +1,20 @@
 import React, { FormEvent, useState } from 'react';
-
 import { useHistory } from 'react-router-dom';
-import Header from '../../../components/Header';
+
 import api from '../../../services/api';
+
 import { useToast } from '../../../hooks/toast';
 
 import { Container } from './styles';
 
+import Header from '../../../components/Header';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
+import DynamicSearchForm from '../../../components/DynamicSearchForm';
+
 import { Person, ProfessionalServiceCreateData } from '../types';
-import DynamicSearchForm from '../../../components/DynamicSearchForm/indext';
 
 const ProfessionalServicesCreate: React.FC = () => {
   const { addToast } = useToast();
@@ -29,8 +31,10 @@ const ProfessionalServicesCreate: React.FC = () => {
   async function handleSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
 
+    const data = { ...professionalService };
+
     try {
-      await api.post(`/api/v1/professional_services/`, professionalService);
+      await api.post(`/api/v1/professional_services/`, data);
 
       history.push('/professional-services');
 
