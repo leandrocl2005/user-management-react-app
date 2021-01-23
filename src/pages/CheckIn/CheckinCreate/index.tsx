@@ -1,10 +1,9 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 import Header from '../../../components/Header';
 import Nav from '../../../components/Nav';
 import FilterButton from '../../../components/FilterButton';
-import SelectPersonItem from '../../../components/SelectPersonItem';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
 import FieldSet from '../../../components/FieldSet';
@@ -25,9 +24,8 @@ import {
   Container,
   InputSelect,
   MedicalProceduresContainer,
-  SelectContainer,
-  SearchForm,
 } from './styles';
+import DynamicSearchForm from '../../../components/DynamicSearchForm/indext';
 
 const reasonOptions = [
   { value: 'companion', label: 'Acompanhante' },
@@ -45,14 +43,10 @@ const CheckInCreate: React.FC = () => {
   const [formVisibility, setFormVisibility] = useState(false);
 
   // Select List, Input and Selected
-  const [searchPersonInput, setSearchPersonInput] = useState('');
-  const [searchCompanionInput, setSearchCompanionInput] = useState('');
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
   const [selectedCompanion, setSelectedCompanion] = useState<Person | null>(
     null,
   );
-  const [allPeople, setAllPeople] = useState<Person[]>([]);
-  const [allCompanions, setAllCompanions] = useState<Person[]>([]);
 
   const [checkinNoPatient, setCheckinNoPatient] = useState<
     CheckinCreateNoPatientData
@@ -78,55 +72,9 @@ const CheckInCreate: React.FC = () => {
     observation: '',
   });
 
-  // Load people on input search submit
-  useEffect(() => {
-    async function loadPeople(): Promise<void> {
-      try {
-        let url = '/api/v1/people/?limit=4';
-        if (searchPersonInput) {
-          url += `&search=${searchPersonInput}`;
-          const response = await api.get(url);
-          setAllPeople(response.data.results);
-        } else {
-          setAllPeople([]);
-        }
-      } catch (err) {
-        addToast({
-          type: 'error',
-          title: 'Erro no servidor',
-          description: 'Servidor offline. Tente mais tarde!',
-        });
-      }
-    }
-    loadPeople();
-  }, [addToast, searchPersonInput]);
-
-  useEffect(() => {
-    async function loadCompanions(): Promise<void> {
-      try {
-        let url = '/api/v1/people/?limit=4';
-        if (searchCompanionInput) {
-          url += `&search=${searchCompanionInput}`;
-          const response = await api.get(url);
-          setAllCompanions(response.data.results);
-        } else {
-          setAllCompanions([]);
-        }
-      } catch (err) {
-        addToast({
-          type: 'error',
-          title: 'Erro no servidor',
-          description: 'Servidor offline. Tente mais tarde!',
-        });
-      }
-    }
-    loadCompanions();
-  }, [addToast, searchCompanionInput]);
-
   // handle person select
   const handleSelectPersonClick = (person: Person): void => {
     setSelectedPerson(person);
-    setSearchPersonInput('');
     setCheckinNoPatient({
       ...checkinNoPatient,
       person: person.id,
@@ -141,7 +89,6 @@ const CheckInCreate: React.FC = () => {
   // handle person select
   const handleSelectCompanionClick = (person: Person): void => {
     setSelectedCompanion(person);
-    setSearchCompanionInput('');
     setCheckinPatient({
       ...checkinPatient,
       companion: person.id,
@@ -211,33 +158,7 @@ const CheckInCreate: React.FC = () => {
       </Nav>
 
       <Nav>
-        <SearchForm>
-          <input
-            placeholder="Buscar pessoa"
-            name="filter"
-            value={searchPersonInput}
-            onChange={event => {
-              setSearchPersonInput(event.target.value);
-              setSelectedPerson(null);
-            }}
-            autoComplete="off"
-            onFocus={() => setFormVisibility(false)}
-          />
-          <SelectContainer
-            style={{
-              display: allPeople.length !== 0 ? 'block' : 'none',
-            }}
-          >
-            {allPeople &&
-              allPeople.map(person => (
-                <SelectPersonItem
-                  person={person}
-                  key={person.id}
-                  handleClick={() => handleSelectPersonClick(person)}
-                />
-              ))}
-          </SelectContainer>
-        </SearchForm>
+        <DynamicSearchForm handleSelect={handleSelectPersonClick} />
       </Nav>
 
       {!isPatient && formVisibility && (
@@ -481,32 +402,7 @@ const CheckInCreate: React.FC = () => {
               />
               <span></span>
             </CheckBoxContainer>
-            <SearchForm>
-              <input
-                placeholder="Acompanhante"
-                name="filter"
-                value={searchCompanionInput}
-                onChange={event => {
-                  setSearchCompanionInput(event.target.value);
-                  setSelectedCompanion(null);
-                }}
-                autoComplete="off"
-              />
-              <SelectContainer
-                style={{
-                  display: allCompanions.length !== 0 ? 'block' : 'none',
-                }}
-              >
-                {allCompanions &&
-                  allCompanions.map(person => (
-                    <SelectPersonItem
-                      person={person}
-                      key={person.id}
-                      handleClick={() => handleSelectCompanionClick(person)}
-                    />
-                  ))}
-              </SelectContainer>
-            </SearchForm>
+            <DynamicSearchForm handleSelect={handleSelectCompanionClick} />
             <FieldContainer>
               <label htmlFor="companion_name">Nome do acompanhante</label>
               <input

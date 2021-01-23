@@ -1,21 +1,18 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 import Header from '../../../components/Header';
 import api from '../../../services/api';
 import { useToast } from '../../../hooks/toast';
 
-import { Container, CheckBoxContainer, SelectContainer } from './styles';
+import { Container, CheckBoxContainer } from './styles';
 
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
-import Nav from '../../../components/Nav';
-import SearchForm from '../../../components/SearchForm';
-
-import SelectPersonItem from '../../../components/SelectPersonItem';
 import { Person, HomeServiceCreateData } from '../types';
+import DynamicSearchForm from '../../../components/DynamicSearchForm/indext';
 
 const HomeServicesCreate: React.FC = () => {
   const { addToast } = useToast();
@@ -31,40 +28,19 @@ const HomeServicesCreate: React.FC = () => {
     sleep: false,
   });
 
-  // Select List, Input and Selected
-  const [searchPersonInput, setSearchPersonInput] = useState('');
+  // Select Person
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
-  const [allPeople, setAllPeople] = useState<Person[]>([]);
-
-  // Load people on input search submit
-  useEffect(() => {
-    async function loadPeople(): Promise<void> {
-      try {
-        let url = '/api/v1/people/?limit=4';
-        if (searchPersonInput) {
-          url += `&search=${searchPersonInput}`;
-          const response = await api.get(url);
-          setAllPeople(response.data.results);
-        } else {
-          setAllPeople([]);
-        }
-      } catch (err) {
-        addToast({
-          type: 'error',
-          title: 'Erro no servidor',
-          description: 'Servidor offline. Tente mais tarde!',
-        });
-      }
-    }
-    loadPeople();
-  }, [addToast, searchPersonInput]);
 
   // Register new home service and redirect to home service page
   async function handleSubmit(event: FormEvent): Promise<void> {
     event.preventDefault();
 
+    const data = {
+      ...homeService,
+    };
+
     try {
-      await api.post(`/api/v1/home_services/`, homeService);
+      await api.post(`/api/v1/home_services/`, data);
 
       history.push('/home-services');
 
@@ -85,7 +61,6 @@ const HomeServicesCreate: React.FC = () => {
   // handle person select
   const handleSelectPersonClick = (person: Person): void => {
     setSelectedPerson(person);
-    setSearchPersonInput('');
     setHomeService({
       ...homeService,
       person: person.id,
@@ -95,43 +70,14 @@ const HomeServicesCreate: React.FC = () => {
   return (
     <Container>
       <Header />
-      <Nav>
-        <SearchForm
-          containerStyle={{ position: 'relative' }}
-          onSubmit={event => event.preventDefault()}
-        >
-          <input
-            placeholder="Buscar pessoa"
-            name="filter"
-            value={searchPersonInput}
-            onChange={event => {
-              setSearchPersonInput(event.target.value);
-              setSelectedPerson(null);
-            }}
-            autoComplete="off"
-          />
-          <SelectContainer
-            style={{
-              display: allPeople.length !== 0 ? 'block' : 'none',
-            }}
-          >
-            {allPeople &&
-              allPeople.map(person => (
-                <SelectPersonItem
-                  person={person}
-                  key={person.id}
-                  handleClick={() => handleSelectPersonClick(person)}
-                />
-              ))}
-          </SelectContainer>
-        </SearchForm>
-      </Nav>
 
       <RegisterUpdateForm onSubmit={handleSubmit}>
         <FieldSet>
           <legend>
             <strong>Identificação</strong>
           </legend>
+
+          <DynamicSearchForm handleSelect={handleSelectPersonClick} />
 
           <FieldContainer>
             <label htmlFor="professional_name">Nome da pessoa</label>

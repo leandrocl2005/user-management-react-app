@@ -7,15 +7,6 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const SelectContainer = styled.div`
-  position: absolute;
-  background: white;
-  border: 1px solid #d3d4d5;
-  border-radius: 8px;
-  top: 34px;
-  overflow: visible;
-`;
-
 export const CheckBoxContainer = styled.label`
   display: block;
   position: relative;
