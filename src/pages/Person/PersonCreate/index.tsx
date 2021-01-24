@@ -1,48 +1,48 @@
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FiChevronDown } from 'react-icons/fi';
-
-import Header from '../../../components/Header';
 
 import { useToast } from '../../../hooks/toast';
 
 import api from '../../../services/api';
 
 import { Container, InputSelect } from './styles';
+
 import FieldContainer from '../../../components/FieldContainer';
+import Header from '../../../components/Header';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
+
 import { PersonCreateData } from '../types';
 
 const stateChoices = [
-  { name: 'São Paulo', abbreviation: 'SP' },
-  { name: 'Paraná', abbreviation: 'PR' },
-  { name: 'Santa Catarina', abbreviation: 'SC' },
-  { name: 'Rio Grande do Sul', abbreviation: 'RS' },
-  { name: 'Mato Grosso do Sul', abbreviation: 'MS' },
-  { name: 'Rondônia', abbreviation: 'RO' },
   { name: 'Acre', abbreviation: 'AC' },
-  { name: 'Amazonas', abbreviation: 'AM' },
-  { name: 'Roraima', abbreviation: 'RR' },
-  { name: 'Pará', abbreviation: 'PA' },
-  { name: 'Amapá', abbreviation: 'AP' },
-  { name: 'Tocantins', abbreviation: 'TO' },
-  { name: 'Maranhão', abbreviation: 'MA' },
-  { name: 'Rio Grande do Norte', abbreviation: 'RN' },
-  { name: 'Paraíba', abbreviation: 'PB' },
-  { name: 'Pernambuco', abbreviation: 'PE' },
   { name: 'Alagoas', abbreviation: 'AL' },
-  { name: 'Sergipe', abbreviation: 'SE' },
+  { name: 'Amapá', abbreviation: 'AP' },
+  { name: 'Amazonas', abbreviation: 'AM' },
   { name: 'Bahia', abbreviation: 'BA' },
-  { name: 'Minas Gerais', abbreviation: 'MG' },
-  { name: 'Rio de Janeiro', abbreviation: 'RJ' },
-  { name: 'Mato Grosso', abbreviation: 'MT' },
-  { name: 'Goiás', abbreviation: 'GO' },
-  { name: 'Distrito Federal', abbreviation: 'DF' },
-  { name: 'Piauí', abbreviation: 'PI' },
   { name: 'Ceará', abbreviation: 'CE' },
+  { name: 'Distrito Federal', abbreviation: 'DF' },
   { name: 'Espírito Santo', abbreviation: 'ES' },
+  { name: 'Goiás', abbreviation: 'GO' },
+  { name: 'Maranhão', abbreviation: 'MA' },
+  { name: 'Mato Grosso', abbreviation: 'MT' },
+  { name: 'Mato Grosso do Sul', abbreviation: 'MS' },
+  { name: 'Minas Gerais', abbreviation: 'MG' },
+  { name: 'Pará', abbreviation: 'PA' },
+  { name: 'Paraíba', abbreviation: 'PB' },
+  { name: 'Paraná', abbreviation: 'PR' },
+  { name: 'Pernambuco', abbreviation: 'PE' },
+  { name: 'Piauí', abbreviation: 'PI' },
+  { name: 'Roraima', abbreviation: 'RR' },
+  { name: 'Rio Grande do Norte', abbreviation: 'RN' },
+  { name: 'Rio Grande do Sul', abbreviation: 'RS' },
+  { name: 'Rio de Janeiro', abbreviation: 'RJ' },
+  { name: 'Rondônia', abbreviation: 'RO' },
+  { name: 'Santa Catarina', abbreviation: 'SC' },
+  { name: 'São Paulo', abbreviation: 'SP' },
+  { name: 'Sergipe', abbreviation: 'SE' },
+  { name: 'Tocantins', abbreviation: 'TO' },
 ];
 
 const PersonCreate: React.FC = () => {
@@ -102,15 +102,25 @@ const PersonCreate: React.FC = () => {
       delete data.email;
     }
 
-    if (data.cpf === '') {
+    if (data.cpf) {
+      data.cpf = data.cpf.replace(/\D/g, '');
+    } else {
       delete data.cpf;
+    }
+
+    if (data.postal_code) {
+      data.postal_code = data.postal_code.replace(/\D/g, '');
+    } else {
+      delete data.postal_code;
     }
 
     if (data.ddd_message_phone === '') {
       delete data.ddd_message_phone;
     }
 
-    if (data.message_phone === '') {
+    if (data.message_phone) {
+      data.message_phone = data.message_phone.replace(/\D/g, '');
+    } else {
       delete data.message_phone;
     }
 
@@ -118,7 +128,9 @@ const PersonCreate: React.FC = () => {
       delete data.ddd_private_phone;
     }
 
-    if (data.private_phone === '') {
+    if (data.private_phone) {
+      data.private_phone = data.private_phone.replace(/\D/g, '');
+    } else {
       delete data.private_phone;
     }
 
@@ -149,7 +161,6 @@ const PersonCreate: React.FC = () => {
         <FieldSet>
           <legend>
             <strong>Identificação</strong>
-            <FiChevronDown />
           </legend>
 
           <FieldContainer>
@@ -195,7 +206,6 @@ const PersonCreate: React.FC = () => {
         <FieldSet>
           <legend>
             <strong>Documentos</strong>
-            <FiChevronDown />
           </legend>
           <FieldContainer>
             <label htmlFor="rg">RG</label>
@@ -227,7 +237,7 @@ const PersonCreate: React.FC = () => {
               onChange={event => {
                 setPerson({
                   ...person,
-                  cpf: event.target.value.replace(/^\D+/g, ''),
+                  cpf: event.target.value,
                 });
               }}
             />
@@ -236,7 +246,6 @@ const PersonCreate: React.FC = () => {
         <FieldSet>
           <legend>
             <strong>Endereço</strong>
-            <FiChevronDown />
           </legend>
 
           <FieldContainer>
@@ -337,7 +346,6 @@ const PersonCreate: React.FC = () => {
         <FieldSet>
           <legend>
             <strong>Contatos</strong>
-            <FiChevronDown />
           </legend>
           <FieldContainer>
             <label htmlFor="email">E-mail</label>

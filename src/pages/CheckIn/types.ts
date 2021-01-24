@@ -20,8 +20,11 @@ export type CheckinCreatePatientData = {
 
 export type CheckinListData = {
   id: number;
+  person: number;
   person_name: string;
+  reason: string;
   companion_name?: string;
+  companion?: number;
   formatted_created_at: string;
   active: boolean;
 };
@@ -42,6 +45,7 @@ export type CheckinUpdatePatientData = {
   ca_number: string;
   social_vacancy: boolean;
   observation: string;
+  active: boolean;
 };
 
 export type CheckinUpdateNoPatientData = {
@@ -49,6 +53,7 @@ export type CheckinUpdateNoPatientData = {
   person: number;
   person_name: string;
   reason: string;
+  active: boolean;
 };
 
 export type Person = {

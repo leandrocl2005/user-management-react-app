@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
-
 import { useHistory } from 'react-router-dom';
+
 import Header from '../../../components/Header';
 import Nav from '../../../components/Nav';
 import FilterButton from '../../../components/FilterButton';
@@ -8,6 +8,7 @@ import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
 import FieldSet from '../../../components/FieldSet';
 import ConfirmButton from '../../../components/ConfirmButton';
+import DynamicSearchForm from '../../../components/DynamicSearchForm';
 
 import api from '../../../services/api';
 
@@ -25,7 +26,6 @@ import {
   InputSelect,
   MedicalProceduresContainer,
 } from './styles';
-import DynamicSearchForm from '../../../components/DynamicSearchForm';
 
 const reasonOptions = [
   { value: 'companion', label: 'Acompanhante' },
@@ -39,7 +39,7 @@ const CheckInCreate: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
-  const [isPatient, setIsPatient] = useState(false);
+  const [isPatient, setIsPatient] = useState(true);
   const [formVisibility, setFormVisibility] = useState(false);
 
   // Select List, Input and Selected
@@ -86,7 +86,7 @@ const CheckInCreate: React.FC = () => {
     setFormVisibility(true);
   };
 
-  // handle person select
+  // handle companion select
   const handleSelectCompanionClick = (person: Person): void => {
     setSelectedCompanion(person);
     setCheckinPatient({

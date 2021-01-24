@@ -3,26 +3,28 @@ import { Switch } from 'react-router-dom';
 
 import Route from './route';
 
-import Notifications from '../pages/Notifications';
-
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 
 import Reports from '../pages/Reports';
+import Profile from '../pages/Profile';
+import Notifications from '../pages/Notifications';
 
 import PersonList from '../pages/Person/PersonList';
 import PersonCreate from '../pages/Person/PersonCreate';
 import PersonUpdate from '../pages/Person/PersonUpdate';
 
-import HomeServicesList from '../pages/HomeServices/HomeServicesList';
 import CheckInList from '../pages/CheckIn/CheckinList';
 import CheckInCreate from '../pages/CheckIn/CheckinCreate';
 import CheckInUpdate from '../pages/CheckIn/CheckinUpdate';
+
 import ProfessionalServicesList from '../pages/ProfessionalServices/ProfessionalServicesList';
 import ProfessionalServicesUpdate from '../pages/ProfessionalServices/ProfessionalServicesUpdate';
 import ProfessionalServicesCreate from '../pages/ProfessionalServices/ProfessionalServicesCreate';
+
+import HomeServicesList from '../pages/HomeServices/HomeServicesList';
 import HomeServicesCreate from '../pages/HomeServices/HomeServicesCreate';
 import HomeServicesUpdate from '../pages/HomeServices/HomeServicesUpdate';
 
@@ -83,6 +85,7 @@ const Routes: React.FC = () => (
     <Route path="/home-services" component={HomeServicesList} isPrivate />
 
     <Route path="/reports" component={Reports} isPrivate />
+    <Route path="/profile" component={Profile} isPrivate />
   </Switch>
 );
 

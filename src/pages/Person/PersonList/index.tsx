@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useToast } from '../../../hooks/toast';
@@ -8,10 +8,10 @@ import api from '../../../services/api';
 import { Container, PersonItem, CardBody } from './styles';
 
 import Header from '../../../components/Header';
-import SearchForm from '../../../components/SearchForm';
 import Nav from '../../../components/Nav';
 import Avatar from '../../../components/Avatar';
 import GalleryContainer from '../../../components/GalleryContainer';
+import StaticSearchForm from '../../../components/StaticSearchForm';
 
 import { PersonListData } from '../types';
 
@@ -43,8 +43,7 @@ const Personlist: React.FC = () => {
     loadPersonList();
   }, [addToast, searchSubmit]);
 
-  const handleSearchSubmit = (event: FormEvent): void => {
-    event.preventDefault();
+  const handleSearchSubmit = (): void => {
     setSearchSubmit(searchInput);
   };
 
@@ -56,14 +55,13 @@ const Personlist: React.FC = () => {
     <Container>
       <Header />
       <Nav total={totalPerson} pathCreate={'/create-people'}>
-        <SearchForm onSubmit={handleSearchSubmit}>
-          <input
-            placeholder="Buscar por nome"
-            name="filter"
-            value={searchInput}
-            onChange={event => setSearchInput(event.target.value)}
-          />
-        </SearchForm>
+        <StaticSearchForm
+          onClickSearch={handleSearchSubmit}
+          placeholder="Buscar por nome"
+          name="filter"
+          value={searchInput}
+          onChange={event => setSearchInput(event.target.value)}
+        />
       </Nav>
       <GalleryContainer>
         {listPerson.map(person => (

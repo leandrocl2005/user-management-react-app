@@ -63,6 +63,7 @@ const CheckInUpdate: React.FC = () => {
     ca_number: '',
     social_vacancy: false,
     observation: '',
+    active: false,
   });
   const [checkinNoPatient, setCheckinNoPatient] = useState<
     CheckinUpdateNoPatientData
@@ -71,6 +72,7 @@ const CheckInUpdate: React.FC = () => {
     person: 0,
     person_name: '',
     reason: '',
+    active: false,
   });
 
   // Select List, Input and Selected
@@ -101,6 +103,7 @@ const CheckInUpdate: React.FC = () => {
             person: response.data.person,
             person_name: response.data.person_name,
             reason: response.data.reason,
+            active: response.data.active,
           };
           setCheckinNoPatient(data);
         }
@@ -239,6 +242,7 @@ const CheckInUpdate: React.FC = () => {
                 <InputSelect
                   id="reason"
                   value={checkinNoPatient.reason}
+                  disabled={!checkinNoPatient.active}
                   onChange={event => {
                     if (event.target.value !== '0') {
                       setCheckinNoPatient({
@@ -259,7 +263,14 @@ const CheckInUpdate: React.FC = () => {
                 </InputSelect>
               </FieldContainer>
             </FieldSet>
-            <ConfirmButton text={'Atualizar checkin'} />
+            {checkinNoPatient.active && (
+              <ConfirmButton text={'Atualizar checkin'} />
+            )}
+            {!checkinNoPatient.active && (
+              <p style={{ color: 'rgb(244, 67, 54)' }}>
+                Este checkin não pode ser atualizado, pois já está fechado!
+              </p>
+            )}
           </RegisterUpdateForm>
         </>
       )}
@@ -271,7 +282,11 @@ const CheckInUpdate: React.FC = () => {
               <legend>
                 <strong>Identificação do paciente</strong>
               </legend>
-
+              {!checkinPatient.active && (
+                <p style={{ color: 'rgb(244, 67, 54)' }}>
+                  Este checkin não pode ser atualizado, pois já está fechado!
+                </p>
+              )}
               <FieldContainer>
                 <label htmlFor="person_name">Nome da pessoa</label>
                 <input
@@ -294,6 +309,7 @@ const CheckInUpdate: React.FC = () => {
                 </InputSelect>
               </FieldContainer>
             </FieldSet>
+
             <FieldSet>
               <legend>
                 <strong>Identificação do motivo</strong>
@@ -493,7 +509,9 @@ const CheckInUpdate: React.FC = () => {
                 disabled
               />
             </FieldContainer>
-            <ConfirmButton text={'Atualizar checkin'} />
+            {checkinPatient.active && (
+              <ConfirmButton text={'Atualizar checkin'} />
+            )}
           </RegisterUpdateForm>
         </>
       )}

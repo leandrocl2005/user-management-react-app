@@ -1,14 +1,15 @@
 import React from 'react';
 
-import { Container, Content } from './styles';
+import { Container, ReportsContainer } from './styles';
 import Header from '../../components/Header';
 
 const Reports: React.FC = () => {
   return (
     <Container>
       <Header />
-
-      <Content>This is the People page content</Content>
+      <ReportsContainer>
+        <h1>Está página está em construção!</h1>
+      </ReportsContainer>
     </Container>
   );
 };

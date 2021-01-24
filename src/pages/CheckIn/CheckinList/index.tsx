@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { TiLockOpen, TiLockClosed, TiEye } from 'react-icons/ti';
@@ -17,10 +17,10 @@ import { useToast } from '../../../hooks/toast';
 
 import Header from '../../../components/Header';
 import FilterButton from '../../../components/FilterButton';
-import SearchForm from '../../../components/SearchForm';
 import Nav from '../../../components/Nav';
 import GalleryContainer from '../../../components/GalleryContainer';
 import Avatar from '../../../components/Avatar';
+import StaticSearchForm from '../../../components/StaticSearchForm';
 
 import { CheckinListData } from '../types';
 
@@ -57,48 +57,63 @@ const CheckInList: React.FC = () => {
     loadCheckins();
   }, [addToast, searchSubmit, filterActive]);
 
-  const handleCheckinClick = ({ id, active }: CheckinListData): void => {
-    async function changeActive(): Promise<void> {
-      try {
-        await api.patch(`api/v1/checkins/${id}/`, {
-          active: !active,
-        });
+  async function handleCloseCheckin(checkin: CheckinListData): Promise<void> {
+    let data: {
+      person: number;
+      reason: string;
+      active: boolean;
+      companion?: number;
+    } = {
+      person: checkin.person,
+      reason: checkin.reason,
+      active: false,
+    };
 
-        const actualCheckins = [...checkins];
-
-        const index = actualCheckins.findIndex(checkin => checkin.id === id);
-        actualCheckins[index].active = !active;
-
-        setCheckins(actualCheckins);
-      } catch (err) {
-        addToast({
-          type: 'error',
-          title: 'Erro no servidor',
-          description: 'Servidor offline. Tente mais tarde!',
-        });
-      }
+    if (checkin.companion) {
+      data = {
+        ...data,
+        companion: checkin.companion,
+      };
     }
-    changeActive();
-    setTotalCheckins(totalCheckins - 1);
-  };
 
-  const handleSearchSubmit = (event: FormEvent): void => {
-    event.preventDefault();
+    try {
+      await api.put(`api/v1/checkins/${checkin.id}/`, data);
+      const actualCheckins = [...checkins];
+      const index = actualCheckins.findIndex(
+        actualCheckin => actualCheckin.id === checkin.id,
+      );
+      actualCheckins[index].active = false;
+      setCheckins(actualCheckins);
+      addToast({
+        type: 'success',
+        title: 'Checkout com sucesso',
+        description: 'Seu checkout foi realizado com sucesso!',
+      });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: 'Erro no servidor',
+        description: 'Servidor offline. Tente mais tarde!',
+      });
+    }
+  }
+
+  const handleSearchSubmit = (): void => {
     setSearchSubmit(searchInput);
   };
 
   return (
     <Container>
       <Header />
+
       <Nav total={totalCheckins} pathCreate={'/create-checkin'}>
-        <SearchForm onSubmit={handleSearchSubmit}>
-          <input
-            placeholder="Buscar por nome"
-            name="filter"
-            value={searchInput}
-            onChange={event => setSearchInput(event.target.value)}
-          />
-        </SearchForm>
+        <StaticSearchForm
+          onClickSearch={handleSearchSubmit}
+          placeholder={'Buscar por nome'}
+          name={'filter'}
+          value={searchInput}
+          onChange={event => setSearchInput(event.target.value)}
+        />
         <FilterButton
           color={'#84c4b7'}
           text={'Abertos'}
@@ -115,6 +130,7 @@ const CheckInList: React.FC = () => {
           onClick={() => setFilterActive(null)}
         />
       </Nav>
+
       <GalleryContainer>
         {checkins.map(checkin => (
           <CheckinItem key={checkin.id}>
@@ -134,7 +150,7 @@ const CheckInList: React.FC = () => {
               {checkin.active && (
                 <TiLockOpen
                   size={24}
-                  onClick={() => handleCheckinClick(checkin)}
+                  onClick={() => handleCloseCheckin(checkin)}
                   style={{ cursor: 'pointer' }}
                   color={'#fffffe'}
                 />

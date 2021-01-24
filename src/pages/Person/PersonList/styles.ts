@@ -37,21 +37,6 @@ export const CardBody = styled.div`
   }
 `;
 
-export const PlusButtonContainer = styled.a`
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #b8d866;
-  cursor: pointer;
-  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
-  transition: 400ms;
-
-  :hover {
-    box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.7);
-  }
-`;
-
 export const PersonItem = styled.div`
   height: 120px;
   width: 320px;
