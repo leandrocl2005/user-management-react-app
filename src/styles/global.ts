@@ -28,4 +28,7 @@ export default createGlobalStyle`
     cursor: pointer;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
 `;

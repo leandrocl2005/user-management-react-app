@@ -1,7 +1,7 @@
 export type ProfessionalServiceCreateData = {
-  professional?: number;
-  title?: string;
-  description?: string;
+  professional: number;
+  title: string;
+  description: string;
 };
 
 export type ProfessionalServiceListData = {
@@ -15,10 +15,16 @@ export type ProfessionalServiceListData = {
 
 export type ProfessionalServiceUpdateData = {
   professional: number;
-  professional_name: string;
-  formatted_created_at: string;
   title: string;
   description: string;
+};
+
+export type ProfessionalServiceLoadData = {
+  professional: number;
+  professional_name: string;
+  title: string;
+  description: string;
+  formatted_created_at: string;
 };
 
 export type Person = {

@@ -1,5 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { Controller, useForm } from 'react-hook-form';
 
 import api from '../../../services/api';
 
@@ -13,7 +14,7 @@ import ConfirmButton from '../../../components/ConfirmButton';
 import RegisterUpdateForm from '../../../components/RegisterUpdateForm';
 import FieldContainer from '../../../components/FieldContainer';
 
-import { ProfessionalServiceUpdateData } from '../types';
+import { ProfessionalServiceLoadData, ProfessionalServiceUpdateData } from '../types';
 
 interface RouteParams {
   id: string;
@@ -21,21 +22,30 @@ interface RouteParams {
 
 const ProfessionalServicesUpdate: React.FC = () => {
   const params = useParams<RouteParams>();
-
   const { addToast } = useToast();
   const history = useHistory();
 
-  // Payload to update professional service
+  const defaultValues = {
+    professional: -1,
+    title: '',
+    description: '',
+  }
+  // data for submit
+  const { handleSubmit, reset, errors, control } = useForm<ProfessionalServiceUpdateData>({
+    defaultValues
+  });
+  // data for user view
   const [professionalService, setProfessionalService] = useState<
-    ProfessionalServiceUpdateData
+    ProfessionalServiceLoadData
   >({
-    professional: 0,
+    professional: -1,
     title: '',
     description: '',
     professional_name: '',
     formatted_created_at: '',
   });
 
+  // load data for submit and data for user view
   useEffect(() => {
     async function loadProfessionalService(): Promise<void> {
       try {
@@ -43,6 +53,11 @@ const ProfessionalServicesUpdate: React.FC = () => {
           `/api/v1/professional_services/${params.id}/`,
         );
         setProfessionalService(response.data);
+        reset({
+          professional: response.data.professional,
+          title: response.data.title,
+          description: response.data.description
+        })
       } catch (err) {
         addToast({
           type: 'error',
@@ -52,65 +67,43 @@ const ProfessionalServicesUpdate: React.FC = () => {
       }
     }
     loadProfessionalService();
-  }, [addToast, params]);
+  }, [addToast, params, reset]);
 
-  async function handleSubmit(event: FormEvent): Promise<void> {
-    event.preventDefault();
+  // handle submit
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    handleSubmit(async (data: ProfessionalServiceUpdateData) => {
+      try {
+        await api.put(`/api/v1/professional_services/${params.id}/`, data);
 
-    const data = {
-      professional: professionalService.professional,
-      title: professionalService.title,
-      description: professionalService.description,
-    };
+        history.push('/professional-services');
 
-    try {
-      await api.put(`/api/v1/professional_services/${params.id}/`, data);
-
-      history.push('/professional-services');
-
-      addToast({
-        type: 'success',
-        title: 'Serviço atualizado',
-        description: 'Serviço atualizado com sucesso!',
-      });
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro no servidor',
-        description: 'Servidor offline. Tente mais tarde!',
-      });
-    }
+        addToast({
+          type: 'success',
+          title: 'Serviço atualizado',
+          description: 'Serviço atualizado com sucesso!',
+        });
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro no servidor',
+          description: 'Servidor offline. Tente mais tarde!',
+        });
+      }
+    })(e);
   }
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (professionalService) {
-      setProfessionalService({
-        ...professionalService,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
-  const onChangeTextArea = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ): void => {
-    if (professionalService) {
-      setProfessionalService({
-        ...professionalService,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
+  // form
   return (
     <Container>
       <Header />
-      <RegisterUpdateForm onSubmit={handleSubmit}>
+      <RegisterUpdateForm onSubmit={onSubmit}>
         <FieldSet>
           <legend>
             <strong>Serviço profissional</strong>
           </legend>
 
+          {/* field professional name disabled*/}
           <FieldContainer>
             <label htmlFor="professional_name">Nome do profissional</label>
             <input
@@ -121,42 +114,103 @@ const ProfessionalServicesUpdate: React.FC = () => {
             />
           </FieldContainer>
 
+          {/* field formatted_created_at disabled*/}
           <FieldContainer>
-            <label htmlFor="service_date">Data do serviço</label>
+            <label htmlFor="formatted_created_at">Data do serviço</label>
             <input
               style={{ color: '#999' }}
-              id="service_date"
+              id="formatted_created_at"
               value={professionalService.formatted_created_at}
               disabled
             />
           </FieldContainer>
 
+          {/* field title */}
           <FieldContainer>
             <label htmlFor="title">Título</label>
-            <input
-              id="title"
-              type="text"
+            <Controller
+              as={
+                <input
+                  id="title"
+                  autoComplete="off"
+                  style={{
+                    borderColor: errors.title ? 'red' : '#d3e2e5'
+                  }}
+                />
+              }
               name="title"
-              placeholder="Digite um título"
-              value={professionalService.title}
-              onChange={onChangeInput}
-              autoComplete="off"
+              control={control}
+              rules={{
+                required: true,
+                maxLength: 60,
+                minLength: 10
+              }}
             />
+            {errors.title && errors.title.type === "required" && (
+              <div style={{ color: 'red' }}>
+                Este campo é obrigatório.
+              </div>
+            )}
+            {errors.title && errors.title.type === "minLength" && (
+              <div style={{ color: 'red' }}>
+                Mínimo de 10 caracters.
+              </div>
+            )}
+            {errors.title && errors.title.type === "maxLength" && (
+              <div style={{ color: 'red' }}>
+                Máximo de 60 caracteres.
+              </div>
+            )}
           </FieldContainer>
 
+          {/* field description*/}
           <FieldContainer>
             <label htmlFor="description">Descrição</label>
-            <textarea
-              id="description"
+            <Controller as={
+              <textarea
+                id="description"
+                autoComplete="off"
+                style={{
+                  borderColor: errors.description ? 'red' : '#d3e2e5'
+                }}
+              />}
               name="description"
-              placeholder="Descrição ..."
-              value={professionalService.description}
-              onChange={onChangeTextArea}
-              autoComplete="off"
+              control={control}
+              rules={{
+                required: true,
+                minLength: 60,
+                maxLength: 400,
+              }}
             />
+            {errors.description && errors.description.type === "required" && (
+              <div style={{ color: 'red' }}>
+                Este campo é obrigatório.
+              </div>
+            )}
+            {errors.description && errors.description.type === "minLength" && (
+              <div style={{ color: 'red' }}>
+                Mínimo de 60 caracters.
+              </div>
+            )}
+            {errors.description && errors.description.type === "maxLength" && (
+              <div style={{ color: 'red' }}>
+                Máximo de 400 caracters.
+              </div>
+            )}
           </FieldContainer>
+
+          {/* field professional hidden */}
+          <Controller as={
+            <input type="hidden" />
+          }
+            name="professional"
+            control={control}
+          />
+
         </FieldSet>
+
         <ConfirmButton text={'Atualizar'} />
+
       </RegisterUpdateForm>
     </Container>
   );

@@ -27,9 +27,11 @@ import ProfessionalServicesCreate from '../pages/ProfessionalServices/Profession
 import HomeServicesList from '../pages/HomeServices/HomeServicesList';
 import HomeServicesCreate from '../pages/HomeServices/HomeServicesCreate';
 import HomeServicesUpdate from '../pages/HomeServices/HomeServicesUpdate';
+
 import NotFound from '../pages/NotFound';
 
 const Routes: React.FC = () => (
+
   <Switch>
     <Route path="/" exact component={SignIn} />
     <Route path="/signup" component={SignUp} />
@@ -87,6 +89,7 @@ const Routes: React.FC = () => (
 
     <Route path="/reports" component={Reports} isPrivate />
     <Route path="/profile" component={Profile} isPrivate />
+
     <Route path="*" component={NotFound} />
   </Switch>
 );
