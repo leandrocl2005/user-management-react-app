@@ -28,6 +28,7 @@ const HomeServicesCreate: React.FC = () => {
     dinner: false,
     snack: false,
     sleep: false,
+    person: -1
   });
 
   // Select Person
@@ -40,6 +41,29 @@ const HomeServicesCreate: React.FC = () => {
     const data = {
       ...homeService,
     };
+
+    // check if a person was selected
+    if (data.person === -1) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0; /* to Safari */
+      addToast({
+        type: 'error',
+        title: 'Pessoa não selecionada',
+        description: 'Por favor, selecione uma pessoa!',
+      });
+      return
+    }
+
+    if (!Object.values(data).some(k => k === true)) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0; /* to Safari */
+      addToast({
+        type: 'error',
+        title: 'Serviço não selecionado',
+        description: 'Por favor, selecione pelo menos um serviço!',
+      });
+      return
+    }
 
     try {
       await api.post(`/api/v1/home_services/`, data);

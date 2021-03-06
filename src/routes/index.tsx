@@ -13,7 +13,7 @@ import Profile from '../pages/Profile';
 import Notifications from '../pages/Notifications';
 
 import PersonList from '../pages/Person/PersonList';
-import PersonCreate from '../pages/Person/PersonCreate';
+import PersonCreateTeste from '../pages/Person/PersonCreateTeste';
 import PersonUpdate from '../pages/Person/PersonUpdate';
 
 import CheckInList from '../pages/CheckIn/CheckinList';
@@ -42,7 +42,7 @@ const Routes: React.FC = () => (
     <Route
       path="/create-people"
       exact={true}
-      component={PersonCreate}
+      component={PersonCreateTeste}
       isPrivate
     />
     <Route path="/people/:id" exact component={PersonUpdate} isPrivate />

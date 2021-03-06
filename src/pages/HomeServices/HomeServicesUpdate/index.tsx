@@ -25,9 +25,18 @@ const HomeServicesUpdate: React.FC = () => {
   const history = useHistory();
 
   // Payload to update professional service
-  const [homeService, setHomeService] = useState<HomeServiceListData | null>(
-    null,
-  );
+  const [homeService, setHomeService] = useState<HomeServiceListData>({
+    id: -1,
+    breakfast: false,
+    lunch: false,
+    shower: false,
+    dinner: false,
+    snack: false,
+    sleep: false,
+    person: -1,
+    formatted_created_at: '',
+    person_name: '',
+  });
 
   useEffect(() => {
     async function loadHomeService(): Promise<void> {
@@ -58,6 +67,32 @@ const HomeServicesUpdate: React.FC = () => {
         sleep: homeService.sleep,
         person: homeService.person,
       };
+
+      // check if a person was selected
+      if (data.person === -1) {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0; /* to Safari */
+        addToast({
+          type: 'error',
+          title: 'Pessoa não selecionada',
+          description: 'Por favor, selecione uma pessoa!',
+        });
+        return
+      }
+
+      // check if at least one service was selected
+      if (!Object.values(data).some(k => k === true)) {
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0; /* to Safari */
+        addToast({
+          type: 'error',
+          title: 'Serviço não selecionado',
+          description: 'Por favor, selecione pelo menos um serviço!',
+        });
+        return
+      }
+
+
       try {
         await api.put(`/api/v1/home_services/${params.id}/`, data);
 
@@ -92,7 +127,7 @@ const HomeServicesUpdate: React.FC = () => {
             <input
               style={{ color: '#999' }}
               id="person_name"
-              value={homeService ? homeService.person_name : ''}
+              value={homeService.person_name}
               disabled
             />
           </FieldContainer>
@@ -102,7 +137,7 @@ const HomeServicesUpdate: React.FC = () => {
             <input
               style={{ color: '#999' }}
               id="service_date"
-              value={homeService ? homeService.formatted_created_at : ''}
+              value={homeService.formatted_created_at}
               disabled
             />
           </FieldContainer>
@@ -118,15 +153,12 @@ const HomeServicesUpdate: React.FC = () => {
               id="breakfast"
               type="checkbox"
               name="breakfast"
-              checked={homeService ? homeService.breakfast : false}
-              onChange={() => {
-                if (homeService) {
-                  setHomeService({
-                    ...homeService,
-                    breakfast: !homeService.breakfast,
-                  });
-                }
-              }}
+              checked={homeService.breakfast}
+              onChange={() => setHomeService({
+                ...homeService,
+                breakfast: !homeService.breakfast,
+              }
+              )}
             />
             <span></span>
           </CheckBoxContainer>
@@ -137,15 +169,11 @@ const HomeServicesUpdate: React.FC = () => {
               id="lunch"
               type="checkbox"
               name="lunch"
-              checked={homeService ? homeService.lunch : false}
-              onChange={() => {
-                if (homeService) {
-                  setHomeService({
-                    ...homeService,
-                    lunch: !homeService.lunch,
-                  });
-                }
-              }}
+              checked={homeService.lunch}
+              onChange={() => setHomeService({
+                ...homeService,
+                lunch: !homeService.lunch,
+              })}
             />
             <span></span>
           </CheckBoxContainer>
@@ -155,15 +183,13 @@ const HomeServicesUpdate: React.FC = () => {
               id="snack"
               type="checkbox"
               name="snack"
-              checked={homeService ? homeService.snack : false}
-              onChange={() => {
-                if (homeService) {
-                  setHomeService({
-                    ...homeService,
-                    snack: !homeService.snack,
-                  });
-                }
-              }}
+              checked={homeService.snack}
+              onChange={() =>
+                setHomeService({
+                  ...homeService,
+                  snack: !homeService.snack,
+                })
+              }
             />
             <span></span>
           </CheckBoxContainer>
@@ -173,15 +199,13 @@ const HomeServicesUpdate: React.FC = () => {
               id="dinner"
               type="checkbox"
               name="dinner"
-              checked={homeService ? homeService.dinner : false}
-              onChange={() => {
-                if (homeService) {
-                  setHomeService({
-                    ...homeService,
-                    dinner: !homeService.dinner,
-                  });
-                }
-              }}
+              checked={homeService.dinner}
+              onChange={() =>
+                setHomeService({
+                  ...homeService,
+                  dinner: !homeService.dinner,
+                })
+              }
             />
             <span></span>
           </CheckBoxContainer>
@@ -197,15 +221,13 @@ const HomeServicesUpdate: React.FC = () => {
               id="shower"
               type="checkbox"
               name="shower"
-              checked={homeService ? homeService.shower : false}
-              onChange={() => {
-                if (homeService) {
-                  setHomeService({
-                    ...homeService,
-                    shower: !homeService.shower,
-                  });
-                }
-              }}
+              checked={homeService.shower}
+              onChange={() =>
+                setHomeService({
+                  ...homeService,
+                  shower: !homeService.shower,
+                })
+              }
             />
             <span></span>
           </CheckBoxContainer>
@@ -215,15 +237,13 @@ const HomeServicesUpdate: React.FC = () => {
               id="sleep"
               type="checkbox"
               name="sleep"
-              checked={homeService ? homeService.sleep : false}
-              onChange={() => {
-                if (homeService) {
-                  setHomeService({
-                    ...homeService,
-                    sleep: !homeService.sleep,
-                  });
-                }
-              }}
+              checked={homeService.sleep}
+              onChange={() =>
+                setHomeService({
+                  ...homeService,
+                  sleep: !homeService.sleep,
+                })
+              }
             />
             <span></span>
           </CheckBoxContainer>

@@ -5,7 +5,7 @@ export type HomeServiceCreateData = {
   dinner: boolean;
   snack: boolean;
   sleep: boolean;
-  person?: number;
+  person: number;
 };
 
 export type HomeServiceListData = {
